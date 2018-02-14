@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require 'byebug'
+
+ENV['STARMAN_ROOT'] = File.absolute_path(File.dirname __FILE__)
+
+require "#{ENV['STARMAN_ROOT']}/framework"
+
+command_name = ARGV.shift.to_sym
+
+commands = {
+  install: InstallCommand,
+  i: InstallCommand
+}
+
+command = commands[command_name].new
+
+Settings.init
+History.init
+
+command.run
