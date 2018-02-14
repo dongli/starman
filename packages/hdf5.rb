@@ -5,8 +5,8 @@ class Hdf5 < Package
   depends_on :szip
   depends_on :libz
 
-  option 'with-cxx', default: false
-  option 'with-fortran', default: true
+  option 'with-cxx', 'Build C++ bindings.'
+  option 'with-fortran', 'Build Fortran bindings.'
 
   def install
     args = %W[
@@ -18,10 +18,11 @@ class Hdf5 < Package
       --enable-static=yes
       --enable-shared=yes
     ]
-    args << '--enable-fortran'
+    args << with_cxx? ? '--enable-cxx' : '--disable-cxx'
+    args << '--enable-fortran' if with_fortran?
     run './configure', *args
     run 'make'
-    run 'make', 'check'
+    run 'make', 'check' unless skip_test?
     run 'make', 'install'
   end
 end

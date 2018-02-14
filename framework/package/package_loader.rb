@@ -2,6 +2,7 @@ module PackageLoader
   def self.loads package_names
     @@loaded_packages = {}
     package_names.each do |package_name|
+      next if package_name[0] == '-'
       scan package_name.to_sym
     end
     @@loaded_packages

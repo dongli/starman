@@ -17,8 +17,9 @@ class History
   end
 
   def self.save_install package
-    system "echo 'insert into install (name, version, prefix, time) " +
-    "values (\"#{package.name}\", \"#{package.version}\", \"#{package.prefix}\", \"#{Time.now.to_s}\")' | #{db_cmd} #{db_path}"
+    system "echo 'insert into install (name, version, prefix, options, time) " +
+    "values (\"#{package.name}\", \"#{package.version}\", \"#{package.prefix}\", " +
+    "\"#{package.options.to_s.gsub('"', '""')}\", \"#{Time.now}\")' | #{db_cmd} #{db_path}"
   end
 
   def self.installed? package

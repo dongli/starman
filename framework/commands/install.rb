@@ -7,14 +7,24 @@ class InstallCommand < CommandParser
 
     >>> starman install <package_name> ... [options]
 EOS
+    # Parse package names and load them.
+    @packages = PackageLoader.loads ARGV.select { |arg| arg[0] != '-' }
+    # Define options.
     @parser.on '-cNAME', '--compiler-set NAME', 'Set the active compiler set by its name set in conf file.' do |compiler_set|
       @@args[:compiler_set] = compiler_set
     end
     @parser.on '-k', '--skip-test', 'Skip possible build test (e.g., make test)' do
       @@args[:skip_test] = true
+    end    
+    # Add possible package option and parse.
+    @packages.each_value do |package|
+      package.options.each do |name, option|
+        @parser.on "--#{name.to_s.gsub('_', '-')}", option[:desc] do
+          option[:value] = true
+        end
+      end
     end
     @parser.parse!
-    @packages = PackageLoader.loads ARGV
   end
 
   def link package

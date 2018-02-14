@@ -14,9 +14,30 @@ module PackageDSL
     end
   end
 
-  [:label, :depends_on, :option].each do |keyword|
+  [:label, :depends_on].each do |keyword|
     self.define_method(keyword) do |val, options = {}|
       spec.send keyword, val, options
     end
+  end
+
+  def option name, desc, options = {}
+    name = name.gsub('-', '_').to_sym
+    options[:desc] = desc
+    options[:type] = :boolean if not options[:type]
+    spec.option name, options
+    # Create a helper for querying option.
+    case options[:type]
+    when :boolean
+      define_method(:"#{name}?") do
+        @spec.options[name][:value]
+      end
+      self.class.define_method(:"#{name}?") do
+        self.class.class_variable_get("@@#{self}_spec").options[name][:value]
+      end
+    end
+  end
+
+  def skip_test?
+    CommandParser.args[:skip_test]
   end
 end
