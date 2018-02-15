@@ -13,6 +13,7 @@ require 'utils/work_in'
 require 'utils/decompose'
 require 'utils/write_file'
 require 'utils/inreplace'
+require 'utils/run'
 require 'settings'
 
 require 'db/history'
