@@ -1,5 +1,6 @@
 module PackageLoader
   def self.loads package_names
+    @@direct_packages = package_names
     @@loaded_packages = {}
     package_names.each do |package_name|
       next if package_name[0] == '-'
@@ -24,5 +25,9 @@ module PackageLoader
 
   def self.package_file_path package_name
     "#{ENV['STARMAN_ROOT']}/packages/#{package_name}.rb"
+  end
+
+  def self.from_cmd_line? package
+    @@direct_packages.include? package.name
   end
 end

@@ -7,6 +7,9 @@ class UninstallCommand < CommandParser
 
     >>> starman uninstall <package_name> ... [options]
 EOS
+    @parser.on '--with-deps', 'Also uninstall dependency packages.' do
+      @@args[:with_deps] = true
+    end
     # Parse package names and load them.
     @packages = PackageLoader.loads ARGV.select { |arg| arg[0] != '-' }
     @parser.parse!
@@ -28,12 +31,15 @@ EOS
   def run
     @packages.keys.each do |package_name|
       package = @packages[package_name]
+      next if not PackageLoader.from_cmd_line? package and not CommandParser.args[:with_deps]
       if not History.installed? package
         CLI.warning "Package #{CLI.green package_name} has not been installed."
       else
         CLI.notice "Uninstall package #{CLI.green package_name} ..."
         unlink package
         FileUtils.rm_rf package.prefix
+        # Remove empty directory.
+        FileUtils.rmdir File.dirname(package.prefix) if Dir.glob("#{File.dirname(package.prefix)}/*").size == 0
         History.remove_install package
       end
     end
