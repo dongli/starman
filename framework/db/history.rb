@@ -22,6 +22,11 @@ class History
     "\"#{package.options.to_s.gsub('"', '""')}\", \"#{Time.now}\")' | #{db_cmd} #{db_path}"
   end
 
+  def self.remove_install package
+    system "echo 'delete from install where name = \"#{package.name}\"' | #{db_cmd} #{db_path}"
+    CLI.error "Failed to update history database!" if not $?.success?
+  end
+
   def self.installed? package
     res = `echo 'select * from install where name = \"#{package.name}\"' | #{db_cmd} #{db_path}`.split('|')
     package.name == res[1] and package.version == res[2] and package.prefix == res[3]

@@ -20,6 +20,9 @@ EOS
     @parser.on '-rPATH', '--rc-root PATH', 'Set runtime configuration root directory.' do |path|
       @@args[:rc_root] = path
     end
+    @parser.on '-d', '--debug', 'Print debug information.' do
+      @@args[:debug] = true
+    end
     @parser.on '-v', '--verbose', 'Print more information including build output.' do
       @@args[:verbose] = true
     end

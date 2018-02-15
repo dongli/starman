@@ -72,7 +72,7 @@ class CLI
 
   def self.warning message
     print "[#{yellow 'Warning'}]: #{message}\n"
-    print_call_stack if CommandLine.option(:debug)
+    print_call_stack if CommandParser.args[:debug]
   end
 
   def self.error message, options = {}

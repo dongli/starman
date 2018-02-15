@@ -25,3 +25,4 @@ require 'package/package_downloader'
 
 require 'commands/command_parser'
 require 'commands/install'
+require 'commands/uninstall'

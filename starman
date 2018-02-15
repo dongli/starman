@@ -10,7 +10,12 @@ command_name = ARGV.shift.to_sym
 
 commands = {
   install: InstallCommand,
-  i: InstallCommand
+  i: InstallCommand,
+  uninstall: UninstallCommand,
+  erase: UninstallCommand,
+  remove: UninstallCommand,
+  delete: UninstallCommand,
+  rm: UninstallCommand
 }
 
 command = commands[command_name].new
