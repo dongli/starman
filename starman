@@ -8,18 +8,21 @@ require "#{ENV['STARMAN_ROOT']}/framework"
 
 command_name = ARGV.shift.to_sym
 
-commands = {
-  install: InstallCommand,
-  i: InstallCommand,
-  uninstall: UninstallCommand,
-  erase: UninstallCommand,
-  remove: UninstallCommand,
-  delete: UninstallCommand,
-  rm: UninstallCommand
+aliases = {
+  i: :install,
+  rm: :uninstall,
+  l: :load
 }
 
-command = commands[command_name].new
+commands = {
+  install: InstallCommand,
+  uninstall: UninstallCommand,
+  load: LoadCommand,
+}
 
+command = (commands[command_name] || commands[aliases[command_name]]).new
+
+OS.init
 Settings.init
 History.init
 

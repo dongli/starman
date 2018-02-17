@@ -10,8 +10,7 @@ EOS
     @parser.on '--with-deps', 'Also uninstall dependency packages.' do
       @@args[:with_deps] = true
     end
-    # Parse package names and load them.
-    @packages = PackageLoader.loads ARGV.select { |arg| arg[0] != '-' }
+    parse_packages
     @parser.parse!
   end
 
@@ -33,7 +32,7 @@ EOS
       package = @packages[package_name]
       next if not PackageLoader.from_cmd_line? package and not CommandParser.args[:with_deps]
       if not History.installed? package
-        CLI.warning "Package #{CLI.green package_name} has not been installed."
+        CLI.warning "Package #{CLI.red package_name} has not been installed."
       else
         CLI.notice "Uninstall package #{CLI.green package_name} ..."
         unlink package

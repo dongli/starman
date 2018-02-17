@@ -32,6 +32,17 @@ EOS
     end
   end
 
+  def parse_packages
+    # NOTE: Package names should be prior to options.
+    finish = false
+    package_names = []
+    ARGV.each do |arg|
+      finish = true if arg[0] == '-'
+      package_names << arg unless finish
+    end
+    @packages = PackageLoader.loads package_names
+  end
+
   def self.args
     @@args
   end

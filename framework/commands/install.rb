@@ -8,7 +8,7 @@ class InstallCommand < CommandParser
     >>> starman install <package_name> ... [options]
 EOS
     # Parse package names and load them.
-    @packages = PackageLoader.loads ARGV.select { |arg| arg[0] != '-' }
+    parse_packages
     # Define options.
     @parser.on '-cNAME', '--compiler-set NAME', 'Set the active compiler set by its name set in conf file.' do |compiler_set|
       @@args[:compiler_set] = compiler_set

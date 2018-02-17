@@ -29,6 +29,12 @@ class Package
     "#{Settings.link_root}/lib"
   end
 
+  ['bin', 'include', 'lib', 'lib64'].each do |dir|
+    define_method(:"opt_#{dir}") do
+      "#{prefix}/#{dir}" if File.directory? "#{prefix}/#{dir}"
+    end
+  end
+
   def name
     self.class.name.gsub(/(.)([A-Z])/,'\1-\2').downcase
   end

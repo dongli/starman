@@ -1,0 +1,14 @@
+function before_command {
+  if [[ "$BASH_COMMAND" =~ .*starman[[:space:]]+(load|l) ]]; then
+    export __load_cmd=$BASH_COMMAND
+  fi
+}
+trap before_command DEBUG
+
+function after_command {
+  if [[ -n "$__load_cmd" ]]; then
+    $($__load_cmd --print)
+    unset __load_cmd
+  fi
+}
+PROMPT_COMMAND=after_command
