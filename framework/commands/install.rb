@@ -43,11 +43,13 @@ EOS
 
   def run
     @packages.each do |name, package|
-      if History.installed? package
-        CLI.notice "Package #{CLI.green package.name} has been installed."
+      if package.has_label? :group
+        CLI.notice "Package group #{CLI.green package.name}@#{CLI.blue package.version} is installed."
+      elsif History.installed? package
+        CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} has been installed."
       else
         PackageDownloader.download package
-        CLI.notice "Install package #{CLI.green package.name} ..."
+        CLI.notice "Install package #{CLI.green package.name}@#{CLI.blue package.version} ..."
         dir = "#{Settings.cache_root}/#{package.name}"
         FileUtils.mkdir_p dir
         work_in dir do
@@ -66,7 +68,7 @@ EOS
         FileUtils.rm_rf dir
         link package
         History.save_install package
-        CLI.notice "Package #{CLI.green package.name} is installed at #{CLI.blue package.prefix}."
+        CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} is installed at #{CLI.blue package.prefix}."
       end
     end
   end

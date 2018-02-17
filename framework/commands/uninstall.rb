@@ -30,7 +30,9 @@ EOS
   def run
     @packages.each do |name, package|
       next if not PackageLoader.from_cmd_line? package and not CommandParser.args[:with_deps]
-      if not History.installed? package
+      if package.has_label? :group
+        CLI.notice "Package group #{CLI.green package.name} is uninstalled."
+      elsif not History.installed? package
         CLI.warning "Package #{CLI.red package.name} has not been installed."
       else
         CLI.notice "Uninstall package #{CLI.green package.name} ..."

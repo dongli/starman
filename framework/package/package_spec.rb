@@ -36,7 +36,7 @@ class PackageSpec
 
   attr_reader :dependencies
   def depends_on val, options = {}
-    @dependencies[val] = options
+    @dependencies[val.to_sym] = options
   end
 
   attr_reader :options

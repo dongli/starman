@@ -1,6 +1,6 @@
 module PackageLoader
   def self.loads package_names
-    @@direct_packages = package_names
+    @@direct_packages = package_names.map &:to_sym
     @@loaded_packages = {}
     package_names.each do |package_name|
       # package_name may be in <name>@<version> form.
@@ -35,6 +35,9 @@ module PackageLoader
   end
 
   def self.from_cmd_line? package
-    @@direct_packages.include? package.name
+    @@direct_packages.include? package.name or @@direct_packages.any? do |name|
+      loaded_package = @@loaded_packages[name]
+      loaded_package.dependencies.has_key? package.name and loaded_package.has_label? :group
+    end
   end
 end

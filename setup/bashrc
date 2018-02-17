@@ -1,3 +1,6 @@
+export STARMAN_ROOT=$(cd $(dirname $BASH_SOURCE) && cd .. && pwd)
+export PATH=$STARMAN_ROOT:$PATH
+
 function before_command {
   if [[ "$BASH_COMMAND" =~ .*starman[[:space:]]+(load|l) ]]; then
     export __load_cmd=$BASH_COMMAND

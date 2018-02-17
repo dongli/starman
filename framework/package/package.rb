@@ -36,6 +36,10 @@ class Package
   end
 
   def name
-    self.class.name.gsub(/(.)([A-Z])/,'\1-\2').downcase
+    self.class.name.gsub(/(.)([A-Z])/,'\1-\2').downcase.to_sym
+  end
+
+  def has_label? label_name
+    @spec.labels.has_key? label_name
   end
 end

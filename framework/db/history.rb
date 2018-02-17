@@ -29,6 +29,6 @@ class History
 
   def self.installed? package
     res = `echo 'select * from install where name = \"#{package.name}\"' | #{db_cmd} #{db_path}`.split('|')
-    package.name == res[1] and package.version == res[2] and package.prefix == res[3]
+    res.empty? || package.name == res[1].to_sym and package.version == res[2] and package.prefix == res[3]
   end
 end
