@@ -28,13 +28,12 @@ EOS
   end
 
   def run
-    @packages.keys.each do |package_name|
-      package = @packages[package_name]
+    @packages.each do |name, package|
       next if not PackageLoader.from_cmd_line? package and not CommandParser.args[:with_deps]
       if not History.installed? package
-        CLI.warning "Package #{CLI.red package_name} has not been installed."
+        CLI.warning "Package #{CLI.red package.name} has not been installed."
       else
-        CLI.notice "Uninstall package #{CLI.green package_name} ..."
+        CLI.notice "Uninstall package #{CLI.green package.name} ..."
         unlink package
         FileUtils.rm_rf package.prefix
         # Remove empty directory.

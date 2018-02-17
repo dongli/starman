@@ -1,5 +1,3 @@
-require 'uri'
-
 # PackageSpec store specifications of a package.
 
 class PackageSpec

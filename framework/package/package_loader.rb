@@ -16,10 +16,10 @@ module PackageLoader
     if File.file? package_file_path(name, version)
       load package_file_path(name, version)
       package = eval("#{name.to_s.split('-').collect(&:capitalize).join}").new
-      @@loaded_packages[name] = package
       package.dependencies.each do |depend_name, depend_options|
         scan depend_name, depend_options[:version]
       end
+      @@loaded_packages[name] = package
     else
       CLI.error "Unknown package #{CLI.red name}#{version ? '@' + version : ''}!"
     end

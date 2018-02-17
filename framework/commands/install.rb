@@ -42,14 +42,13 @@ EOS
   end
 
   def run
-    @packages.keys.reverse_each do |package_name|
-      package = @packages[package_name]
+    @packages.each do |name, package|
       if History.installed? package
-        CLI.notice "Package #{CLI.green package_name} has been installed."
+        CLI.notice "Package #{CLI.green package.name} has been installed."
       else
         PackageDownloader.download package
-        CLI.notice "Install package #{CLI.green package_name} ..."
-        dir = "#{Settings.cache_root}/#{package_name}"
+        CLI.notice "Install package #{CLI.green package.name} ..."
+        dir = "#{Settings.cache_root}/#{package.name}"
         FileUtils.mkdir_p dir
         work_in dir do
           decompress "#{Settings.cache_root}/#{package.file_name}"
