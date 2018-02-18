@@ -13,8 +13,9 @@ class CommandParser
       _____| |  |   |  |   _   ||   |  | || ||_|| ||   _   || | |   |
      |_______|  |___|  |__| |__||___|  |_||_|   |_||__| |__||_|  |__|
 
-Longrun Weather Inc., STARMAN: Another package manager for Linux/Mac programmer.
-Copyright (C) 2015-2018 - All Rights Reserved."
+STARMAN: Another package manager for Linux/Mac programmer.
+Copyright (C) 2015-2018 - All Rights Reserved.
+Sponsored by Longrun Weather Inc..
 EOS
     @parser.separator ''
     @parser.on '-rPATH', '--rc-root PATH', 'Set runtime configuration root directory.' do |path|
