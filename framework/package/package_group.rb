@@ -1,3 +1,0 @@
-class PackageGroup
-
-end
