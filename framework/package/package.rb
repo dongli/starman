@@ -6,11 +6,13 @@ class Package
   def_delegators :@spec, :url, :mirror, :sha256, :file_name, :version, :labels, :dependencies, :options, :labels
 
   def initialize
-    @spec = self.class.class_variable_get "@@#{self.class}_spec"
+    package_class = self.class.name.split('::').last
+    @spec = self.class.class_variable_get "@@#{package_class}_spec"
   end
 
   def self.prefix
-    "#{Settings.install_root}/#{Settings.compiler_set}/Packages/#{self.name.gsub(/(.)([A-Z])/,'\1-\2').downcase}/#{self.class_variable_get("@@#{self}_spec").version}"
+    package_class = self.name.split('::').last
+    "#{Settings.install_root}/#{Settings.compiler_set}/Packages/#{package_class.gsub(/(.)([A-Z])/,'\1-\2').downcase}/#{self.class_variable_get("@@#{package_class}_spec").version}"
   end
 
   def prefix
@@ -36,7 +38,7 @@ class Package
   end
 
   def name
-    self.class.name.gsub(/(.)([A-Z])/,'\1-\2').downcase.to_sym
+    self.class.name.split('::').last.gsub(/(.)([A-Z])/,'\1-\2').downcase.to_sym
   end
 
   def has_label? label_name

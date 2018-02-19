@@ -14,7 +14,7 @@ module PackageLoader
   def self.scan name, version
     return if @@loaded_packages.has_key? name
     if File.file? package_file_path(name, version)
-      load package_file_path(name, version)
+      eval open(package_file_path(name, version), 'r').read
       package = eval("#{name.to_s.split('-').collect(&:capitalize).join}").new
       package.dependencies.each do |depend_name, depend_options|
         scan depend_name, depend_options[:version]

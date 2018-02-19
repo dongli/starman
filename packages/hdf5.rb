@@ -3,7 +3,7 @@ class Hdf5 < Package
   sha256 '9c5ce1e33d2463fb1a42dd04daacbc22104e57676e2204e3d66b1ef54b88ebf2'
 
   depends_on :szip
-  depends_on :libz
+  depends_on :zlib
 
   option 'with-cxx', 'Build C++ bindings.'
   option 'with-fortran', 'Build Fortran bindings.'

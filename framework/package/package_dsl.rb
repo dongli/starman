@@ -4,8 +4,9 @@ module PackageDSL
   end
 
   def spec
-    return self.class_variable_get "@@#{self}_spec"  if self.class_variable_defined? "@@#{self}_spec"
-    self.class_variable_set "@@#{self}_spec", PackageSpec.new 
+    package_class = self.name.split('::').last
+    return self.class_variable_get "@@#{package_class}_spec"  if self.class_variable_defined? "@@#{package_class}_spec"
+    self.class_variable_set "@@#{package_class}_spec", PackageSpec.new 
   end
 
   [:url, :mirror, :sha256, :version, :file_name].each do |keyword|
