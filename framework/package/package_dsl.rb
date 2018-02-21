@@ -21,6 +21,10 @@ module PackageDSL
     end
   end
 
+  def grouped_by val
+    spec.group = val.to_sym
+  end
+
   def option name, desc, options = {}
     name = name.gsub('-', '_').to_sym
     options[:desc] = desc

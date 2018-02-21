@@ -3,7 +3,7 @@ class Package
   include PackageDSL
 
   extend Forwardable
-  def_delegators :@spec, :url, :mirror, :sha256, :file_name, :version, :labels, :dependencies, :options, :labels
+  def_delegators :@spec, :url, :mirror, :sha256, :file_name, :version, :group, :labels, :dependencies, :options, :labels
 
   def initialize
     package_class = self.class.name.split('::').last
@@ -12,7 +12,12 @@ class Package
 
   def self.prefix
     package_class = self.name.split('::').last
-    "#{Settings.install_root}/#{Settings.compiler_set}/Packages/#{package_class.gsub(/(.)([A-Z])/,'\1-\2').downcase}/#{self.class_variable_get("@@#{package_class}_spec").version}"
+    spec = self.class_variable_get("@@#{package_class}_spec")
+    if spec.group
+      PackageLoader.loaded_packages[spec.group].prefix
+    else
+      "#{Settings.install_root}/#{Settings.compiler_set}/Packages/#{package_class.gsub(/(.)([A-Z])/,'\1-\2').downcase}/#{spec.version}"
+    end
   end
 
   def prefix

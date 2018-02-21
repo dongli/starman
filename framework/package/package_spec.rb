@@ -7,6 +7,7 @@ class PackageSpec
     @sha256 = nil
     @version = nil
     @file_name = nil
+    @group = nil
     @labels = {}
     @dependencies = {}
     @options = {}
@@ -19,7 +20,7 @@ class PackageSpec
     self.file_name = File.basename(URI.parse(val).path)
   end
 
-  attr_accessor :mirror, :sha256, :version
+  attr_accessor :mirror, :sha256, :version, :group
 
   attr_reader :file_name
   def file_name= val
