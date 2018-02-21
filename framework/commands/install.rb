@@ -17,7 +17,7 @@ EOS
       @@args[:skip_test] = true
     end    
     # Add possible package option and parse.
-    @packages.each_value do |package|
+    PackageLoader.loaded_packages.each_value do |package|
       package.options.each do |name, option|
         @parser.on "--#{name.to_s.gsub('_', '-')}", option[:desc] do
           option[:value] = true
@@ -42,7 +42,7 @@ EOS
   end
 
   def run
-    @packages.each do |name, package|
+    PackageLoader.loaded_packages.each do |name, package|
       if package.has_label? :group
         CLI.notice "Package group #{CLI.green package.name}@#{CLI.blue package.version} is installed."
       elsif History.installed? package

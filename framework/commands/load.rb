@@ -25,7 +25,7 @@ EOS
       ENV[OS.ld_library_path] = "#{Settings.link_root}/lib:#{ENV[OS.ld_library_path]}" if File.directory? "#{Settings.link_root}/lib"
       ENV[OS.ld_library_path] = "#{Settings.link_root}/lib64:#{ENV[OS.ld_library_path]}" if File.directory? "#{Settings.link_root}/lib64"
     else
-      @packages.each do |name, package|
+      PackageLoader.loaded_packages.each do |name, package|
         next unless PackageLoader.from_cmd_line? package
         if package.has_label? :group
           CLI.notice "Load package group #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]

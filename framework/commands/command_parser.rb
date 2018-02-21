@@ -41,7 +41,7 @@ EOS
       finish = true if arg[0] == '-'
       package_names << arg unless finish
     end
-    @packages = PackageLoader.loads package_names
+    PackageLoader.loads package_names
   end
 
   def self.args

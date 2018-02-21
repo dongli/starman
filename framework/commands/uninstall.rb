@@ -28,7 +28,7 @@ EOS
   end
 
   def run
-    @packages.each do |name, package|
+    PackageLoader.loaded_packages.each do |name, package|
       next if not PackageLoader.from_cmd_line? package and not CommandParser.args[:with_deps]
       if package.has_label? :group
         CLI.notice "Package group #{CLI.green package.name} is uninstalled."

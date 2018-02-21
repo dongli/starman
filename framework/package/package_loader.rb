@@ -1,4 +1,8 @@
 module PackageLoader
+  def self.loaded_packages
+    @@loaded_packages
+  end
+
   def self.loads package_names
     @@direct_packages = package_names.map &:to_sym
     @@loaded_packages = {}
