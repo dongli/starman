@@ -1,5 +1,6 @@
 $LOAD_PATH << "#{ENV['STARMAN_ROOT']}/framework"
 
+require 'digest'
 require 'forwardable'
 require 'fileutils'
 require 'net/http'

@@ -31,6 +31,25 @@ source <STARMAN_directory>/setup/bashrc
 Usage
 =====
 
+When first use, STARMAN will create the following directories:
+
+- `/tmp/starman`: Store package source codes and temporary files.
+- `$USER/.starman`: Store runtime files (e.g. `conf.yml`, `history.db`).
+
+You need to edit `$USER/.starman/conf.yml`. An example is
+
+```
+---
+install_root: /nfs/software
+defaults:
+  compiler_set: ifort_2013.2.146
+  compiler_sets:
+    ifort_2013.2.146:
+        c: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/icc
+        cxx: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/icpc
+        fortran: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/ifort
+```
+
 You can list the help message of each command by:
 
 ```

@@ -10,13 +10,13 @@ module PackageDSL
   end
 
   [:url, :mirror, :sha256, :version, :file_name].each do |keyword|
-    self.define_method(keyword) do |val|
+    self.send :define_method, keyword do |val|
       spec.send "#{keyword}=", val
     end
   end
 
   [:label, :depends_on].each do |keyword|
-    self.define_method(keyword) do |val, options = {}|
+    self.send :define_method, keyword do |val, options = {}|
       spec.send keyword, val, options
     end
   end
@@ -32,7 +32,7 @@ module PackageDSL
       define_method(:"#{name}?") do
         @spec.options[name][:value]
       end
-      self.class.define_method(:"#{name}?") do
+      self.class.send :define_method, :"#{name}?" do
         self.class.class_variable_get("@@#{self}_spec").options[name][:value]
       end
     end

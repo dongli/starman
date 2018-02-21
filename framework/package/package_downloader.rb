@@ -15,7 +15,9 @@ class PackageDownloader
     uri = URI(package.url)
     case uri.scheme
     when 'ftp'
-      ftp = Net::FTP.new uri.host, port: uri.port
+      ftp = Net::FTP.new
+      ftp.passive = true
+      ftp.connect uri.host, uri.port
       ftp.login
       total_size = ftp.size(uri.path).to_f
       downloaded_size = 0

@@ -19,16 +19,18 @@ class History
   def self.save_install package
     system "echo 'insert into install (name, version, prefix, options, time) " +
     "values (\"#{package.name}\", \"#{package.version}\", \"#{package.prefix}\", " +
-    "\"#{package.options.to_s.gsub('"', '""')}\", \"#{Time.now}\")' | #{db_cmd} #{db_path}"
+    "\"#{package.options.to_s.gsub('"', '""')}\", \"#{Time.now}\");' | #{db_cmd} #{db_path}"
   end
 
   def self.remove_install package
-    system "echo 'delete from install where name = \"#{package.name}\"' | #{db_cmd} #{db_path}"
+    system "echo 'delete from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}"
     CLI.error "Failed to update history database!" if not $?.success?
   end
 
   def self.installed? package
-    res = `echo 'select * from install where name = \"#{package.name}\"' | #{db_cmd} #{db_path}`.split('|')
-    res.empty? || package.name == res[1].to_sym and package.version == res[2] and package.prefix == res[3]
+    res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split('|')
+    return false if res.empty?
+    return true if package.name == res[1].to_sym and package.version == res[2] and package.prefix == res[3]
+    CLI.error "Package #{CLI.red package.name}@#{CLI.blue res[2]} has been installed in #{res[3]}!" 
   end
 end
