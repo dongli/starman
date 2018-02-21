@@ -51,6 +51,7 @@ EOS
         PackageDownloader.download package
         CLI.notice "Install package #{CLI.green package.name}@#{CLI.blue package.version} ..."
         dir = "#{Settings.cache_root}/#{package.name}"
+        FileUtils.rm_rf dir if File.directory? dir
         FileUtils.mkdir_p dir
         work_in dir do
           decompress "#{Settings.cache_root}/#{package.file_name}"
