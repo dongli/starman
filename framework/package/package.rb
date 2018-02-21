@@ -8,6 +8,10 @@ class Package
   def initialize
     package_class = self.class.name.split('::').last
     @spec = self.class.class_variable_get "@@#{package_class}_spec"
+    # Check necessary attributes are set.
+    [:version].each do |attr|
+      CLI.error "Package #{CLI.red name} lacks attribute #{CLI.blue attr}!" if not @spec.send(attr)
+    end
   end
 
   def self.prefix
