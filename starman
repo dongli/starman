@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'byebug'
-
 ENV['STARMAN_ROOT'] = File.absolute_path(File.dirname __FILE__)
 
 require "#{ENV['STARMAN_ROOT']}/framework"
