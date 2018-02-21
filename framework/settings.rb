@@ -52,6 +52,7 @@ class Settings
       ENV['CXX'] = cxx_compiler
       ENV['FC'] = fortran_compiler
       ENV['F77'] = fortran_compiler
+      ENV[OS.ld_library_path] = "#{link_root}/lib:#{link_root}/lib64:#{ENV[OS.ld_library_path]}"
       if CommandParser.args[:verbose]
         CLI.notice "Use #{CLI.blue compiler_set} compilers."
         CLI.notice "CC = #{CLI.blue c_compiler}"
