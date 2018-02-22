@@ -10,7 +10,7 @@ module Utils
     end
     if not $?.success?
       CLI.error "Failed to run #{cmd_line}!" +
-        "#{CommandParser.args[:verbose] && " Check logs:\n#{Settings.cache_root}/stdout.#{Process.pid}\n#{Settings.cache_root}/stderr.#{Process.pid}"}"
+        "#{CommandParser.args[:verbose] || " Check logs:\n#{Settings.cache_root}/stdout.#{Process.pid}\n#{Settings.cache_root}/stderr.#{Process.pid}"}"
     else
       FileUtils.rm_f "#{Settings.cache_root}/stdout.#{Process.pid}"
       FileUtils.rm_f "#{Settings.cache_root}/stderr.#{Process.pid}"

@@ -48,11 +48,7 @@ class Settings
       @@settings = YAML.load(open(conf_file).read)
       CLI.error "#{CLI.red 'install_root'} is not set in #{CLI.blue conf_file}!" if not install_root or install_root == '<change_me>'
       @@settings['link_root'] = "#{Settings.install_root}/#{Settings.compiler_set}"
-      ENV['CC'] = c_compiler
-      ENV['CXX'] = cxx_compiler
-      ENV['FC'] = fortran_compiler
-      ENV['F77'] = fortran_compiler
-      ENV[OS.ld_library_path] = "#{link_root}/lib:#{link_root}/lib64:#{ENV[OS.ld_library_path]}"
+      set_compile_env
       if CommandParser.args[:verbose]
         CLI.notice "Use #{CLI.blue compiler_set} compilers."
         CLI.notice "CC = #{CLI.blue c_compiler}"

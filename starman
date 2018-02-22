@@ -18,9 +18,10 @@ commands = {
   load: LoadCommand,
 }
 
+OS.init
+
 command = (commands[command_name] || commands[aliases[command_name]]).new
 
-OS.init
 Settings.init
 History.init
 

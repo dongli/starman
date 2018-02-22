@@ -5,7 +5,7 @@ module PackageDSL
 
   def spec
     package_class = self.name.split('::').last
-    return self.class_variable_get "@@#{package_class}_spec"  if self.class_variable_defined? "@@#{package_class}_spec"
+    return self.class_variable_get "@@#{package_class}_spec" if self.class_variable_defined? "@@#{package_class}_spec"
     self.class_variable_set "@@#{package_class}_spec", PackageSpec.new 
   end
 
