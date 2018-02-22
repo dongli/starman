@@ -10,11 +10,20 @@ class OS
   end
 
   def self.init
-    case `uname`.strip.to_sym
+    sys = `uname`.strip.to_sym
+    case sys
     when :Darwin
       @@os = Mac.new
+    when :Linux
+      dist = `cat /etc/os-release | grep '^NAME'`.match(/NAME="(.*)"/)[1]
+      case dist
+      when /CentOS/
+        @@os = CentOS.new
+      else
+        CLI.error "Unsupport Linux #{dist}!"
+      end
     else
-      CLI.error "Unknown OS #{CLI.red `uname`.strip}!"
+      CLI.error "Unknown OS #{CLI.red sys}!"
     end
   end
 

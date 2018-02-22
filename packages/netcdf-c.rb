@@ -7,10 +7,11 @@ class NetcdfC < Package
 
   depends_on :hdf5
 
+  option 'disable-netcdf-4', 'Disable NetCDF4 interfaces.'
+
   def install
   	args = %W[
       --prefix=#{prefix}
-      --enable-netcdf-4
       --enable-utilities
       --enable-shared
       --enable-static
@@ -20,6 +21,7 @@ class NetcdfC < Package
       CPPFLAGS='-I#{include}'
       LDFLAGS='-L#{lib}'
     ]
+    args << '--disable-netcdf-4' if disable_netcdf_4?
     run './configure', *args
     run 'make'
     run 'make', 'check' unless skip_test?
