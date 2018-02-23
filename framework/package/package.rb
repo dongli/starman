@@ -44,6 +44,10 @@ class Package
       path = "#{Settings.link_root self}/#{dir}"
       path if File.directory? path
     end
+    define_method(:"common_#{dir}") do
+      path = "#{Settings.common_root}/#{dir}"
+      path if File.directory? path
+    end
     self.class.send :define_method, :"link_#{dir}" do
       path = "#{Settings.link_root}/#{dir}"
       path if File.directory? path
