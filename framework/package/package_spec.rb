@@ -12,6 +12,7 @@ class PackageSpec
     @dependencies = {}
     @options = {}
     @patches = []
+    @conflicts = []
   end
 
   attr_reader :url
@@ -56,6 +57,13 @@ class PackageSpec
       spec = PackageSpec.new
       spec.instance_exec &block
       @patches << spec
+    end
+  end
+
+  attr_reader :conflicts
+  def conflicts_with *vals
+    vals.each do |val|
+      @conflicts << val.to_sym unless @conflicts.include? val.to_sym
     end
   end
 end

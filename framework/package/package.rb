@@ -4,7 +4,7 @@ class Package
 
   extend Forwardable
   def_delegators :@spec, :url, :mirror, :sha256, :file_name, :version, :group, :labels, :dependencies, :options
-  def_delegators :@spec, :labels, :has_label?
+  def_delegators :@spec, :labels, :has_label?, :conflicts
 
   def initialize
     package_class = self.class.name.split('::').last

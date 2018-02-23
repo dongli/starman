@@ -50,6 +50,9 @@ defaults:
         fortran: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/ifort
 ```
 
+You are advised to give each compiler set a good name, and NEVER change them
+since they will be casted into packages' prefix.
+
 You can list the help message of each command by:
 
 ```
@@ -94,6 +97,9 @@ In your `.bashrc` after STARMAN source statement, add the load commands:
 starman load netcdf@4.6.0
 ```
 
+This command will load the environment settings (e.g., `PATH`,
+`LD_LIBRARY_PATH`) into current shell (currently only BASH).
+
 Uninstall package
 -----------------
 
@@ -106,3 +112,10 @@ or
 ```
 $ starman rm netcdf
 ```
+
+Contribution
+============
+
+If you are familiar with package installation and system admin, you can
+contribute new packages by writing a package `DSL` file in Ruby language as
+[netcdf-c.rb](https://github.com/dongli/starman/blob/master/packages/netcdf-c.rb).

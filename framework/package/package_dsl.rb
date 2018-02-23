@@ -21,6 +21,10 @@ module PackageDSL
     end
   end
 
+  def conflicts_with *val
+    spec.conflicts_with *val
+  end
+
   def grouped_by val
     spec.group = val.to_sym
   end
