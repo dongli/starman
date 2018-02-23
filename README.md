@@ -36,9 +36,9 @@ Usage
 When first use, STARMAN will create the following directories:
 
 - `/tmp/starman`: Store package source codes and temporary files.
-- `$USER/.starman`: Store runtime files (e.g. `conf.yml`, `history.db`).
+- `$USER/.starman` or `/var/starman` if user is root: Store runtime files (e.g. `conf.yml`, `history.db`).
 
-You need to edit `$USER/.starman/conf.yml`. An example is
+You need to edit `conf.yml` if you are behind the wheel. An example is
 
 ```
 ---

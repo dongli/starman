@@ -52,6 +52,8 @@ class Settings
   def self.init
     # rc_root has priority order: --rc-root > /var/starman > ~/.starman
     @@rc_root = CommandParser.args[:rc_root] || File.directory?('/var/starman') ? '/var/starman' : "#{ENV['HOME']}/.starman"
+    # When user is root, set rc_root to global visible directory.
+    @@rc_root = '/var/starman' if ENV['USER'] == 'root'
     if File.file? conf_file
       @@settings = YAML.load(open(conf_file).read)
       CLI.error "#{CLI.red 'install_root'} is not set in #{CLI.blue conf_file}!" if not install_root or install_root == '<change_me>'
