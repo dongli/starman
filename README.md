@@ -5,9 +5,11 @@ This is the third time I rewrote this package manager, and hope this will be
 the final version. This time I try to simplify the design to make STARMAN
 robust and focus on HPC usage. I set down the following goals:
 
-- User can use `load` command to change shell environment for specific packages
+[X] User can use `load` command to change shell environment for specific packages
   like `modules`.
-- Support package update which is lacked in previous version.
+[X] Use database to manage information.
+[ ] Support package update which is lacked in previous version.
+[ ] Better support MPI cluster environment.
 
 Prerequisites
 =============
