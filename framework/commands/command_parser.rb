@@ -1,6 +1,6 @@
-require 'optparse'
-
 class CommandParser
+  include Utils
+
   def initialize
     @parser = OptionParser.new
     @@args = {}

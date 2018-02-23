@@ -21,9 +21,12 @@ EOS
 
   def run
     if @@args[:all]
-      ENV['PATH'] = "#{Settings.link_root}/bin:#{ENV['PATH']}" if File.directory? "#{Settings.link_root}/bin"
-      ENV[OS.ld_library_path] = "#{Settings.link_root}/lib:#{ENV[OS.ld_library_path]}" if File.directory? "#{Settings.link_root}/lib"
-      ENV[OS.ld_library_path] = "#{Settings.link_root}/lib64:#{ENV[OS.ld_library_path]}" if File.directory? "#{Settings.link_root}/lib64"
+      append_path Package.link_bin if Package.link_bin
+      append_ld_library_path Package.link_lib if Package.link_lib
+      append_ld_library_path Package.link_lib64 if Package.link_lib64
+      append_path Package.common_bin if Package.common_bin
+      append_ld_library_path Package.common_lib if Package.common_lib
+      append_ld_library_path Package.common_lib64 if Package.common_lib64
     else
       PackageLoader.loaded_packages.each do |name, package|
         next unless PackageLoader.from_cmd_line? package
@@ -33,9 +36,9 @@ EOS
           CLI.warning "Package #{CLI.red package.name}@#{CLI.blue package.name} has not been installed."
         else
           CLI.notice "Load package #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]
-          ENV['PATH'] = "#{package.opt_bin}:#{ENV['PATH']}" if package.opt_bin
-          ENV[OS.ld_library_path] = "#{package.opt_lib}:#{ENV[OS.ld_library_path]}" if package.opt_lib
-          ENV[OS.ld_library_path] = "#{package.opt_lib64}:#{ENV[OS.ld_library_path]}" if package.opt_lib64
+          append_path package.bin if package.bin
+          append_ld_library_path package.lib if package.lib
+          append_ld_library_path package.lib64 if package.lib64
         end
       end
     end

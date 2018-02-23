@@ -13,8 +13,16 @@ class Settings
     @@settings['install_root']
   end
 
-  def self.link_root
-    @@settings['link_root']
+  def self.link_root package = nil
+    if package
+      package.has_label?(:common) ? common_root : link_root
+    else
+      @@settings['link_root']
+    end
+  end
+
+  def self.common_root
+    "#{install_root}/common"
   end
 
   def self.conf_file
@@ -22,7 +30,7 @@ class Settings
   end
 
   def self.compiler_set
-    @@settings['defaults']['compiler_set']
+    CommandParser.args[:compiler_set] || @@settings['defaults']['compiler_set']
   end
 
   def self.compilers

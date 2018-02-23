@@ -13,8 +13,8 @@ class NetcdfFortran < Package
       --disable-dap-remote-tests
       --enable-static
       --enable-shared
-      CPPFLAGS='-I#{include}'
-      LDFLAGS='-L#{lib}'
+      CPPFLAGS='-I#{link_include}'
+      LDFLAGS='-L#{link_lib}'
     ]
     run './configure', *args
     run 'make'

@@ -7,7 +7,7 @@ class Version
     begin
       @major = Integer(tmp[0])
     rescue
-      CLI.report_error "Bad version identifer #{CLI.red version_string}!", options
+      CLI.error "Bad version identifer #{CLI.red version_string}!", options
     end
     # The alpha, beta, release candidate identifers may be appended to the
     # minor version identifer
@@ -15,7 +15,7 @@ class Version
     res = tmp[1].match(/(\d+)-?(a|b|rc)?(\d+)?/)
     # TODO: Handle bad minor version identifer.
     if not res
-      CLI.report_error "Bad version identifer #{CLI.red version_string}!", options
+      CLI.error "Bad version identifer #{CLI.red version_string}!", options
     end
     @minor = res[1].to_i
     if res[2] and res[3]
@@ -30,17 +30,15 @@ class Version
     elsif not res[2] and res[3]
       @beta = res[3].to_i
     elsif res[2] and not res[3]
-      CLI.report_error "Bad version identifer #{CLI.red version_string}!", options
+      CLI.error "Bad version identifer #{CLI.red version_string}!", options
     end
     return if tmp.size == 2
     @revision = tmp[2].to_i
-    if tmp.size > 3
-      CLI.report_error "Bad version identifer #{CLI.red version_string}!", options
-    end
+    CLI.warning "Nonstandard version identifer #{CLI.red version_string}!" if tmp.size > 3
   end
 
   def >= other
-    CLI.report_error "Invalid argument #{other}!" if other.class != Version and other.class != String
+    CLI.error "Invalid argument #{other}!" if other.class != Version and other.class != String
     other_ = other.class == String ? Version.new(other) : other
     return false if self.major and other_.major and self.major < other_.major
     return true  if self.major and other_.major and self.major > other_.major
@@ -58,7 +56,7 @@ class Version
   end
 
   def <= other
-    CLI.report_error "Invalid argument #{other}!" if other.class != Version and other.class != String
+    CLI.error "Invalid argument #{other}!" if other.class != Version and other.class != String
     other_ = other.class == String ? Version.new(other) : other
     return false if self.major and other_.major and self.major > other_.major
     return true  if self.major and other_.major and self.major < other_.major
@@ -76,7 +74,7 @@ class Version
   end
 
   def == other
-    CLI.report_error "Invalid argument #{other}!" if other.class != Version and other.class != String
+    CLI.error "Invalid argument #{other}!" if other.class != Version and other.class != String
     other_ = other.class == String ? Version.new(other) : other
     return false if (self.major and not other_.major) or (not self.major and other_.major)
     return false if self.major and other_.major and self.major != other_.major
@@ -94,7 +92,7 @@ class Version
   end
 
   def =~ other
-    CLI.report_error "Invalid argument #{other}!" if other.class != Version and other.class != String
+    CLI.error "Invalid argument #{other}!" if other.class != Version and other.class != String
     other_ = other.class == String ? Version.new(other) : other
     return false if not self.major and other_.major
     return false if self.major and other_.major and self.major != other_.major
@@ -111,6 +109,11 @@ class Version
     return true
   end
 
+  def compare condition
+    match = condition.match(/(>=|<=|==|=~)\s*(.*)/)
+    self.send match[1].to_sym, Version.new(match[2])
+  end
+
   def to_s
     res = "#{major}" if major
     res << ".#{minor}" if minor
@@ -125,10 +128,5 @@ class Version
     res = "#{major}" if major
     res << ".#{minor}" if minor
     return res
-  end
-
-  def self.check version_string
-    tmp = version_string.match(/(>=|==|=~)?(.*)/)
-    Version.new tmp[2]
   end
 end

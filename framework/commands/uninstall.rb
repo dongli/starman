@@ -20,7 +20,7 @@ EOS
       next if File.directory? file_path
       basename = File.basename file_path
       subdir = File.dirname(file_path).match(regex)[1]
-      dir = "#{Settings.link_root}/#{subdir}"
+      dir = "#{Settings.link_root package}/#{subdir}"
       FileUtils.rm_f "#{dir}/#{basename}"
       # Remove empty directory.
       FileUtils.rmdir dir if Dir.glob("#{dir}/*").size == 0

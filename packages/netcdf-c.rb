@@ -18,8 +18,8 @@ class NetcdfC < Package
       --disable-dap-remote-tests
       --disable-doxygen
       --disable-dap
-      CPPFLAGS='-I#{include}'
-      LDFLAGS='-L#{lib}'
+      CPPFLAGS='-I#{link_include}'
+      LDFLAGS='-L#{link_lib}'
     ]
     args << '--disable-netcdf-4' if disable_netcdf_4?
     run './configure', *args

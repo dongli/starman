@@ -33,7 +33,7 @@ EOS
       next if File.directory? file_path
       basename = File.basename file_path
       subdir = File.dirname(file_path).match(regex)[1]
-      dir = "#{Settings.link_root}/#{subdir}"
+      dir = "#{Settings.link_root package}/#{subdir}"
       # Fix 'libtool: warning: library XXX was moved.' problem.
       inreplace file_path, /^libdir='.*'$/, "libdir='#{dir}'" if basename =~ /.*\.la$/
       FileUtils.mkdir_p dir if not File.directory? dir
@@ -47,6 +47,9 @@ EOS
         if package.labels[:skip_if_exist].has_key? :file and File.file? package.labels[:skip_if_exist][:file]
           CLI.notice "Use system #{CLI.green name}."
           next
+        elsif package.labels[:skip_if_exist].has_key? :version
+          v = Version.new(package.labels[:skip_if_exist][:version].call)
+          next if v.compare(package.labels[:skip_if_exist][:condition])
         end
       end
       if package.has_label? :group
@@ -77,6 +80,9 @@ EOS
         History.save_install package
         CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} is installed at #{CLI.blue package.prefix}."
       end
+      # Change environment to affect following packages.
+      append_path package.bin if package.bin
+      append_ld_library_path package.lib if package.lib
     end
   end
 end

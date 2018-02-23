@@ -34,6 +34,9 @@ class PackageSpec
   def label val, options = {}
     @labels[val] = options
   end
+  def has_label? val
+    @labels.has_key? val
+  end
 
   attr_reader :dependencies
   def depends_on val, options = {}
