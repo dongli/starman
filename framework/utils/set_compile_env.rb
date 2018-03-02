@@ -4,5 +4,9 @@ module Utils
     ENV['CXX'] = cxx_compiler
     ENV['FC'] = fortran_compiler
     ENV['F77'] = fortran_compiler
+    ENV['MPICC'] = mpi_c_compiler
+    ENV['MPICXX'] = mpi_cxx_compiler
+    ENV['MPIFC'] = mpi_fortran_compiler
+    ENV['MPIF90'] = mpi_fortran_compiler
   end
 end

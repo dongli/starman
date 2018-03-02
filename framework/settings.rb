@@ -49,6 +49,18 @@ class Settings
     compilers['fortran']
   end
 
+  def self.mpi_c_compiler
+    compilers['mpi_c']
+  end
+
+  def self.mpi_cxx_compiler
+    compilers['mpi_cxx']
+  end
+
+  def self.mpi_fortran_compiler
+    compilers['mpi_fortran']
+  end
+
   def self.init
     # rc_root has priority order: --rc-root > /var/starman > ~/.starman
     @@rc_root = CommandParser.args[:rc_root] || File.directory?('/var/starman') ? '/var/starman' : "#{ENV['HOME']}/.starman"
