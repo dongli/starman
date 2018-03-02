@@ -7,6 +7,7 @@ module Utils
     ENV['MPICC'] = mpi_c_compiler
     ENV['MPICXX'] = mpi_cxx_compiler
     ENV['MPIFC'] = mpi_fortran_compiler
+    ENV['MPIF77'] = mpi_fortran_compiler
     ENV['MPIF90'] = mpi_fortran_compiler
   end
 end
