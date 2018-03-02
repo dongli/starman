@@ -9,13 +9,15 @@ command_name = ARGV.shift.to_sym
 aliases = {
   i: :install,
   rm: :uninstall,
-  l: :load
+  l: :load,
+  c: :config
 }
 
 commands = {
   install: InstallCommand,
   uninstall: UninstallCommand,
   load: LoadCommand,
+  config: ConfigCommand
 }
 
 OS.init
