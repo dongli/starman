@@ -2,6 +2,9 @@ module Utils
   def inreplace file_paths, before = nil, after = nil, &block
     Array(file_paths).each do |file_path|
       content = File.read(file_path)
+      if not content.valid_encoding?
+        content = content.encode('UTF-16be', invalid: :replace, replace: '?').encode('UTF-8')
+      end
       if block_given?
         block.call content
       elsif before.class == Hash and not after
