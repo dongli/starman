@@ -2,7 +2,9 @@ class Mvapich2 < Package
   url 'http://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-2.2.tar.gz'
   sha256 '791a6fc2b23de63b430b3e598bf05b1b25b82ba8bf7e0622fc81ba593b3bb131'
 
-  conflicts_with :openmpi, :mpich2
+  label :mpi
+
+  conflicts_with :openmpi
 
   option 'enable-debug', 'Enable debug messages, may impact performance.'
   # TODO: Should we add slurm dependency?

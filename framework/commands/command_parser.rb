@@ -34,6 +34,16 @@ EOS
   end
 
   def parse_packages
+    # We really needs rc_root!
+    ARGV.each_with_index do |arg, i|
+      if arg == '-r' or arg == '--rc-root'
+        @@args[:rc_root] = ARGV[i+1]
+        break
+      end
+    end
+    Settings.init
+    History.init
+    CompilerSet.init
     # NOTE: Package names should be prior to options.
     finish = false
     package_names = []
@@ -41,10 +51,10 @@ EOS
       finish = true if arg[0] == '-'
       package_names << arg unless finish
     end
-    PackageLoader.loads package_names
+    PackageLoader.loads *package_names
   end
 
   def self.args
-    @@args
+    @@args ||= {}
   end
 end

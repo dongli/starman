@@ -9,7 +9,6 @@ command_name = ARGV.shift.to_sym
 aliases = {
   i: :install,
   rm: :uninstall,
-  l: :load,
   c: :config
 }
 
@@ -17,14 +16,13 @@ commands = {
   install: InstallCommand,
   uninstall: UninstallCommand,
   load: LoadCommand,
-  config: ConfigCommand
+  config: ConfigCommand,
+  link: LinkCommand,
+  unlink: UnlinkCommand
 }
 
 OS.init
 
 command = (commands[command_name] || commands[aliases[command_name]]).new
-
-Settings.init
-History.init
 
 command.run

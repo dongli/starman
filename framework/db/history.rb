@@ -31,6 +31,10 @@ class History
     res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split('|')
     return false if res.empty?
     return true if package.name == res[1].to_sym and package.version == res[2] and package.prefix == res[3]
-    CLI.error "Package #{CLI.red package.name}@#{CLI.blue res[2]} has been installed in #{res[3]}!" 
+    if CommandParser.args[:force]
+      remove_install package
+    else
+      CLI.error "Package #{CLI.red package.name}@#{CLI.blue res[2]} has been installed in #{res[3]}!"
+    end
   end
 end

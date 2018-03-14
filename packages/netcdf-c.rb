@@ -10,6 +10,8 @@ class NetcdfC < Package
   option 'disable-netcdf-4', 'Disable NetCDF4 interfaces.'
 
   def install
+    ENV['CPPFLAGS'] += " -I#{link_inc}"
+    ENV['LDFLAGS'] += " -L#{link_lib}"
   	args = %W[
       --prefix=#{prefix}
       --enable-utilities
@@ -18,13 +20,11 @@ class NetcdfC < Package
       --disable-dap-remote-tests
       --disable-doxygen
       --disable-dap
-      CPPFLAGS='-I#{link_include}'
-      LDFLAGS='-L#{link_lib}'
     ]
     args << '--disable-netcdf-4' if disable_netcdf_4?
     run './configure', *args
     run 'make'
-    run 'make', 'check' unless skip_test?
+    run 'make', 'check' if not skip_test? and not CompilerSet.c.intel?
     run 'make', 'install'
   end
 end

@@ -3,7 +3,7 @@ class Package
   include PackageDSL
 
   extend Forwardable
-  def_delegators :@spec, :url, :mirror, :sha256, :file_name, :version, :group, :labels, :dependencies, :options
+  def_delegators :@spec, :url, :url=, :mirror, :sha256, :file_name, :version, :group, :labels, :dependencies, :options
   def_delegators :@spec, :labels, :has_label?, :conflicts
 
   def initialize
@@ -35,24 +35,38 @@ class Package
     Settings.link_root
   end
 
-  [:bin, :include, :lib, :lib64].each do |dir|
+  def link_root
+    Settings.link_root self
+  end
+
+  [:bin, :inc, :lib, :lib64].each do |dir|
     define_method(dir) do
+      dir = dir == :inc ? :include : dir
       path = "#{prefix}/#{dir}"
       path if File.directory? path
     end
     define_method(:"link_#{dir}") do
+      dir = dir == :inc ? :include : dir
       path = "#{Settings.link_root self}/#{dir}"
       path if File.directory? path
     end
     define_method(:"common_#{dir}") do
+      dir = dir == :inc ? :include : dir
       path = "#{Settings.common_root}/#{dir}"
       path if File.directory? path
     end
+    self.class.send :define_method, dir do
+      dir = dir == :inc ? :include : dir
+      path = "#{prefix}/#{dir}"
+      path if File.directory? path
+    end
     self.class.send :define_method, :"link_#{dir}" do
+      dir = dir == :inc ? :include : dir
       path = "#{Settings.link_root}/#{dir}"
       path if File.directory? path
     end
     self.class.send :define_method, :"common_#{dir}" do
+      dir = dir == :inc ? :include : dir
       path = "#{Settings.common_root}/#{dir}"
       path if File.directory? path
     end

@@ -5,6 +5,8 @@ class Pnetcdf < Package
   option 'without-cxx', 'Disable C++ bindings'
   option 'without-fortran', 'Disable Fortran bindings'
 
+  depends_on :mpi
+
   def install
     args = %W[
       --prefix=#{prefix}

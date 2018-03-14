@@ -12,7 +12,7 @@ class Tiff < Package
       --prefix=#{prefix}
       --disable-dependency-tracking
       --without-x
-      --with-jpeg-include-dir=#{include}
+      --with-jpeg-include-dir=#{inc}
       --with-jpeg-lib-dir=#{lib}
       --disable-lzma
     ]

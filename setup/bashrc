@@ -2,8 +2,11 @@ export STARMAN_ROOT=$(cd $(dirname $BASH_SOURCE) && cd .. && pwd)
 export PATH=$STARMAN_ROOT:$PATH
 
 function before_command {
-  if [[ "$BASH_COMMAND" =~ .*starman[[:space:]]+(load|l) ]]; then
-    $($BASH_COMMAND --print)
+  if [[ "$BASH_COMMAND" =~ .*starman[[:space:]]+(load) ]]; then
+    res=$($BASH_COMMAND --print)
+    if [[ ! "$res" =~ Warning && ! "$res" =~ Error ]]; then
+      $(echo $res)
+    fi
   fi
 }
 trap before_command DEBUG

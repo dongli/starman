@@ -3,29 +3,49 @@ module PackageLoader
     @@loaded_packages
   end
 
-  def self.loads package_names
+  def self.loads *package_names
     @@direct_packages = package_names.map &:to_sym
     @@loaded_packages = {}
     package_names.each do |package_name|
       # package_name may be in <name>@<version> form.
-      name, version = package_name.split '@'
+      name, version = package_name.to_s.split '@'
       name = name.to_sym
-      scan name, version
+      scan name, version: version
     end
     @@loaded_packages
   end
 
-  def self.scan name, version
+  def self.scan name, options = {}
     return if @@loaded_packages.has_key? name
-    if File.file? package_file_path(name, version)
-      eval open(package_file_path(name, version), 'r').read
+    if package_file_path(name, options[:version])
+      eval open(package_file_path(name, options[:version]), 'r').read
       package = eval("#{name.to_s.split('-').collect(&:capitalize).join}").new
-      package.dependencies.each do |depend_name, depend_options|
-        scan depend_name, depend_options[:version]
+      unless options[:nodeps]
+        package.dependencies.keys.each do |depend_name|
+          depend_package = scan depend_name, package.dependencies[depend_name]
+          if depend_package and depend_package.name != depend_name
+            package.dependencies[depend_package.name] = {}
+            package.dependencies.delete depend_name
+          end
+        end
       end
+      scan package.group, nodeps: true if package.group
       @@loaded_packages[name] = package
     else
-      CLI.error "Unknown package #{CLI.red name}#{version ? '@' + version : ''}!"
+      possible_packages = []
+      search_packages_for_label(name).each do |path|
+        eval open(path, 'r').read
+        name = File.basename(path, '.rb')
+        possible_packages << eval("#{name.to_s.split('-').collect(&:capitalize).join}").new
+        if History.installed? possible_packages.last
+          return scan(possible_packages.last.name)
+        end
+      end
+      if possible_packages.size > 1
+        CLI.error "You should install one of #{possible_packages.map(&:name).join(', ')} first!"
+      else
+        CLI.error "Unknown package #{CLI.red name}#{options[:version] ? '@' + options[:version] : ''}!"
+      end
     end
   end
 
@@ -43,5 +63,13 @@ module PackageLoader
       loaded_package = @@loaded_packages[name]
       loaded_package.dependencies.has_key? package.name and loaded_package.has_label? :group
     end
+  end
+
+  def self.search_packages_for_label label
+    matches = []
+    Dir.glob("#{ENV['STARMAN_ROOT']}/packages/*.rb").each do |path|
+      matches << path if open(path, 'r').read =~ /label :#{label}/
+    end
+    return matches
   end
 end

@@ -7,14 +7,14 @@ class NetcdfFortran < Package
   depends_on 'netcdf-c'
 
   def install
+    ENV['CPPFLAGS'] += " -I#{link_inc}"
+    ENV['LDFLAGS'] += " -L#{link_lib}"
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
       --disable-dap-remote-tests
       --enable-static
       --enable-shared
-      CPPFLAGS='-I#{link_include}'
-      LDFLAGS='-L#{link_lib}'
     ]
     run './configure', *args
     run 'make'
