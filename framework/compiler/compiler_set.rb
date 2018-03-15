@@ -2,9 +2,14 @@ class CompilerSet
   def self.init
     command_patterns = {
       gcc: {
-        c: /gcc(-\d+)?$/,
-        cxx: /g\+\+(-\d+)?$/,
-        fortran: /gfortran(-\d+)?$/
+        c: /\bgcc(-\d+)?$/,
+        cxx: /\bg\+\+(-\d+)?$/,
+        fortran: /\bgfortran(-\d+)?$/
+      },
+      pgi: {
+        c: /\bpgcc$/,
+        cxx: /\bpg\+\+$/,
+        fortran: /\bpgfortran$/
       },
       intel: {
         c: /icc$/,
@@ -16,6 +21,8 @@ class CompilerSet
       case Settings.compilers[language.to_s]
       when command_patterns[:gcc][language]
         self.class_variable_set :"@@#{language}_compiler", Gcc.new(language)
+      when command_patterns[:pgi][language]
+        self.class_variable_set :"@@#{language}_compiler", Pgi.new(language)
       when command_patterns[:intel][language]
         self.class_variable_set :"@@#{language}_compiler", Intel.new(language)
       end

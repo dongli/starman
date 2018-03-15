@@ -8,6 +8,7 @@ class ConfigCommand < CommandParser
     >>> starman config [options]
 EOS
     @parser.parse!
+    Settings.init
   end
 
   def run

@@ -23,18 +23,12 @@ class History
   end
 
   def self.remove_install package
-    system "echo 'delete from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}"
+    system "echo 'delete from install where prefix = \"#{package.prefix}\";' | #{db_cmd} #{db_path}"
     CLI.error "Failed to update history database!" if not $?.success?
   end
 
   def self.installed? package
-    res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split('|')
-    return false if res.empty?
-    return true if package.name == res[1].to_sym and package.version == res[2] and package.prefix == res[3]
-    if CommandParser.args[:force]
-      remove_install package
-    else
-      CLI.error "Package #{CLI.red package.name}@#{CLI.blue res[2]} has been installed in #{res[3]}!"
-    end
+    res = `echo 'select * from install where name = \"#{package.name}\" and prefix = \"#{package.prefix}\";' | #{db_cmd} #{db_path}`.split('|')
+    return true if not res.empty? and package.name == res[1].to_sym and package.version == res[2] and package.prefix == res[3]
   end
 end

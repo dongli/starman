@@ -4,7 +4,7 @@ class Package
 
   extend Forwardable
   def_delegators :@spec, :url, :url=, :mirror, :sha256, :file_name, :version, :group, :labels, :dependencies, :options
-  def_delegators :@spec, :labels, :has_label?, :conflicts
+  def_delegators :@spec, :labels, :has_label?, :conflicts, :resources, :resource, :links
 
   def initialize
     package_class = self.class.name.split('::').last
@@ -18,10 +18,13 @@ class Package
   def self.prefix
     package_class = self.name.split('::').last
     spec = self.class_variable_get("@@#{package_class}_spec")
+    name = package_class.gsub(/(.)([A-Z])/,'\1-\2').downcase
     if spec.group
       PackageLoader.loaded_packages[spec.group].prefix
     elsif spec.has_label? :common
-      "#{Settings.install_root}/common/Packages/#{package_class.gsub(/(.)([A-Z])/,'\1-\2').downcase}/#{spec.version}"
+      "#{Settings.install_root}/common/Packages/#{name}/#{spec.version}"
+    elsif spec.has_label? :compiler
+      "#{Settings.install_root}/#{name}_#{spec.version}/Packages/#{name}/#{spec.version}"
     else
       "#{Settings.install_root}/#{Settings.compiler_set}/Packages/#{package_class.gsub(/(.)([A-Z])/,'\1-\2').downcase}/#{spec.version}"
     end
@@ -43,36 +46,41 @@ class Package
     define_method(dir) do
       dir = dir == :inc ? :include : dir
       path = "#{prefix}/#{dir}"
-      path if File.directory? path
     end
     define_method(:"link_#{dir}") do
       dir = dir == :inc ? :include : dir
       path = "#{Settings.link_root self}/#{dir}"
-      path if File.directory? path
     end
     define_method(:"common_#{dir}") do
       dir = dir == :inc ? :include : dir
       path = "#{Settings.common_root}/#{dir}"
-      path if File.directory? path
     end
     self.class.send :define_method, dir do
       dir = dir == :inc ? :include : dir
       path = "#{prefix}/#{dir}"
-      path if File.directory? path
     end
     self.class.send :define_method, :"link_#{dir}" do
       dir = dir == :inc ? :include : dir
       path = "#{Settings.link_root}/#{dir}"
-      path if File.directory? path
     end
     self.class.send :define_method, :"common_#{dir}" do
       dir = dir == :inc ? :include : dir
       path = "#{Settings.common_root}/#{dir}"
-      path if File.directory? path
     end
   end
 
   def name
     self.class.name.split('::').last.gsub(/(.)([A-Z])/,'\1-\2').downcase.to_sym
+  end
+
+  def install_resource name, dir, options = {}
+    FileUtils.mkdir_p dir if not Dir.exist? dir
+    if options[:plain_file]
+      FileUtils.cp "#{Settings.cache_root}/#{resource(name).file_name}", dir
+    else
+      work_in dir do
+        decompress "#{Settings.cache_root}/#{resource(name).file_name}", options
+      end
+    end
   end
 end

@@ -13,17 +13,35 @@ class PackageSpec
     @options = {}
     @patches = []
     @conflicts = []
+    @resources = {}
+    @links = {}
   end
 
-  attr_reader :url
+  def url val = nil
+    return @url unless val
+    @url = val
+    self.file_name = File.basename(URI.parse(val).path)
+  end
   def url= val
     @url = val
     self.file_name = File.basename(URI.parse(val).path)
   end
 
-  attr_accessor :mirror, :sha256, :version, :group
+  [:mirror, :sha256, :version, :group].each do |attr|
+    define_method(attr) do |val = nil|
+      return self.instance_variable_get :"@#{attr}" unless val
+      self.instance_variable_set :"@#{attr}", val
+    end
+  end
+  attr_writer :mirror, :sha256, :version, :group
 
-  attr_reader :file_name
+  def file_name val = nil
+    return @file_name unless val
+    @file_name = val
+    # Assume a reasonable file name pattern to extract version information.
+    match = /.*-(\d+\.\d+(\.\d+(\.\d+)?)?)/.match(val)
+    @version = match[1] if match
+  end
   def file_name= val
     @file_name = val
     # Assume a reasonable file name pattern to extract version information.
@@ -49,6 +67,12 @@ class PackageSpec
     @options[val] = options
   end
 
+  attr_reader :resources
+  def resource name, spec = nil
+    @resources[name.to_sym] = spec if spec
+    @resources[name.to_sym]
+  end
+
   attr_reader :patches
   def patch data = nil, &block
     if data
@@ -65,5 +89,10 @@ class PackageSpec
     vals.each do |val|
       @conflicts << val.to_sym unless @conflicts.include? val.to_sym
     end
+  end
+
+  attr_reader :links
+  def link src, dst
+    @links[src] = dst
   end
 end

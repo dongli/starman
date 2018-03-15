@@ -28,6 +28,9 @@ EOS
       end
     end
     @parser.parse!
+    # Reinitialize settings since compiler set may be set in command line.
+    Settings.init
+    CompilerSet.init
   end
 
   def run
@@ -46,9 +49,12 @@ EOS
       elsif History.installed? package
         CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} has been installed."
       else
+        package.resources.each_value do |resource|
+          PackageDownloader.download resource
+        end
         PackageDownloader.download package
         CLI.notice "Install package #{CLI.green package.name}@#{CLI.blue package.version} ..."
-        dir = "#{Settings.cache_root}/#{package.name}"
+        dir = "#{Settings.cache_root}/#{package.name}_#{Settings.compiler_set}"
         FileUtils.rm_rf dir if File.directory? dir
         FileUtils.mkdir_p dir
         work_in dir do
@@ -72,7 +78,7 @@ EOS
       end
       # Change environment to affect following packages.
       append_path package.bin if package.bin
-      append_ld_library_path package.lib if package.lib
+      append_ld_library_path package.lib if Dir.exist? package.lib
     end
   end
 end

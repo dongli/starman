@@ -26,12 +26,15 @@ module PackageLoader
           if depend_package and depend_package.name != depend_name
             package.dependencies[depend_package.name] = {}
             package.dependencies.delete depend_name
+          elsif not depend_package
+            package.dependencies.delete depend_name
           end
         end
       end
       scan package.group, nodeps: true if package.group
       @@loaded_packages[name] = package
     else
+      return if PackageSpecialLabels.check name
       possible_packages = []
       search_packages_for_label(name).each do |path|
         eval open(path, 'r').read

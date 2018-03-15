@@ -81,9 +81,9 @@ class Settings
       set_compile_env
       if CommandParser.args[:verbose]
         CLI.notice "Use #{CLI.blue compiler_set} compilers."
-        CLI.notice "CC = #{CLI.blue c_compiler}"
-        CLI.notice "CXX = #{CLI.blue cxx_compiler}"
-        CLI.notice "FC = #{CLI.blue fortran_compiler}"
+        ['CC', 'CXX', 'FC', 'MPICC', 'MPICXX', 'MPIFC', 'MPIF90', 'MPIF77'].each do |env|
+          CLI.notice "#{env} = #{CLI.blue ENV[env]}" if ENV[env]
+        end
       end
     else
       begin

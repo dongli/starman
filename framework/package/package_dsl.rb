@@ -10,8 +10,12 @@ module PackageDSL
   end
 
   [:url, :mirror, :sha256, :version, :file_name].each do |keyword|
-    self.send :define_method, keyword do |val|
-      spec.send "#{keyword}=", val
+    self.send :define_method, keyword do |val = nil|
+      if val
+        spec.send "#{keyword}=", val
+      else
+        spec.send keyword
+      end
     end
   end
 
@@ -46,7 +50,18 @@ module PackageDSL
     end
   end
 
+  def resource name, &block
+    return spec.resources[name.to_sym] if not block_given?
+    res = PackageSpec.new
+    res.instance_eval &block
+    spec.resource name, res
+  end
+
   def skip_test?
     CommandParser.args[:skip_test]
+  end
+
+  def link src, dst
+    spec.link src, dst
   end
 end
