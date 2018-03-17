@@ -21,7 +21,7 @@ EOS
 
   def run
     if @@args[:all]
-      append_path Package.link_bin if Package.link_bin
+      append_path Package.link_bin if Dir.exist? Package.link_bin
       append_ld_library_path Package.link_lib if Dir.exist? Package.link_lib
       append_ld_library_path Package.link_lib64 if Dir.exist? Package.link_lib64
       append_path Package.common_bin if Package.common_bin
@@ -36,15 +36,19 @@ EOS
           CLI.warning "Package #{CLI.red package.name}@#{CLI.blue package.name} has not been installed."
         else
           CLI.notice "Load package #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]
-          append_path package.bin if package.bin
-          append_ld_library_path package.lib if Dir.exist? package.lib
-          append_ld_library_path package.lib64 if Dir.exist? package.lib64
+          append_path package.link_bin if Dir.exist? package.link_bin
+          append_ld_library_path package.link_lib if Dir.exist? package.link_lib
+          append_ld_library_path package.link_lib64 if Dir.exist? package.link_lib64
         end
       end
     end
     if @@args[:print]
       print "export PATH=#{ENV['PATH']}\n"
       print "export #{OS.ld_library_path}=#{ENV[OS.ld_library_path]}\n"
+      PackageLoader.loaded_packages.each do |name, package|
+        next unless PackageLoader.from_cmd_line? package
+        print "export #{name.to_s.gsub('-', '_').upcase}_ROOT=#{package.link_root}\n"
+      end
     end
   end
 end

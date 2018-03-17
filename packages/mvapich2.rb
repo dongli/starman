@@ -20,7 +20,7 @@ class Mvapich2 < Package
     args = %W[
       --prefix=#{prefix}
       --enable-fortran=all
-      CPPFLAGS='-I#{common_include}'
+      CPPFLAGS='-I#{common_inc}'
       LDFLAGS='-L#{common_lib}'
     ]
     # NOTE: IB library from vendors should already been installed.
