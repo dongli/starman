@@ -41,6 +41,9 @@ class Package
   def link_root
     Settings.link_root self
   end
+  def self.link_root
+    self.new.link_root
+  end
 
   [:bin, :inc, :lib, :lib64].each do |dir|
     define_method(dir) do
@@ -82,5 +85,9 @@ class Package
         decompress "#{Settings.cache_root}/#{resource(name).file_name}", options
       end
     end
+  end
+
+  # Default actions.
+  def post_install
   end
 end

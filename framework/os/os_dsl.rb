@@ -12,7 +12,7 @@ module OsDSL
     if val != nil
       spec.type = val.to_sym
     else
-      self.class_variable_get(:@@os).type
+      @@os.type
     end
   end
 
@@ -20,7 +20,15 @@ module OsDSL
     if block_given?
       spec.version = block
     else
-      self.class_variable_get(:@@os).version
+      @@os.version
+    end
+  end
+
+  def command name, &block
+    if block_given?
+      spec.commands[name.to_sym] = block
+    else
+      @@os.commands[name.to_sym]
     end
   end
 end

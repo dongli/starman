@@ -69,6 +69,7 @@ EOS
           work_in working_dir do
             set_compile_flags package
             package.install
+            package.post_install
           end
         end
         FileUtils.rm_rf dir

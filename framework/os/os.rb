@@ -1,8 +1,9 @@
 class OS
+  extend Utils
   include OsDSL
 
   extend Forwardable
-  def_delegators :@spec, :type, :version
+  def_delegators :@spec, :type, :version, :commands
 
   def initialize
     @spec = self.class.class_variable_get "@@#{self.class}_spec"
@@ -24,6 +25,14 @@ class OS
       end
     else
       CLI.error "Unknown OS #{CLI.red sys}!"
+    end
+    # Delegate commands of OS instance.
+    class << self
+      @@os.commands.each do |name, block|
+        self.send :define_method, name do |*args|
+          block.call *args
+        end
+      end
     end
   end
 

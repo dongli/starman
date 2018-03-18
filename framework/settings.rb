@@ -71,6 +71,18 @@ class Settings
     compilers['mpi_fortran']
   end
 
+  def self.nodes
+    [settings['nodes']['master_node'], settings['nodes']['slave_nodes']].flatten.uniq
+  end
+
+  def self.master_node
+    settings['nodes']['master_node']
+  end
+
+  def self.slave_nodes
+    settings['nodes']['slave_nodes']
+  end
+
   def self.init
     # rc_root has priority order: --rc-root > /var/starman > ~/.starman
     @@rc_root = CommandParser.args[:rc_root] || (File.directory?('/var/starman') ? '/var/starman' : "#{ENV['HOME']}/.starman")
