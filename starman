@@ -9,7 +9,8 @@ command_name = ARGV.shift.to_sym
 aliases = {
   i: :install,
   rm: :uninstall,
-  c: :config
+  c: :config,
+  e: :edit
 }
 
 commands = {
@@ -17,6 +18,7 @@ commands = {
   uninstall: UninstallCommand,
   load: LoadCommand,
   config: ConfigCommand,
+  edit: EditCommand,
   link: LinkCommand,
   unlink: UnlinkCommand
 }
