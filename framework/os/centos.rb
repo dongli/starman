@@ -3,7 +3,7 @@ class CentOS < OS
 
   version do
     # CentOS Linux release 7.4.1708 (Core)
-    `cat /etc/centos-release`.match(/CentOS Linux release ([\d\.]+)/)[1]
+    `cat /etc/centos-release`.match(/CentOS.*release ([\d\.]+)/)[1]
   end
 
   command :add_user do |name, options = {}|

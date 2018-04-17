@@ -16,12 +16,11 @@ class OS
     when :Darwin
       @@os = Mac.new
     when :Linux
-      dist = `cat /etc/os-release | grep '^NAME'`.match(/NAME="(.*)"/)[1]
-      case dist
+      case `cat /etc/*release`
       when /CentOS/
         @@os = CentOS.new
       else
-        CLI.error "Unsupport Linux #{dist}!"
+        CLI.error "Unsupport Linux!"
       end
     else
       CLI.error "Unknown OS #{CLI.red sys}!"
