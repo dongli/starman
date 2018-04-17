@@ -1,7 +1,7 @@
 module Utils
-  def mv src, dst
+  def ln src, dst
     Dir.glob src do |src_file|
-      FileUtils.mv src_file, dst.to_s
+      FileUtils.ln_sf src_file, dst
     end
   end
 end
