@@ -7,6 +7,7 @@ class Hdf5 < Package
 
   option 'with-cxx', 'Build C++ bindings.'
   option 'with-fortran', 'Build Fortran bindings.'
+  option 'enable-threadsafe', 'Enable thread safe.'
 
   def install
     args = %W[
@@ -20,6 +21,7 @@ class Hdf5 < Package
     ]
     args << with_cxx? ? '--enable-cxx' : '--disable-cxx'
     args << '--enable-fortran' if with_fortran?
+    args << '--enable-threadsafe --enable-unsupported' if enable_threadsafe?
     run './configure', *args
     run 'make'
     run 'make', 'check' unless skip_test?
