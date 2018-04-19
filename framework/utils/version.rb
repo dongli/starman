@@ -2,7 +2,7 @@ class Version
   attr_reader :major, :minor, :revision, :alpha, :beta, :release_candidate
 
   def initialize version_string, options = {}
-    tmp = version_string.split('.')
+    tmp = version_string.split('.') rescue ['0', '0']
     # The major version identifer is the first one.
     begin
       @major = Integer(tmp[0])

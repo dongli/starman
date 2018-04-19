@@ -3,7 +3,7 @@ class Cmake < Package
   sha256 '80d0faad4ab56de07aa21a7fc692c88c4ce6156d42b0579c6962004a70a3218b'
 
   label :common
-  label :skip_if_exist, version: lambda { `cmake --version`.match(/(\d+\.\d+\.\d+(\.\d+)?)/)[1] }, condition: '>= 3'
+  label :skip_if_exist, version: lambda { `cmake --version`.match(/(\d+\.\d+\.\d+(\.\d+)?)/)[1] rescue nil }, condition: '>= 3'
 
   def install
     run './bootstrap', "--prefix=#{prefix}", '--', '-DCMAKE_BUILD_TYPE=Release'
