@@ -90,4 +90,7 @@ class Package
   # Default actions.
   def post_install
   end
+
+  def export_env
+  end
 end

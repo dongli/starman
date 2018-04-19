@@ -39,6 +39,7 @@ EOS
           append_path package.link_bin if Dir.exist? package.link_bin
           append_ld_library_path package.link_lib if Dir.exist? package.link_lib
           append_ld_library_path package.link_lib64 if Dir.exist? package.link_lib64
+          package.export_env
         end
       end
     end

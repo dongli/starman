@@ -24,6 +24,8 @@ class Gcc < Package
     sha256 '6b8b0fd7f81d0a957beb3679c81bbb34ccc7568d5682844d8924424a0dadcb1b'
   end
 
+  option 'disable-lto', 'Disable Link Time Optimisation support.'
+
   def install
     args = %W[
       --prefix=#{prefix}
@@ -34,11 +36,11 @@ class Gcc < Package
       --enable-libstdcxx-time=yes
       --enable-stage1-checking
       --enable-checking=release
-      --enable-lto
       --with-build-config=bootstrap-debug
       --disable-werror
       --disable-nls
     ]
+    args << '--enable-lto' unless disable_lto?
     install_resource :mpfr, '.'
     mv 'mpfr-4.0.1', 'mpfr'
     install_resource :gmp, '.'
@@ -53,5 +55,9 @@ class Gcc < Package
       #run 'ulimit -s 32768 && make -k check' unless skip_test?
       run 'make', 'install'
     end
+  end
+
+  def export_env
+    append_ld_library_path "#{lib}/gcc/lib64"
   end
 end
