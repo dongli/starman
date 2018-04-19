@@ -23,6 +23,8 @@ class Settings
         File.dirname(package.prefix) + '/link'
       elsif package.has_label? :common
         common_root
+      elsif package.has_label? :compiler
+        File.dirname(File.dirname(File.dirname(package.prefix)))
       else
         link_root
       end
