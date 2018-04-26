@@ -19,6 +19,8 @@ class OS
       case `cat /etc/*release`
       when /CentOS/
         @@os = CentOS.new
+      when /Ubuntu/
+        @@os = Ubuntu.new
       else
         CLI.error "Unsupport Linux!"
       end
@@ -40,7 +42,7 @@ class OS
   end
 
   def self.linux?
-    [:centos].include? @@os.type
+    [:centos, :ubuntu].include? @@os.type
   end
 
   def self.ld_library_path
