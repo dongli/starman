@@ -25,6 +25,7 @@ commands = {
 
 OS.init
 
+CLI.error "Unknown command #{CLI.red command_name}!" unless commands.has_key? command_name
 command = (commands[command_name] || commands[aliases[command_name]]).new
 
 command.run
