@@ -29,6 +29,7 @@ class Cdo < Package
     ]
     run './configure', *args
     run 'make'
+    inreplace 'test/tsformat.test', 'test -n "$CDO"      || CDO=cdo', 'CDO="../src/cdo -L"'
     run 'make', 'check' unless skip_test?
     run 'make', 'install'
   end
