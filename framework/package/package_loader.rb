@@ -62,7 +62,9 @@ module PackageLoader
   end
 
   def self.from_cmd_line? package
-    @@direct_packages.include? package.name or @@direct_packages.any? do |name|
+    @@direct_packages.include? package.name or @@direct_packages.any? do |package_name|
+      name, version = package_name.to_s.split '@'
+      name = name.to_sym
       loaded_package = @@loaded_packages[name]
       loaded_package.dependencies.has_key? package.name and loaded_package.has_label? :group
     end
