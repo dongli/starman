@@ -3,7 +3,8 @@ class Ubuntu < OS
 
   version do
     # VERSION="17.10 (Artful Aardvark)"
-    `cat /etc/lsb-release`.match(/VERSION="(\d+[\.\d+]*)/)[1]
+    # DISTRIB_RELEASE=18.04
+    `cat /etc/lsb-release`.match(/(VERSION|RELEASE)="?(\d+[\.\d+]*)/)[2]
   end
 
   command :add_user do |name, options = {}|
