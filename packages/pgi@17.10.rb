@@ -1,10 +1,10 @@
 class Pgi < Package
   if OS.linux?
-    url 'https://download.pgroup.com/secure/pgilinux-2018-184-x86-64.tar.gz?Q097P6Z3vZtCfBXNitlkv0Vae12a0TJ-SblG4raK1vuXj75UgouyESuq9O4iIwhLktb0FR-RPSM6fQsDmSxqxghVKYT9Z7Wr1Xkyk7JVS9eIpNSI5-B5-GvzsPJIOGe_3Y-uGWk'
+    url 'http://download.pgroup.com/secure/pgilinux-2017-1710-x86_64.tar.gz?K7SF2BG6tl-RRYQb13oRUUwyjZ0S-72vX35ceD1ZO5xvqSk8Ec7e3wsPvt3JK9ZRDozSrEilpKnA0q-d2EYJk5KpBb5o-y5X14Zjh-f3Id9tOwHAEr6jMRT5WQ4tkhadwLhwNcaQ'
     sha256 '9da8f869fb9b70c0c4423c903d40a9e22d54b997af359a43573c0841165cd1b6'
-    file_name 'pgilinux-2018-184-x86_64.tar.gz'
+    file_name 'pgilinux-2017-1710-x86_64.tar.gz'
   end
-  version '18.04'
+  version '17.10'
 
   label :compiler
 
