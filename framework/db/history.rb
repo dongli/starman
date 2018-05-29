@@ -1,6 +1,6 @@
 class History
   def self.db_path
-    "#{Settings.rc_root}/history.db"
+    "#{Runtime.rc_root}/history.db"
   end
 
   def self.db_cmd

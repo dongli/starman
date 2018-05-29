@@ -1,10 +1,10 @@
 class Pgi < Package
   if OS.linux?
-    url 'https://download.pgroup.com/secure/pgilinux-2018-184-x86-64.tar.gz?Q097P6Z3vZtCfBXNitlkv0Vae12a0TJ-SblG4raK1vuXj75UgouyESuq9O4iIwhLktb0FR-RPSM6fQsDmSxqxghVKYT9Z7Wr1Xkyk7JVS9eIpNSI5-B5-GvzsPJIOGe_3Y-uGWk'
-    sha256 '9da8f869fb9b70c0c4423c903d40a9e22d54b997af359a43573c0841165cd1b6'
-    file_name 'pgilinux-2018-184-x86_64.tar.gz'
+    url 'https://download.pgroup.com/secure/pgilinux-2018-184-x86-64.tar.gz?VdJBUwzGhcDhR_F3XFcB0WZvCDTW0JFYbFrmkqEXgBvGhK0fXDSriGDROlUg5P0ieLDl_ajD59uZ2J5-KxvZeVuHCWgrdg_UAv0DrSsoy6FBLKaX_hMvFv82LbVLu-PJfzHsrmM'
+    sha256 '81e0dcf6000b026093ece180d42d77854c23269fb8409cedcf51c674ca580a0f'
+    file_name 'pgilinux-2018-184-x86-64.tar.gz'
   end
-  version '18.04'
+  version '18.4'
 
   label :compiler
 
@@ -28,5 +28,15 @@ class Pgi < Package
     ENV['PGI_INSTALL_MPI'] = with_mpi?.to_s
     ENV['PGI_MPI_GPU_SUPPORT'] = with_mpi_gpu?.to_s
     run './install'
+  end
+
+  def post_install
+    # Update conf file to add this new compiler set.
+    Settings.settings['compiler_sets']["pgi_#{version}"] = {
+      c: bin + '/pgcc',
+      cxx: bin + '/pg++',
+      fortran: bin + '/pgfortran'
+    }
+    Settings.write
   end
 end

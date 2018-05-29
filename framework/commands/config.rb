@@ -8,10 +8,10 @@ class ConfigCommand < CommandParser
     >>> starman config [options]
 EOS
     @parser.parse!
-    Settings.init
+    Settings.init ignore_errors: true
   end
 
   def run
-    system "vim -c 'set filetype=yaml' #{Settings.conf_file}"
+    system "vi -c 'set filetype=yaml' #{Settings.conf_file}"
   end
 end

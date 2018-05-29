@@ -44,6 +44,7 @@ require 'compiler/pgi'
 require 'compiler/intel'
 require 'compiler/compiler_set'
 
+require 'runtime'
 require 'settings'
 
 require 'db/history'
@@ -57,6 +58,7 @@ require 'package/package_linker'
 require 'package/package_special_labels'
 
 require 'commands/command_parser'
+require 'commands/setup'
 require 'commands/install'
 require 'commands/uninstall'
 require 'commands/load'

@@ -12,6 +12,6 @@ EOS
   end
 
   def run
-    system "vim -c 'set filetype=ruby' #{ENV['STARMAN_ROOT']}/packages/#{ARGV.last}.rb"
+    system "vi -c 'set filetype=ruby' #{ENV['STARMAN_ROOT']}/packages/#{ARGV.last}.rb"
   end
 end

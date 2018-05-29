@@ -1,20 +1,18 @@
 class Settings
   extend Utils
 
+  @@settings = {}
+
   def self.settings
-    @@settings ||= {}
-  end
-
-  def self.cache_root
-    '/tmp/starman'
-  end
-
-  def self.rc_root
-    @@rc_root
+    @@settings
   end
 
   def self.install_root
-    settings['install_root']
+    @@settings['install_root']
+  end
+
+  def self.cache_root
+    @@settings['cache_root']
   end
 
   def self.link_root package = nil
@@ -26,10 +24,10 @@ class Settings
       elsif package.has_label? :compiler
         File.dirname(File.dirname(File.dirname(package.prefix)))
       else
-        link_root
+        "#{Settings.install_root}/#{Settings.compiler_set}"
       end
     else
-      settings['link_root']
+      "#{Settings.install_root}/#{Settings.compiler_set}"
     end
   end
 
@@ -38,15 +36,15 @@ class Settings
   end
 
   def self.conf_file
-    "#{rc_root}/conf.yml"
+    "#{Runtime.rc_root}/conf.yml"
   end
 
   def self.compiler_set
-    CommandParser.args[:compiler_set] || settings['defaults']['compiler_set']
+    CommandParser.args[:compiler_set] || @@settings['defaults']['compiler_set']
   end
 
   def self.compilers
-    settings['compiler_sets'][compiler_set]
+    @@settings['compiler_sets'][compiler_set]
   end
 
   def self.c_compiler
@@ -74,24 +72,26 @@ class Settings
   end
 
   def self.nodes
-    [settings['nodes']['master_node'], settings['nodes']['slave_nodes']].flatten.uniq
+    [@@settings['nodes']['master_node'], @@settings['nodes']['slave_nodes']].flatten.uniq
   end
 
   def self.master_node
-    settings['nodes']['master_node']
+    @@settings['nodes']['master_node']
   end
 
   def self.slave_nodes
-    settings['nodes']['slave_nodes']
+    @@settings['nodes']['slave_nodes']
   end
 
-  def self.init
-    # rc_root has priority order: --rc-root > /var/starman > ~/.starman
-    @@rc_root = CommandParser.args[:rc_root] || (File.directory?('/var/starman') ? '/var/starman' : "#{ENV['HOME']}/.starman")
+  def self.init options = {}
     if File.file? conf_file
       @@settings = YAML.load(open(conf_file).read)
-      CLI.error "#{CLI.red 'install_root'} is not set in #{CLI.blue conf_file}!" if not install_root or install_root == '<change_me>'
-      settings['link_root'] = "#{Settings.install_root}/#{Settings.compiler_set}"
+      if (not install_root or install_root == '<change_me>') and not options[:ignore_errors]
+        CLI.error "#{CLI.red 'install_root'} is not set in #{CLI.blue conf_file}!"
+      end
+      if (not compiler_set or compiler_set == '<change_me>') and not options[:ignore_errors]
+        CLI.error "#{CLI.red 'compiler_set'} is not set in #{CLI.blue conf_file}!"
+      end
       set_compile_env
       if CommandParser.args[:verbose]
         CLI.notice "Use #{CLI.blue compiler_set} compilers."
@@ -99,26 +99,32 @@ class Settings
           CLI.notice "#{env} = #{CLI.blue ENV[env]}" if ENV[env]
         end
       end
-    else
-      begin
-        CLI.notice "Create runtime configuration directory #{CLI.blue rc_root}."
-        FileUtils.mkdir_p rc_root
-        write_file conf_file, <<-EOS
----
-install_root: <change_me>
-defaults:
-  compiler_set: <change_me>
-compiler_sets:
-  <change_me>:
-    c: <change_me>
-    cxx: <change_me>
-    fortran: <change_me>
-EOS
-        CLI.notice "Please edit #{CLI.blue conf_file} to suit your environment and come back."
-        exit
-      rescue Errno::EACCES => e
-        CLI.error "Failed to create runtime configuration directory at #{CLI.red rc_root}!\n#{e}"
+    end
+  end
+
+  def self.write options = nil
+    if options
+      if File.file? conf_file and not options[:force]
+        CLI.error "#{CLI.red conf_file} exists! Overwrite it by using --force option!"
       end
+      @@settings['install_root'] = options[:install_root]
+      @@settings['cache_root'] = options[:cache_root]
+      if system_command? 'gcc' and system_command? 'g++'
+        @@settings['defaults'] = { 'compiler_set' => 'gcc' }
+        @@settings['compiler_sets'] = { 'gcc' => {} }
+        @@settings['compiler_sets']['gcc']['c'] = `which gcc`.chomp
+        @@settings['compiler_sets']['gcc']['cxx'] = `which g++`.chomp
+        @@settings['compiler_sets']['gcc']['fortran'] = `which gfortran`.chomp if system_command? 'gfortran'
+      end
+    end
+    begin
+      write_file conf_file, @@settings.to_yaml
+    rescue Errno::EACCES => e
+      CLI.error "Failed to create runtime configuration directory at #{CLI.red Runtime.rc_root}!\n#{e}"
+    end
+    if not File.file? conf_file
+      CLI.notice "Create runtime configuration directory #{CLI.blue Runtime.rc_root}."
+      CLI.notice "Please edit #{CLI.blue conf_file} to suit your environment and come back."
     end
   end
 end
