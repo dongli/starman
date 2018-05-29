@@ -18,7 +18,7 @@ class Runtime
   end
 
   def self.write options
-    @@runtime[:rc_root] = options[:rc_root]
+    @@runtime['rc_root'] = options[:rc_root]
     write_file runtime_file, <<-EOS
 ---
 rc_root: #{@@runtime[:rc_root]}
