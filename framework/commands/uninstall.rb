@@ -7,6 +7,9 @@ class UninstallCommand < CommandParser
 
     >>> starman uninstall <package_name> ... [options]
 EOS
+    @parser.on '-cNAME', '--compiler-set NAME', 'Set the active compiler set by its name set in conf file.' do |compiler_set|
+      @@args[:compiler_set] = compiler_set
+    end
     @parser.on '--with-deps', 'Also uninstall dependency packages.' do
       @@args[:with_deps] = true
     end

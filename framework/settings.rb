@@ -48,27 +48,27 @@ class Settings
   end
 
   def self.c_compiler
-    compilers['c']
+    compilers['c'] || compilers[:c]
   end
 
   def self.cxx_compiler
-    compilers['cxx']
+    compilers['cxx'] || compilers[:cxx]
   end
 
   def self.fortran_compiler
-    compilers['fortran']
+    compilers['fortran'] || compilers[:fortran]
   end
 
   def self.mpi_c_compiler
-    compilers['mpi_c']
+    compilers['mpi_c'] || compilers[:mpi_c]
   end
 
   def self.mpi_cxx_compiler
-    compilers['mpi_cxx']
+    compilers['mpi_cxx'] || compilers[:mpi_cxx]
   end
 
   def self.mpi_fortran_compiler
-    compilers['mpi_fortran']
+    compilers['mpi_fortran'] || compilers[:mpi_fortran]
   end
 
   def self.nodes
