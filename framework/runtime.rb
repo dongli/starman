@@ -21,7 +21,7 @@ class Runtime
     @@runtime['rc_root'] = options[:rc_root]
     write_file runtime_file, <<-EOS
 ---
-rc_root: #{@@runtime[:rc_root]}
+rc_root: #{@@runtime['rc_root']}
 EOS
   end
 end
