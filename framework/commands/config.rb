@@ -12,6 +12,7 @@ EOS
   end
 
   def run
-    system "vi -c 'set filetype=yaml' #{Settings.conf_file}"
+    cmd = system_command?('vim') ? 'vim' : 'vi'
+    system "#{cmd} -c 'set filetype=yaml' #{Settings.conf_file}"
   end
 end

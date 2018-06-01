@@ -12,6 +12,7 @@ EOS
   end
 
   def run
-    system "vi -c 'set filetype=ruby' #{ENV['STARMAN_ROOT']}/packages/#{ARGV.last}.rb"
+    cmd = system_command?('vim') ? 'vim' : 'vi'
+    system "#{cmd} -c 'set filetype=ruby' #{ENV['STARMAN_ROOT']}/packages/#{ARGV.last}.rb"
   end
 end
