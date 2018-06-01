@@ -8,12 +8,11 @@ class OdbApi < Package
 
   def install
     args = std_cmake_args
-    args << '-DENABLE_NETCDF'
-    args << '-DENABLE_FORTRAN'
-    args << "-DCMAKE_Fortran_FLAGS='-I#{link_inc}'"
-    args << "-DLINK_FLAGS='-L#{link_lib}'"
+    args << '-DENABLE_NETCDF=On'
+    args << '-DENABLE_FORTRAN=On'
+    args << "-DNETCDF_PATH='#{link_inc}'"
     mkdir 'build' do
-      run 'cmake', '..'
+      run 'cmake', '..', *args
       run 'make', 'install'
     end
   end
