@@ -15,7 +15,7 @@ class CLI
   end
 
   def self.width
-    `tput cols`.strip.to_i
+    `tput cols`.strip.to_i rescue 80
   end
 
   def self.truncate str

@@ -30,26 +30,40 @@ Put STARMAN in any location, and add the following `source` statement in your `.
 source <STARMAN_directory>/setup/bashrc
 ```
 
+Then run setup command to kickoff:
+
+```
+starman setup --install-root <where_you_want_to_put_installed_software> \
+--rc-root <where_store_config_and_db_files> \
+--cache-root <where_store_packages_and_temporary_files>
+```
+
+The default `cache_root` is `/tmp/starman`. You can put predownloaded packages
+there to avoid download.
+
+The default `rc_root` is `$USER/.starman`.
+
 Usage
 =====
 
-When first use, STARMAN will create the following directories:
+When first use, you need to edit the configuration by running:
 
-- `/tmp/starman`: Store package source codes and temporary files.
-- `$USER/.starman` or `/var/starman` if user is root: Store runtime files (e.g. `conf.yml`, `history.db`).
+```
+starman config
+```
 
-You need to edit `conf.yml` if you are behind the wheel. An example is
-
+An example is:
 ```
 ---
 install_root: /nfs/software
+cache_root: /tmp/starman
 defaults:
   compiler_set: ifort_2013.2.146
-  compiler_sets:
-    ifort_2013.2.146:
-        c: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/icc
-        cxx: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/icpc
-        fortran: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/ifort
+compiler_sets:
+  ifort_2013.2.146:
+    c: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/icc
+    cxx: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/icpc
+    fortran: /nfs/software/intel/composer_xe_2013.2.146/bin/intel64/ifort
 ```
 
 You are advised to give each compiler set a good name, and NEVER change them
