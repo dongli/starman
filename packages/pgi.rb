@@ -34,7 +34,7 @@ class Pgi < Package
     # Update conf file to add this new compiler set.
     Settings.settings['compiler_sets']["pgi_#{version}"] = {
       c: link_bin + '/pgcc',
-      cxx: link_bin + '/pg++',
+      cxx: link_bin + '/pgc++',
       fortran: link_bin + '/pgfortran'
     }
     Settings.write
