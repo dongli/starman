@@ -39,6 +39,6 @@ class Pgi < Package
     }
     Settings.write
     # Run makelocalrc.
-    run "#{bin}/makelocalrc", prefix, '-x'
+    run "#{prefix}/linux86-64/#{version}/bin/makelocalrc", prefix, '-x'
   end
 end
