@@ -38,5 +38,7 @@ class Pgi < Package
       fortran: link_bin + '/pgfortran'
     }
     Settings.write
+    # Run makelocalrc.
+    run "#{bin}/makelocalrc", prefix, '-x'
   end
 end
