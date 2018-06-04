@@ -1,8 +1,8 @@
 class Pgi < Package
   if OS.linux?
-    url 'https://download.pgroup.com/secure/pgilinux-2018-184-x86-64.tar.gz?VdJBUwzGhcDhR_F3XFcB0WZvCDTW0JFYbFrmkqEXgBvGhK0fXDSriGDROlUg5P0ieLDl_ajD59uZ2J5-KxvZeVuHCWgrdg_UAv0DrSsoy6FBLKaX_hMvFv82LbVLu-PJfzHsrmM'
+    url 'http://static.longrunweather.com/packages/pgilinux-2018-184-x86-64.tar.gz'
+    #url 'https://download.pgroup.com/secure/pgilinux-2018-184-x86-64.tar.gz?VdJBUwzGhcDhR_F3XFcB0WZvCDTW0JFYbFrmkqEXgBvGhK0fXDSriGDROlUg5P0ieLDl_ajD59uZ2J5-KxvZeVuHCWgrdg_UAv0DrSsoy6FBLKaX_hMvFv82LbVLu-PJfzHsrmM'
     sha256 '81e0dcf6000b026093ece180d42d77854c23269fb8409cedcf51c674ca580a0f'
-    file_name 'pgilinux-2018-184-x86-64.tar.gz'
   end
   version '18.4'
 
