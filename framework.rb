@@ -34,6 +34,7 @@ require 'os/os_dsl'
 require 'os/os'
 require 'os/mac'
 require 'os/centos'
+require 'os/redhat'
 require 'os/ubuntu'
 
 require 'compiler/compiler_spec'
