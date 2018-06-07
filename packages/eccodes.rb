@@ -11,6 +11,7 @@ class Eccodes < Package
     args << '-DENABLE_JPG=On'
     args << '-DENABLE_NETCDF=On'
     args << '-DENABLE_FORTRAN=On'
+    args << "-DJASPER_PATH='#{link_inc}'"
     args << "-DNETCDF_PATH='#{link_inc}'"
     mkdir 'build' do
       run 'cmake', '..', *args

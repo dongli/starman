@@ -9,9 +9,10 @@ class Jasper < Package
   option 'disable-opengl', 'Disable OpenGL dependencies.'
 
   def install
+    args = std_cmake_args
+    args << '-DJAS_ENABLE_OPENGL=Off' if disable_opengl?
+    args << '-DJAS_ENABLE_DOC=Off'
     mkdir 'build' do
-      args = std_cmake_args
-      args << '-DJAS_ENABLE_OPENGL=false' if disable_opengl?
       run 'cmake', '..', *args
       run 'make'
       # FIXME: Some tests need openjpeg.
