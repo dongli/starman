@@ -19,6 +19,8 @@ class OS
       case `cat /etc/*release`
       when /CentOS/
         @@os = CentOS.new
+      when /Red Hat Enterprise Linux Server/
+        @@os = RedHatOS.new
       when /Ubuntu/
         @@os = Ubuntu.new
       else
@@ -42,7 +44,7 @@ class OS
   end
 
   def self.linux?
-    [:centos, :ubuntu].include? @@os.type
+    [:centos, :redhat, :ubuntu].include? @@os.type
   end
 
   def self.ld_library_path

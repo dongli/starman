@@ -82,6 +82,10 @@ class Package
     self.class.name.split('::').last.gsub(/(.)([A-Z])/,'\1-\2').downcase.to_sym
   end
 
+  def file_path
+    Settings.cache_root + '/' + file_name
+  end
+
   def install_resource name, dir, options = {}
     FileUtils.mkdir_p dir if not Dir.exist? dir
     if options[:plain_file]

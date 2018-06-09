@@ -13,6 +13,9 @@ class Bufrlib < Package
       '*.F' => '../*.F',
       'bufrlib.PRM' => '../bufrlib.PRM'
     }
+    if CompilerSet.fortran.intel?
+      inreplace 'preproc.sh', 'cpp', 'fpp'
+    end
     mkdir 'build' do
       ln '../*.f', '.'
       ln '../*.c', '.'

@@ -21,7 +21,8 @@ commands = {
   config: ConfigCommand,
   edit: EditCommand,
   link: LinkCommand,
-  unlink: UnlinkCommand
+  unlink: UnlinkCommand,
+  pack: PackCommand
 }
 
 OS.init
