@@ -45,30 +45,36 @@ class Package
     self.new.link_root
   end
 
-  [:bin, :inc, :lib, :lib64].each do |dir|
+  [:bin, :inc, :lib, :lib64, :man].each do |dir|
     define_method(dir) do
       dir = dir == :inc ? :include : dir
-      path = "#{prefix}/#{dir}"
+      dir = dir == :man ? 'share/man' : dir
+      "#{prefix}/#{dir}"
     end
     define_method(:"link_#{dir}") do
       dir = dir == :inc ? :include : dir
-      path = "#{Settings.link_root self}/#{dir}"
+      dir = dir == :man ? 'share/man' : dir
+      "#{Settings.link_root self}/#{dir}"
     end
     define_method(:"common_#{dir}") do
       dir = dir == :inc ? :include : dir
-      path = "#{Settings.common_root}/#{dir}"
+      dir = dir == :man ? 'share/man' : dir
+      "#{Settings.common_root}/#{dir}"
     end
     self.class.send :define_method, dir do
       dir = dir == :inc ? :include : dir
-      path = "#{prefix}/#{dir}"
+      dir = dir == :man ? 'share/man' : dir
+      "#{prefix}/#{dir}"
     end
     self.class.send :define_method, :"link_#{dir}" do
       dir = dir == :inc ? :include : dir
-      path = "#{Settings.link_root}/#{dir}"
+      dir = dir == :man ? 'share/man' : dir
+      "#{Settings.link_root}/#{dir}"
     end
     self.class.send :define_method, :"common_#{dir}" do
       dir = dir == :inc ? :include : dir
-      path = "#{Settings.common_root}/#{dir}"
+      dir = dir == :man ? 'share/man' : dir
+      "#{Settings.common_root}/#{dir}"
     end
   end
 

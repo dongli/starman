@@ -73,7 +73,7 @@ EOS
           end
         end
         FileUtils.rm_rf dir
-        PackageLinker.link package
+        PackageLinker.link package unless package.has_label? :alone
         History.save_install package
         CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} is installed at #{CLI.blue package.prefix}."
       end

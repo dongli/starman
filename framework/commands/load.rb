@@ -36,9 +36,17 @@ EOS
           CLI.warning "Package #{CLI.red package.name}@#{CLI.blue package.name} has not been installed."
         else
           CLI.notice "Load package #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]
-          append_path package.link_bin if Dir.exist? package.link_bin
-          append_ld_library_path package.link_lib if Dir.exist? package.link_lib
-          append_ld_library_path package.link_lib64 if Dir.exist? package.link_lib64
+          if package.has_label? :alone
+            append_path package.bin if Dir.exist? package.bin
+            append_ld_library_path package.lib if Dir.exist? package.lib
+            append_ld_library_path package.lib64 if Dir.exist? package.lib64
+            append_manpath package.man if Dir.exist? package.man
+          else
+            append_path package.link_bin if Dir.exist? package.link_bin
+            append_ld_library_path package.link_lib if Dir.exist? package.link_lib
+            append_ld_library_path package.link_lib64 if Dir.exist? package.link_lib64
+            append_manpath package.link_man if Dir.exist? package.link_man
+          end
           package.export_env
         end
       end

@@ -7,6 +7,7 @@ class Pgi < Package
   version '18.4'
 
   label :compiler
+  label :alone
 
   option 'with-nvidia', 'Install NVIDIA components, such as CUDA.'
   option 'with-amd', 'Install AMD components.'
@@ -14,7 +15,9 @@ class Pgi < Package
   option 'with-mpi', 'Install precompiled OpenMPI (not recommended).'
   option 'with-mpi-gpu', 'Install NVIDIA GPU support in OpenMPI.'
 
-  link "#{prefix}/linux86-64/#{version}/bin/*", 'bin'
+  def root
+    "#{prefix}/linux86-64/#{version}"
+  end
 
   def install
     ENV['PGI_SILENT'] = 'true'
@@ -33,12 +36,17 @@ class Pgi < Package
   def post_install
     # Update conf file to add this new compiler set.
     Settings.settings['compiler_sets']["pgi_#{version}"] = {
-      c: link_bin + '/pgcc',
-      cxx: link_bin + '/pgc++',
-      fortran: link_bin + '/pgfortran'
+      c: "#{root}/bin/pgcc",
+      cxx: "#{root}/bin/pgc++",
+      fortran: "#{root}/bin/pgfortran"
     }
     Settings.write
     # Run makelocalrc.
-    run "#{prefix}/linux86-64/#{version}/bin/makelocalrc", "#{prefix}/linux86-64/#{version}", '-x'
+    run "#{root}/bin/makelocalrc", root, '-x'
+  end
+
+  def export_env
+    append_path "#{root}/bin"
+    append_manpath "#{root}/man"
   end
 end
