@@ -28,7 +28,21 @@ class History
   end
 
   def self.installed? package
-    res = `echo 'select * from install where name = \"#{package.name}\" and prefix = \"#{package.prefix}\";' | #{db_cmd} #{db_path}`.split('|')
-    return true if not res.empty? and package.name == res[1].to_sym and package.version == res[2] and package.prefix == res[3]
+    res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split('|')
+    # If old version package has been installed, we should tell user that
+    # he/she must use force option to override with newer version.
+    if not res.empty? and package.name == res[1].to_sym
+      if package.version != res[2] or package.prefix != res[3]
+        if CommandParser.args[:force]
+          return false
+        else
+          CLI.warning "Package #{CLI.blue package.name} #{CLI.red res[2]} has been installed! Use --force/-f to override."
+          package.version = res[2]
+        end
+      end
+      true
+    else
+      false
+    end
   end
 end

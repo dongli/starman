@@ -35,6 +35,10 @@ class PackageSpec
   end
   attr_writer :mirror, :sha256, :version, :group
 
+  def version= val
+    @version = val
+  end
+
   def file_name val = nil
     return @file_name unless val
     @file_name = val

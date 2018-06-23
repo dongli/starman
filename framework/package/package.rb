@@ -3,7 +3,8 @@ class Package
   include PackageDSL
 
   extend Forwardable
-  def_delegators :@spec, :url, :url=, :mirror, :sha256, :file_name, :version, :group, :labels, :dependencies, :options
+  def_delegators :@spec, :url, :url=, :mirror, :sha256, :file_name, :version, :version=
+  def_delegators :@spec, :group, :labels, :dependencies, :options
   def_delegators :@spec, :labels, :has_label?, :conflicts, :resources, :resource, :links
 
   def initialize
