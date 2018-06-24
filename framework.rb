@@ -29,6 +29,7 @@ require 'utils/system_command?'
 require 'utils/curl'
 require 'utils/mv'
 require 'utils/ssh'
+require 'utils/patch'
 
 require 'os/os_spec'
 require 'os/os_dsl'

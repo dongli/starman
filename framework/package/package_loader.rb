@@ -47,22 +47,24 @@ module PackageLoader
       if possible_packages.size > 1
         CLI.error "You should install one of #{possible_packages.map(&:name).join(', ')} first!"
       else
-        CLI.error "Unknown package #{CLI.red name}#{options[:version] ? '@' + options[:version] : ''}!"
+        scan name
+        @@loaded_packages[name].version = options[:version] if options[:version]
       end
     end
   end
 
   def self.package_file_path name, version
-    path = "#{ENV['STARMAN_ROOT']}/packages/#{name}#{version ? '-' + version : ''}.rb"
+    path = "#{ENV['STARMAN_ROOT']}/packages/#{name.to_s.gsub('_', '-')}#{version ? '@' + version : ''}.rb"
     if not File.file? path
-      path = "#{ENV['STARMAN_ROOT']}/packages/#{name}.rb"
-      path = nil unless File.file? path and open(path).read.match(version)
+      path = "#{ENV['STARMAN_ROOT']}/packages/#{name.to_s.gsub('_', '-')}.rb"
+      path = nil unless File.file? path and (version and open(path).read.match(version))
     end
     return path
   end
 
   def self.from_cmd_line? package
-    @@direct_packages.include? package.name or @@direct_packages.any? do |package_name|
+    @@direct_packages.include? package.name or @@direct_packages.include? :"#{package.name}@#{package.version}" or
+    @@direct_packages.any? do |package_name|
       name, version = package_name.to_s.split '@'
       name = name.to_sym
       loaded_package = @@loaded_packages[name]

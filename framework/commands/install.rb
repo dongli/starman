@@ -67,6 +67,16 @@ EOS
             working_dir = subdirs.first
           end
           work_in working_dir do
+            # Apply possible patches.
+            package.patches.each_with_index do |patch, index|
+              case patch
+              when String
+                CLI.notice "Apply patch #{CLI.green index.to_s} to #{CLI.blue package.name}."
+                patch_data patch
+              else
+                CLI.error 'Unprocessed patch!'
+              end
+            end
             set_compile_flags package
             package.install
             package.post_install

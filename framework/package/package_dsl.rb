@@ -57,6 +57,23 @@ module PackageDSL
     spec.resource name, res
   end
 
+  def patch data = nil, &block
+    if data == :DATA
+      data = ''
+      start = false
+      File.open("#{ENV['STARMAN_ROOT']}/packages/#{Package.package_name self}.rb", 'r').each do |line|
+        if line =~ /__END__/
+          start = true
+          next
+        end
+        data << line if start
+      end
+      spec.patch data
+    else
+      spec.patch &block
+    end
+  end
+
   def skip_test?
     CommandParser.args[:skip_test]
   end

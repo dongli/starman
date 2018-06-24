@@ -25,7 +25,7 @@ EOS
       elsif not History.installed? package
         CLI.warning "Package #{CLI.red package.name} has not been installed."
       else
-        CLI.notice "Uninstall package #{CLI.green package.name} ..."
+        CLI.notice "Uninstall package #{CLI.green package.name} #{CLI.blue package.version} ..."
         PackageLinker.unlink package
         FileUtils.rm_rf package.prefix
         # Remove empty directory.
