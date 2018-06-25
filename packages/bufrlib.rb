@@ -6,6 +6,8 @@ class Bufrlib < Package
   def install
     if CompilerSet.fortran.gcc?
       flags = '-fno-underscoring'
+    elsif CompilerSet.fortran.intel?
+      flags = '-assume nounderscore'
     else
       flags = ''
     end
