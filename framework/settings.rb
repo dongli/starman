@@ -17,7 +17,9 @@ class Settings
 
   def self.link_root package = nil
     if package
-      if package.has_label? :alone
+      if package.has_label? :not_link
+        package.prefix
+      elsif package.has_label? :alone
         File.dirname(package.prefix) + '/link'
       elsif package.has_label? :common
         common_root

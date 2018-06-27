@@ -1,6 +1,6 @@
 class Gcc < Package
-  url 'http://mirrors.ustc.edu.cn/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.gz'
-  sha256 'fa06e455ca198ddc11ea4ddf2a394cf7cfb66aa7e0ab98cc1184189f1d405870'
+  url 'http://mirrors.ustc.edu.cn/gnu/gcc/gcc-8.1.0/gcc-8.1.0.tar.xz'
+  sha256 '1d1866f992626e61349a1ccd0b8d5253816222cdc13390dcfaa74b093aa2b153'
 
   label :compiler
 

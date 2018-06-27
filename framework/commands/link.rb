@@ -13,7 +13,7 @@ EOS
 
   def run
     PackageLoader.loaded_packages.each do |name, package|
-      next if not PackageLoader.from_cmd_line? package or package.has_label? :alone
+      next if not PackageLoader.from_cmd_line? package or package.has_label? :not_link
       CLI.notice "Link package #{CLI.green package.name} ..."
       PackageLinker.link package
     end

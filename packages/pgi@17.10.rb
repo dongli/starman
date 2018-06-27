@@ -7,6 +7,7 @@ class Pgi < Package
   version '17.10'
 
   label :compiler
+  label :not_link
 
   option 'with-nvidia', 'Install NVIDIA components, such as CUDA.'
   option 'with-amd', 'Install AMD components.'

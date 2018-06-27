@@ -32,7 +32,7 @@ EOS
         next unless PackageLoader.from_cmd_line? package
         if package.has_label? :group
           CLI.notice "Load package group #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]
-        elsif not History.installed? package
+        elsif History.installed?(package) == false
           CLI.warning "Package #{CLI.red package.name}@#{CLI.blue package.name} has not been installed."
         else
           CLI.notice "Load package #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]

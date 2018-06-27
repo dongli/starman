@@ -34,13 +34,14 @@ class History
     if not res.empty? and package.name == res[1].to_sym
       if package.version != res[2] or package.prefix != res[3]
         if CommandParser.args[:force]
-          return false
+          false
         else
-          CLI.warning "Package #{CLI.blue package.name} #{CLI.red res[2]} has been installed! Use --force/-f to override."
           package.version = res[2]
+          :old_version_installed
         end
+      else
+        true
       end
-      true
     else
       false
     end

@@ -44,10 +44,13 @@ EOS
           next if v.compare(package.labels[:skip_if_exist][:condition])
         end
       end
+      res = History.installed? package
       if package.has_label? :group
         CLI.notice "Package group #{CLI.green package.name}@#{CLI.blue package.version} is installed."
-      elsif History.installed? package
+      elsif res == true
         CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} has been installed."
+      elsif res == :old_version_installed and PackageLoader.from_cmd_line? package
+        CLI.warning "Package #{CLI.blue package.name} #{CLI.red package.version} has been installed! Use --force/-f to override."
       else
         package.resources.each_value do |resource|
           PackageDownloader.download resource
