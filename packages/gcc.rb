@@ -57,7 +57,13 @@ class Gcc < Package
     end
   end
 
-  def export_env
-    append_ld_library_path "#{lib}/gcc/lib64"
+  def post_install
+    # Update conf file to add this new compiler set.
+    Settings.settings['compiler_sets']["gcc_#{version}"] = {
+      c: "#{bin}/gcc",
+      cxx: "#{bin}/g++",
+      fortran: "#{bin}/gfortran"
+    }
+    Settings.write
   end
 end
