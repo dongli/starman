@@ -41,7 +41,10 @@ EOS
           next
         elsif package.labels[:skip_if_exist].has_key? :version
           v = Version.new(package.labels[:skip_if_exist][:version].call)
-          next if v.compare(package.labels[:skip_if_exist][:condition])
+          if v.compare(package.labels[:skip_if_exist][:condition])
+            CLI.notice "Use existing #{CLI.green name} #{CLI.blue v}."
+            next
+          end
         end
       end
       res = History.installed? package
