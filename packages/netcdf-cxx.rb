@@ -7,6 +7,7 @@ class NetcdfCxx < Package
   depends_on 'netcdf-c'
 
   def install
+    return false if CompilerSet.cxx.pgi? and OS.mac?
     ENV['CPPFLAGS'] += " -I#{link_inc}"
     ENV['LDFLAGS'] += " -L#{link_lib}"
     args = %W[

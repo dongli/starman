@@ -14,6 +14,10 @@ class NetcdfC < Package
     inreplace 'nc_test4/hdf5plugins/H5Zmisc.c', '#define DBLVAL 12345678.12345678d', '#define DBLVAL 12345678.12345678'
     inreplace 'nc_test4/test_filter_misc.c', '#define DBLVAL 12345678.12345678d', '#define DBLVAL 12345678.12345678'
     inreplace 'nc_test4/tst_filterparser.c', '#define DBLVAL 12345678.12345678d', '#define DBLVAL 12345678.12345678'
+    if CompilerSet.c.pgi?
+      ENV['CPPFLAGS'] += ' -DNDEBUG'
+      ENV['LDFLAGS'] = '-lsz'
+    end
     ENV['CPPFLAGS'] += " -I#{link_inc}"
     ENV['LDFLAGS'] += " -L#{link_lib}"
   	args = %W[

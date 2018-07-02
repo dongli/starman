@@ -16,4 +16,8 @@ class Compiler
   def intel?
     @spec.vendor == :intel
   end
+
+  def pgi?
+    @spec.vendor == :pgi
+  end
 end

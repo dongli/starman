@@ -63,6 +63,7 @@ EOS
         dir = "#{Settings.cache_root}/#{package.name}_#{Settings.compiler_set}"
         FileUtils.rm_rf dir if File.directory? dir
         FileUtils.mkdir_p dir
+        installed = false
         work_in dir do
           decompress "#{Settings.cache_root}/#{package.file_name}"
           subdirs = Dir.glob('*')
@@ -84,14 +85,16 @@ EOS
               end
             end
             set_compile_flags package
-            package.install
+            installed = package.install
             package.post_install
           end
         end
         FileUtils.rm_rf dir
-        PackageLinker.link package unless package.has_label? :alone
-        History.save_install package
-        CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} is installed at #{CLI.blue package.prefix}."
+        if installed
+          PackageLinker.link package unless package.has_label? :alone
+          History.save_install package
+          CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} is installed at #{CLI.blue package.prefix}."
+        end
       end
       # Change environment to affect following packages.
       append_path package.bin if package.bin

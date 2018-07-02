@@ -8,7 +8,7 @@ class CompilerSet
       },
       pgi: {
         c: /\bpgcc$/,
-        cxx: /\bpg\+\+$/,
+        cxx: /\bpgc\+\+$/,
         fortran: /\bpgfortran$/
       },
       intel: {

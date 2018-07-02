@@ -22,6 +22,7 @@ class Hdf5 < Package
     args << with_cxx? ? '--enable-cxx' : '--disable-cxx'
     args << '--enable-fortran' if with_fortran?
     args << '--enable-threadsafe --enable-unsupported' if enable_threadsafe?
+    ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
     run './configure', *args
     run 'make'
     run 'make', 'check' unless skip_test?
