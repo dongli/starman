@@ -54,6 +54,7 @@ EOS
     if @@args[:print]
       print "export PATH=#{ENV['PATH']}\n"
       print "export #{OS.ld_library_path}=#{ENV[OS.ld_library_path]}\n"
+      print "export MANPATH=#{ENV['MANPATH']}\n"
       PackageLoader.loaded_packages.each do |name, package|
         next unless PackageLoader.from_cmd_line? package
         print "export #{name.to_s.gsub('-', '_').upcase}_ROOT=#{package.link_root}\n"
