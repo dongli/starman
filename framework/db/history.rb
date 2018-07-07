@@ -31,7 +31,7 @@ class History
     res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split("\n")
     res.each do |record|
       columns = record.split('|')
-      next unless columns[3] =~ /#{Settings.compiler_set}/
+      next unless package.has_label?(:common) or columns[3] =~ /#{Settings.compiler_set}/
       # If old version package has been installed, we should tell user that
       # he/she must use force option to override with newer version.
       if package.version != columns[2] or package.prefix != columns[3]
