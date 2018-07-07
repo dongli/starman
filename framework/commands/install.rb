@@ -35,7 +35,7 @@ EOS
 
   def run
     PackageLoader.loaded_packages.each do |name, package|
-      if package.has_label? :skip_if_exist
+      if package.has_label? :skip_if_exist and not CommandParser.args[:force]
         if package.labels[:skip_if_exist].has_key? :file and File.file? package.labels[:skip_if_exist][:file]
           CLI.notice "Use system #{CLI.green name}."
           next
