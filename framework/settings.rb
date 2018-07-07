@@ -88,6 +88,7 @@ class Settings
   def self.init options = {}
     if File.file? conf_file
       @@settings = YAML.load(open(conf_file).read)
+      return if options[:only_load]
       if (not install_root or install_root == '<change_me>') and not options[:ignore_errors]
         CLI.error "#{CLI.red 'install_root'} is not set in #{CLI.blue conf_file}!"
       end
@@ -112,11 +113,15 @@ class Settings
       @@settings['install_root'] = options[:install_root]
       @@settings['cache_root'] = options[:cache_root]
       if system_command? 'gcc' and system_command? 'g++'
-        @@settings['defaults'] = { 'compiler_set' => 'gcc' }
-        @@settings['compiler_sets'] = { 'gcc' => {} }
-        @@settings['compiler_sets']['gcc']['c'] = `which gcc`.chomp
-        @@settings['compiler_sets']['gcc']['cxx'] = `which g++`.chomp
-        @@settings['compiler_sets']['gcc']['fortran'] = `which gfortran`.chomp if system_command? 'gfortran'
+        version = `gcc -v 2>&1`.match(/^gcc\s+.+\s+(\d+\.\d+\.\d+)/)[1]
+        tag = "gcc_#{version}"
+        @@settings['defaults'] = { 'compiler_set' => tag }
+        @@settings['compiler_sets'] = { tag => {} }
+        @@settings['compiler_sets'][tag]['c'] = which('gcc')
+        @@settings['compiler_sets'][tag]['cxx'] = which('g++')
+        @@settings['compiler_sets'][tag]['fortran'] = which('gfortran') if system_command? 'gfortran'
+      else
+        CLI.warning "There are no GCC compilers. Install ones or use your preferred ones, and run again with #{CLI.red '-f'} option!"
       end
     end
     begin

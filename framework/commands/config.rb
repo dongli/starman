@@ -11,7 +11,7 @@ EOS
       @@args[:compiler_set] = compiler_set
     end
     @parser.parse!
-    Settings.init ignore_errors: true
+    Settings.init only_load: true
   end
 
   def run
