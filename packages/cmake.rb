@@ -1,6 +1,6 @@
 class Cmake < Package
-  url 'https://cmake.org/files/v3.10/cmake-3.10.2.tar.gz'
-  sha256 '80d0faad4ab56de07aa21a7fc692c88c4ce6156d42b0579c6962004a70a3218b'
+  url 'https://cmake.org/files/v3.11/cmake-3.11.4.tar.gz'
+  sha256 '8f864e9f78917de3e1483e256270daabc4a321741592c5b36af028e72bff87f5'
 
   label :common
   label :skip_if_exist, version: lambda { `cmake --version`.match(/(\d+\.\d+\.\d+(\.\d+)?)/)[1] rescue nil }, condition: '>= 3'
