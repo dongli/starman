@@ -22,6 +22,8 @@ class Package
     name = package_class.gsub(/(.)([A-Z])/,'\1-\2').downcase
     if spec.group
       PackageLoader.loaded_packages[spec.group].prefix
+    elsif spec.has_label? :skip_if_exist and spec.system_prefix
+      spec.system_prefix
     elsif spec.has_label? :common
       "#{Settings.install_root}/common/Packages/#{name}/#{spec.version}"
     elsif spec.has_label? :compiler
@@ -46,7 +48,7 @@ class Package
     self.new.link_root
   end
 
-  [:bin, :inc, :lib, :lib64, :man].each do |dir|
+  [:bin, :inc, :lib, :lib64, :share, :man].each do |dir|
     define_method(dir) do
       dir = dir == :inc ? :include : dir
       dir = dir == :man ? 'share/man' : dir
@@ -98,6 +100,23 @@ class Package
       work_in dir do
         decompress "#{Settings.cache_root}/#{resource(name).file_name}", options
       end
+    end
+  end
+
+  def skipped?
+    return false unless self.has_label? :skip_if_exist
+    if self.labels[:skip_if_exist].has_key? :file and File.file? self.labels[:skip_if_exist][:file]
+      return true
+    elsif self.labels[:skip_if_exist].has_key? :include_file
+      ['/usr/include', '/usr/local/include'].each do |dir|
+        if File.file? "#{dir}/#{self.labels[:skip_if_exist][:include_file]}"
+          @spec.system_prefix = File.dirname dir
+          return true
+        end
+      end
+    elsif self.labels[:skip_if_exist].has_key? :version
+      v = Version.new(self.labels[:skip_if_exist][:version].call)
+      return true if v.compare(self.labels[:skip_if_exist][:condition])
     end
   end
 

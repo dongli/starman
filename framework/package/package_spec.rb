@@ -99,4 +99,6 @@ class PackageSpec
   def link src, dst
     @links[src] = dst
   end
+
+  attr_accessor :system_prefix
 end

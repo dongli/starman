@@ -36,15 +36,9 @@ EOS
   def run
     PackageLoader.loaded_packages.each do |name, package|
       if package.has_label? :skip_if_exist and not CommandParser.args[:force]
-        if package.labels[:skip_if_exist].has_key? :file and File.file? package.labels[:skip_if_exist][:file]
+        if package.skipped?
           CLI.notice "Use system #{CLI.green name}."
           next
-        elsif package.labels[:skip_if_exist].has_key? :version
-          v = Version.new(package.labels[:skip_if_exist][:version].call)
-          if v.compare(package.labels[:skip_if_exist][:condition])
-            CLI.notice "Use existing #{CLI.green name} #{CLI.blue v}."
-            next
-          end
         end
       end
       res = History.installed? package
@@ -63,7 +57,6 @@ EOS
         dir = "#{Settings.cache_root}/#{package.name}_#{Settings.compiler_set}"
         FileUtils.rm_rf dir if File.directory? dir
         FileUtils.mkdir_p dir
-        installed = false
         work_in dir do
           decompress "#{Settings.cache_root}/#{package.file_name}"
           subdirs = Dir.glob('*')
@@ -85,16 +78,14 @@ EOS
               end
             end
             set_compile_flags package
-            installed = package.install
+            package.install
             package.post_install
           end
         end
         FileUtils.rm_rf dir
-        if installed
-          PackageLinker.link package unless package.has_label? :alone
-          History.save_install package
-          CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} is installed at #{CLI.blue package.prefix}."
-        end
+        PackageLinker.link package unless package.has_label? :alone
+        History.save_install package
+        CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} is installed at #{CLI.blue package.prefix}."
       end
       # Change environment to affect following packages.
       append_path package.bin if package.bin
