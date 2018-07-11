@@ -118,6 +118,7 @@ class Package
       v = Version.new(self.labels[:skip_if_exist][:version].call)
       return true if v.compare(self.labels[:skip_if_exist][:condition])
     end
+    return false
   end
 
   # Default actions.
