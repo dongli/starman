@@ -69,10 +69,13 @@ EOS
           work_in working_dir do
             # Apply possible patches.
             package.patches.each_with_index do |patch, index|
+              CLI.notice "Apply patch #{CLI.green index.to_s} to #{CLI.blue package.name}."
               case patch
               when String
-                CLI.notice "Apply patch #{CLI.green index.to_s} to #{CLI.blue package.name}."
                 patch_data patch
+              when PackageSpec
+p FileUtils.pwd
+                patch_file "#{Settings.cache_root}/#{patch.file_name}"
               else
                 CLI.error 'Unprocessed patch!'
               end

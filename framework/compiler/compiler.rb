@@ -2,7 +2,7 @@ class Compiler
   include CompilerDSL
 
   extend Forwardable
-  def_delegators :@spec, :vendor, :version
+  def_delegators :@spec, :vendor, :version, :command
 
   def initialize language
     @spec = self.class.class_variable_get "@@#{self.class}_spec"
