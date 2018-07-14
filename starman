@@ -4,13 +4,18 @@ ENV['STARMAN_ROOT'] = File.absolute_path(File.dirname __FILE__)
 
 require "#{ENV['STARMAN_ROOT']}/framework"
 
-command_name = ARGV.shift.to_sym
+begin
+  command_name = ARGV.shift.to_sym
+rescue
+  CLI.error 'No command is provided!'
+end
 
 aliases = {
   i: :install,
   rm: :uninstall,
   c: :config,
-  e: :edit
+  e: :edit,
+  u: :update
 }
 
 commands = {
@@ -22,7 +27,8 @@ commands = {
   edit: EditCommand,
   link: LinkCommand,
   unlink: UnlinkCommand,
-  pack: PackCommand
+  pack: PackCommand,
+  update: UpdateCommand
 }
 
 OS.init
