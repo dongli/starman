@@ -16,7 +16,7 @@ class Eccodes < Package
     mkdir 'build' do
       run 'cmake', '..', *args
       run 'make'
-      run 'ctest' unless skip_test?
+      run 'make', 'check' unless skip_test?
       run 'make', 'install'
     end
   end
