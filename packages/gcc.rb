@@ -26,6 +26,10 @@ class Gcc < Package
 
   option 'disable-lto', 'Disable Link Time Optimisation support.'
 
+  def export_env
+    append_ld_library_path "#{lib}/gcc/lib64"
+  end
+
   def install
     args = %W[
       --prefix=#{prefix}

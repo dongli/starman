@@ -14,9 +14,9 @@ class PackageDownloader
     end
     # Download patches if exist.
     package.patches.each_with_index do |patch, index|
-      next if downloaded? patch
       case patch
       when PackageSpec
+        next if downloaded? patch
         CLI.notice "Downloading #{patch.url} ..."
         curl patch.url, Settings.cache_root, rename: patch.file_name
       end
