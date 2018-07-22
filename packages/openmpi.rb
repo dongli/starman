@@ -4,7 +4,7 @@ class Openmpi < Package
 
   label :mpi
 
-  conflicts_with :mvapich2
+  conflicts_with :mpich, :mvapich2
 
   def install
     args = %W[

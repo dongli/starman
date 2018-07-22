@@ -4,7 +4,7 @@ class Mvapich2 < Package
 
   label :mpi
 
-  conflicts_with :openmpi
+  conflicts_with :openmpi, :mpich
 
   option 'enable-debug', 'Enable debug messages, may impact performance.'
   # TODO: Should we add slurm dependency?
