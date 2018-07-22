@@ -6,6 +6,12 @@ class Mpich < Package
 
   conflicts_with :openmpi, :mvapich2
 
+  def export_env
+    ENV['MPICC'] = "#{bin}/mpicc"
+    ENV['MPICXX'] = "#{bin}/mpic++"
+    ENV['MPIFC'] = "#{bin}/mpifort"
+  end
+
   def install
     args = %W[
       --prefix=#{prefix}

@@ -93,6 +93,7 @@ p FileUtils.pwd
       # Change environment to affect following packages.
       append_path package.bin if package.bin
       append_ld_library_path package.lib if Dir.exist? package.lib
+      package.export_env
     end
   end
 end

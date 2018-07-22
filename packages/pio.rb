@@ -6,6 +6,7 @@ class Pio < Package
   option 'with-pnetcdf', 'Use PnetCDF library.'
 
   depends_on :mpi
+  depends_on :cmake
   depends_on :netcdf
   depends_on :pnetcdf if with_pnetcdf?
 
@@ -22,7 +23,7 @@ class Pio < Package
     else
       args << "-DWITH_PNETCDF=OFF"
     end
-    args << "-DMPIEXEC_PREFLAGS='--oversubscribe'"
+    args << "-DMPIEXEC_PREFLAGS='--oversubscribe'" if MPI.openmpi?
     mkdir 'build' do
       run 'cmake', '..', *args
       run 'make'

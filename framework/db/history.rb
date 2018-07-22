@@ -29,6 +29,7 @@ class History
 
   def self.installed? package
     res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split("\n")
+    return nil if res.empty?
     res.each do |record|
       columns = record.split('|')
       next unless package.has_label?(:common) or columns[3] =~ /#{Settings.compiler_set}/
