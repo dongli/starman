@@ -4,7 +4,7 @@ class Readline < Package
 
   label :common
   label :alone
-  label :skip_if_exist, include_file: 'readline.h'
+  label :skip_if_exist, include_file: 'readline/readline.h'
 
   %w[
     001 9ac1b3ac2ec7b1bf0709af047f2d7d2a34ccde353684e57c6b47ebca77d7a376
