@@ -6,6 +6,8 @@ class Mpich < Package
 
   conflicts_with :openmpi, :mvapich2
 
+  option 'enable-fast', 'Get fastest performance at the expense of error reporting and other program development aids.'
+
   def export_env
     ENV['MPICC'] = "#{bin}/mpicc"
     ENV['MPICXX'] = "#{bin}/mpic++"
@@ -18,6 +20,7 @@ class Mpich < Package
       --disable-dependency-tracking
       --disable-silent-rules
     ]
+    args << '--enable-fast=all,O3' if enable_fast?
     run './configure', *args
     run 'make'
     run 'make', 'check' unless skip_test?

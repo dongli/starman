@@ -57,7 +57,7 @@ class Gcc < Package
       run '../configure', *args
       run 'make', 'bootstrap'
       #run 'ulimit -s 32768 && make -k check' unless skip_test?
-      run 'make', 'install'
+      run 'make', '-j4', 'install'
     end
   end
 
