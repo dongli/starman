@@ -35,11 +35,11 @@ EOS
   def run
     cmd = system_command?('vim') ? 'vim' : 'vi'
     direct_edit = false
-    if @@args[:compiler_set] and @@args[:cc] and @@args[:cxx] and @@args[:fc]
-      Settings.settings['compiler_sets'][@@args[:compiler_set]] = {}
-      Settings.settings['compiler_sets'][@@args[:compiler_set]]['c'] = @@args[:cc]
-      Settings.settings['compiler_sets'][@@args[:compiler_set]]['cxx'] = @@args[:cxx]
-      Settings.settings['compiler_sets'][@@args[:compiler_set]]['fortran'] = @@args[:fc]
+    if @@args[:compiler_set] and (@@args[:cc] or @@args[:cxx] or @@args[:fc] or @@args[:mpicc] or @@args[:mpicxx] or @@args[:mpifc])
+      Settings.settings['compiler_sets'][@@args[:compiler_set]] ||= {}
+      Settings.settings['compiler_sets'][@@args[:compiler_set]]['c'] = @@args[:cc] if @@args[:cc]
+      Settings.settings['compiler_sets'][@@args[:compiler_set]]['cxx'] = @@args[:cxx] if @@args[:cxx]
+      Settings.settings['compiler_sets'][@@args[:compiler_set]]['fortran'] = @@args[:fc] if @@args[:fc]
       Settings.settings['compiler_sets'][@@args[:compiler_set]]['mpi_c'] = @@args[:mpicc] if @@args[:mpicc]
       Settings.settings['compiler_sets'][@@args[:compiler_set]]['mpi_cxx'] = @@args[:mpicxx] if @@args[:mpicxx]
       Settings.settings['compiler_sets'][@@args[:compiler_set]]['mpi_fortran'] = @@args[:mpifc] if @@args[:mpifc]
