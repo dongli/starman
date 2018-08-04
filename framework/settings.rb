@@ -110,18 +110,20 @@ class Settings
       if File.file? conf_file and not options[:force]
         CLI.error "#{CLI.red conf_file} exists! Overwrite it by using --force option!"
       end
-      @@settings['install_root'] = options[:install_root]
-      @@settings['cache_root'] = options[:cache_root]
-      if system_command? 'gcc' and system_command? 'g++'
-        version = `gcc -v 2>&1`.match(/^gcc\s+.+\s+(\d+\.\d+\.\d+)/)[1]
-        tag = "gcc_#{version}"
-        @@settings['defaults'] = { 'compiler_set' => tag }
-        @@settings['compiler_sets'] = { tag => {} }
-        @@settings['compiler_sets'][tag]['c'] = which('gcc')
-        @@settings['compiler_sets'][tag]['cxx'] = which('g++')
-        @@settings['compiler_sets'][tag]['fortran'] = which('gfortran') if system_command? 'gfortran'
-      else
-        CLI.warning "There are no GCC compilers. Install ones or use your preferred ones, and run again with #{CLI.red '-f'} option!"
+      if not options[:just_write]
+        @@settings['install_root'] = options[:install_root] if options[:install_root]
+        @@settings['cache_root'] = options[:cache_root] if options[:cache_root]
+        if system_command? 'gcc' and system_command? 'g++'
+          version = `gcc -v 2>&1`.match(/^gcc\s+.+\s+(\d+\.\d+\.\d+)/)[1]
+          tag = "gcc_#{version}"
+          @@settings['defaults'] = { 'compiler_set' => tag }
+          @@settings['compiler_sets'] = { tag => {} }
+          @@settings['compiler_sets'][tag]['c'] = which('gcc')
+          @@settings['compiler_sets'][tag]['cxx'] = which('g++')
+          @@settings['compiler_sets'][tag]['fortran'] = which('gfortran') if system_command? 'gfortran'
+        else
+          CLI.warning "There are no GCC compilers. Install ones or use your preferred ones, and run again with #{CLI.red '-f'} option!"
+        end
       end
     end
     begin
