@@ -6,6 +6,10 @@ class CompilerSet
         cxx: /\bg\+\+(-\d+)?$/,
         fortran: /\bgfortran(-\d+)?$/
       },
+      clang: {
+        c: /\bclang$/,
+        cxx: /\bclang\+\+$/
+      },
       pgi: {
         c: /\bpgcc$/,
         cxx: /\bpgc\+\+$/,
@@ -21,6 +25,8 @@ class CompilerSet
       case Settings.compilers[language.to_s]
       when command_patterns[:gcc][language]
         self.class_variable_set :"@@#{language}_compiler", Gcc.new(language)
+      when command_patterns[:clang][language]
+        self.class_variable_set :"@@#{language}_compiler", Clang.new(language)
       when command_patterns[:pgi][language]
         self.class_variable_set :"@@#{language}_compiler", Pgi.new(language)
       when command_patterns[:intel][language]

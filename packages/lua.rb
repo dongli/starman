@@ -6,6 +6,7 @@ class Lua < Package
   label :skip_if_exist, include_file: 'lua.h'
 
   depends_on :readline
+  depends_on :ncurses
 
   def install
     inreplace 'src/Makefile', {

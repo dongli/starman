@@ -114,6 +114,13 @@ class Package
           return true
         end
       end
+    elsif self.labels[:skip_if_exist].has_key? :library_file
+      ['/usr/lib', '/usr/lib64', '/usr/local/lib', '/usr/local/lib64'].each do |dir|
+        if File.file? "#{dir}/#{self.labels[:skip_if_exist][:library_file]}"
+          @spec.system_prefix = File.dirname dir
+          return true
+        end
+      end
     elsif self.labels[:skip_if_exist].has_key? :version
       v = Version.new(self.labels[:skip_if_exist][:version].call)
       return true if v.compare(self.labels[:skip_if_exist][:condition])

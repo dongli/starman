@@ -50,4 +50,8 @@ class OS
   def self.ld_library_path
     mac? ? 'DYLD_LIBRARY_PATH' : 'LD_LIBRARY_PATH'
   end
+
+  def self.soname
+    mac? ? 'dylib' : 'so'
+  end
 end
