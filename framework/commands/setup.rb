@@ -17,6 +17,21 @@ EOS
     @parser.on '--cache-root DIR', 'Set cache root directory.' do |cache_root|
       @@args[:cache_root] = cache_root
     end
+    @parser.on '-cVALUE', '--compiler-set VALUE', 'Set compiler set tag or name.' do |compiler_set|
+      @@args[:compiler_set] = compiler_set
+    end
+    @@args[:cc] = 'gcc'
+    @parser.on '--cc VALUE', 'Set C compiler command.' do |cc|
+      @@args[:cc] = cc
+    end
+    @@args[:cxx] = 'g++'
+    @parser.on '--cxx VALUE', 'Set C++ compiler command.' do |cxx|
+      @@args[:cxx] = cxx
+    end
+    @@args[:fc] = 'gfortran'
+    @parser.on '--fc VALUE', 'Set Fortran compiler command.' do |fc|
+      @@args[:fc] = fc
+    end
     @parser.on '-f', '--force', 'Setup anyway' do
       @@args[:force] = true
     end

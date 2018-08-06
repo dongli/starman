@@ -113,14 +113,27 @@ class Settings
       if not options[:just_write]
         @@settings['install_root'] = options[:install_root] if options[:install_root]
         @@settings['cache_root'] = options[:cache_root] if options[:cache_root]
-        if system_command? 'gcc' and system_command? 'g++'
-          version = `gcc -v 2>&1`.match(/^gcc\s+.+\s+(\d+\.\d+\.\d+)/)[1]
-          tag = "gcc_#{version}"
+        if system_command? CommandParser.args[:cc] and system_command? CommandParser.args[:cxx]
+          if CommandParser.args[:compiler_set]
+            tag = CommandParser.args[:compiler_set]
+          else
+            if CommandParser.args[:cc] =~ /gcc/
+              res = `#{CommandParser.args[:cc]} -v 2>&1`.match(/^gcc\s+.+\s+(\d+\.\d+\.\d+)/)
+            elsif CommandParser.args[:cc] =~ /clang/
+              res = `#{CommandParser.args[:cc]} -v 2>&1`.match(/version\s(\d+\.\d+\.\d+)/)
+            end
+            if res
+              version = res[1]
+            else
+              CLI.error "Failed to check version of #{`which #{CommandParser.args[:cc]}`.chomp}!".chomp
+            end
+            tag = "#{File.basename(CommandParser.args[:cc]).gsub(/-.*$/, '')}_#{version}"
+          end
           @@settings['defaults'] = { 'compiler_set' => tag }
           @@settings['compiler_sets'] = { tag => {} }
-          @@settings['compiler_sets'][tag]['c'] = which('gcc')
-          @@settings['compiler_sets'][tag]['cxx'] = which('g++')
-          @@settings['compiler_sets'][tag]['fortran'] = which('gfortran') if system_command? 'gfortran'
+          @@settings['compiler_sets'][tag]['c'] = which(CommandParser.args[:cc])
+          @@settings['compiler_sets'][tag]['cxx'] = which(CommandParser.args[:cxx])
+          @@settings['compiler_sets'][tag]['fortran'] = which(CommandParser.args[:fc]) if system_command? CommandParser.args[:fc]
         else
           CLI.warning "There are no GCC compilers. Install ones or use your preferred ones, and run again with #{CLI.red '-f'} option!"
         end
