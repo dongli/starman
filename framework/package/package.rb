@@ -3,7 +3,7 @@ class Package
   include PackageDSL
 
   extend Forwardable
-  def_delegators :@spec, :url, :url=, :mirror, :sha256, :file_name, :version, :version=
+  def_delegators :@spec, :url, :url=, :mirror, :sha256, :file_name, :file_path, :version, :version=
   def_delegators :@spec, :group, :labels, :dependencies, :options, :patches
   def_delegators :@spec, :labels, :has_label?, :conflicts, :resources, :resource, :links
 
@@ -86,10 +86,6 @@ class Package
   end
   def name
     Package.package_name self.class
-  end
-
-  def file_path
-    Settings.cache_root + '/' + file_name
   end
 
   def install_resource name, dir, options = {}

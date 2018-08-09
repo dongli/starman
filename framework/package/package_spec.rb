@@ -52,6 +52,9 @@ class PackageSpec
     match = /.*-(\d+\.\d+(\.\d+(\.\d+)?)?)/.match(val)
     @version = match[1] if match
   end
+  def file_path
+    Settings.cache_root + '/' + file_name
+  end
 
   attr_reader :labels
   def label val, options = {}

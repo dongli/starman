@@ -31,12 +31,25 @@ EOS
       end
     end
     tar_file_path = "/tmp/starman-packages-#{DateTime.now.strftime('%Y%m%d%H%M%S')}.tar"
-    tar_file = Gem::Package::TarWriter.new(File.open(tar_file_path, 'w'))
+    tar_file = Gem::Package::TarWriter.new(File.open(tar_file_path, 'wb'))
     PackageLoader.loaded_packages.each do |name, package|
       unless package.has_label? :group
         CLI.blue_arrow package.file_path
-        content = File.open(package.file_path, 'rb').read
-        tar_file.add_file_simple package.file_name, 0444, content.length { |io| io.write content }
+        tar_file.add_file package.file_name, File.stat(package.file_path).mode do |io|
+          io.write File.open(package.file_path, 'rb').read
+        end
+        package.patches.each do |patch|
+          CLI.blue_arrow patch.file_path
+          tar_file.add_file patch.file_name, File.stat(patch.file_path).mode do |io|
+            io.write File.open(patch.file_path, 'rb').read
+          end
+        end
+        package.resources.each_value do |resource|
+          CLI.blue_arrow resource.file_path
+          tar_file.add_file resource.file_name, File.stat(resource.file_path).mode do |io|
+            io.write File.open(resource.file_path, 'rb').read
+          end
+        end
       end
     end
     tar_file.close
