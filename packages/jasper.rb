@@ -1,23 +1,48 @@
 class Jasper < Package
-  url 'https://codeload.github.com/mdadams/jasper/tar.gz/version-2.0.14'
-  sha256 '85266eea728f8b14365db9eaf1edc7be4c348704e562bb05095b9a077cf1a97b'
-  file_name 'jasper-2.0.14.tar.gz'
+  url 'http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz'
+  sha256 '0021684d909de1eb2f7f5a4d608af69000ce37773d51d1fb898e03b8d488087d'
 
-  depends_on :cmake
   depends_on :jpeg
 
-  option 'disable-opengl', 'Disable OpenGL dependencies.'
+  patch :DATA
 
   def install
-    args = std_cmake_args
-    args << '-DJAS_ENABLE_OPENGL=Off' if disable_opengl?
-    args << '-DJAS_ENABLE_DOC=Off'
-    mkdir 'build' do
-      run 'cmake', '..', *args
-      run 'make'
-      # FIXME: Some tests need openjpeg.
-      #run 'make', 'test' unless skip_test?
-      run 'make', 'install'
-    end
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --enable-shared
+      --prefix=#{prefix}
+      CPPFLAGS='-I#{Jpeg.inc}'
+      LDFLAGS='-L#{Jpeg.lib}'
+    ]
+    run './configure', *args
+    run 'make', 'install'
   end
 end
+
+__END__
+diff --git a/src/libjasper/jpc/jpc_dec.c b/src/libjasper/jpc/jpc_dec.c
+index fa72a0e..1f4845f 100644
+--- a/src/libjasper/jpc/jpc_dec.c
++++ b/src/libjasper/jpc/jpc_dec.c
+@@ -1069,12 +1069,18 @@ static int jpc_dec_tiledecode(jpc_dec_t *dec, jpc_dec_tile_t *tile)
+  /* Apply an inverse intercomponent transform if necessary. */
+  switch (tile->cp->mctid) {
+  case JPC_MCT_RCT:
+-   assert(dec->numcomps == 3);
++   if (dec->numcomps != 3 && dec->numcomps != 4) {
++     jas_eprintf("bad number of components (%d)\n", dec->numcomps);
++     return -1;
++   }
+    jpc_irct(tile->tcomps[0].data, tile->tcomps[1].data,
+      tile->tcomps[2].data);
+    break;
+  case JPC_MCT_ICT:
+-   assert(dec->numcomps == 3);
++   if (dec->numcomps != 3 && dec->numcomps != 4) {
++     jas_eprintf("bad number of components (%d)\n", dec->numcomps);
++     return -1;
++   }
+    jpc_iict(tile->tcomps[0].data, tile->tcomps[1].data,
+      tile->tcomps[2].data);
+    break;
