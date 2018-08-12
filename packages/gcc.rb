@@ -64,9 +64,9 @@ class Gcc < Package
   def post_install
     # Update conf file to add this new compiler set.
     Settings.settings['compiler_sets']["gcc_#{version}"] = {
-      c: "#{bin}/gcc",
-      cxx: "#{bin}/g++",
-      fortran: "#{bin}/gfortran"
+      'c' => "#{bin}/gcc",
+      'cxx' => "#{bin}/g++",
+      'fortran' => "#{bin}/gfortran"
     }
     Settings.write
   end

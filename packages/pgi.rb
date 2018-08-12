@@ -36,9 +36,9 @@ class Pgi < Package
   def post_install
     # Update conf file to add this new compiler set.
     Settings.settings['compiler_sets']["pgi_#{version}"] = {
-      c: "#{root}/bin/pgcc",
-      cxx: "#{root}/bin/pgc++",
-      fortran: "#{root}/bin/pgfortran"
+      'c' => "#{root}/bin/pgcc",
+      'cxx' => "#{root}/bin/pgc++",
+      'fortran' => "#{root}/bin/pgfortran"
     }
     Settings.write
     # Run makelocalrc.
