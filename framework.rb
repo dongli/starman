@@ -9,7 +9,7 @@ require 'optparse'
 require 'pathname'
 require 'uri'
 require 'yaml'
-require 'rubygems/package'
+#require 'rubygems/package'
 
 require 'utils/append_env'
 require 'utils/cli'
