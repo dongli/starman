@@ -39,6 +39,7 @@ EOS
           io.write File.open(package.file_path, 'rb').read
         end
         package.patches.each do |patch|
+          next if patch.class == String
           CLI.blue_arrow patch.file_path
           tar_file.add_file patch.file_name, File.stat(patch.file_path).mode do |io|
             io.write File.open(patch.file_path, 'rb').read

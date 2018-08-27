@@ -5,10 +5,13 @@ class OdbApi < Package
   depends_on :eccodes
   depends_on :netcdf
 
+  option 'with-python', 'Build Python2 bindings.'
+
   def install
     args = std_cmake_args
     args << '-DENABLE_NETCDF=On'
     args << '-DENABLE_FORTRAN=On'
+    args << "-DENABLE_PYTHON=#{with_python? ? 'On' : 'Off'}"
     args << "-DNETCDF_PATH='#{link_inc}'"
     if OS.mac?
       inreplace 'odb_api/CMakeLists.txt', 'ecbuild_add_cxx_flags("-fPIC -Wl,--as-needed")', 'ecbuild_add_cxx_flags("-fPIC")'
