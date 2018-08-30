@@ -1,6 +1,6 @@
 class Antlr2 < Package
   url 'http://dust.ess.uci.edu/nco/antlr-2.7.7.tar.gz'
-  sha256 '853aeb021aef7586bda29e74a6b03006bcb565a755c86b66032d8ec31b67dbb9'
+  sha256 'c6d3161e888a635fd47f9ecba7c35b2590e3e5d590e7829456228cf2590f5d87'
 
   label :common
 
