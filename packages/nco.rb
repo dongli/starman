@@ -27,7 +27,6 @@ class Nco < Package
       ANTLR_ROOT=#{Antlr2.link_root}
     ]
     run './configure', *args
-    inreplace 'src/nco/ncap_lex.l', 'yy_size_t yyget_leng', 'int yyget_leng' if OS.linux?
     run 'make'
     run 'make', 'check' if not skip_test?
     run 'make', 'install'
