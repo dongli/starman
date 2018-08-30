@@ -18,6 +18,7 @@ class Nco < Package
       --enable-ncap2
       --enable-udunits2
       --enable-optimize-custom
+      --disable-doc
       NETCDF_INC=#{Netcdf.link_inc}
       NETCDF_LIB=#{Netcdf.link_lib}
       NETCDF4_ROOT=#{Netcdf.link_root}
