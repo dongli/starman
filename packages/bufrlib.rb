@@ -6,29 +6,22 @@ class Bufrlib < Package
   def install
     if CompilerSet.fortran.gcc?
       flags = '-fno-underscoring'
+      inreplace 'preproc.sh', {
+        '-C' => '',
+        'cpp' => 'cpp -traditional-cpp'
+      }
     elsif CompilerSet.fortran.intel?
       flags = '-assume nounderscore'
     else
       flags = ''
     end
-    inreplace 'preproc.sh', {
-      '*.F' => '../*.F',
-      'bufrlib.PRM' => '../bufrlib.PRM'
-    }
-    if CompilerSet.fortran.intel?
-      inreplace 'preproc.sh', 'cpp', 'fpp'
-    end
-    mkdir 'build' do
-      ln '../*.f', '.'
-      ln '../*.c', '.'
-      ln '../*.h', '.'
-      run '$CC -c `../preproc.sh` *.c'
-      run '$FC ', flags, ' -c modv*.f moda*.f `ls -1 *.f | grep -v "mod[av]_"`'
-      run 'ar crv libbufr.a *.o'
-    end
+    inreplace 'preproc.sh', 'cpp', 'fpp' if CompilerSet.fortran.intel?
+    run '$CC -c `./preproc.sh` *.c'
+    run '$FC ', flags, ' -c modv*.f moda*.f `ls -1 *.f | grep -v "mod[av]_"`'
+    run 'ar crv libbufr.a *.o'
     mkdir inc
     mkdir lib
     mv '*.h', inc
-    mv './build/libbufr.a', lib
+    mv 'libbufr.a', lib
   end
 end
