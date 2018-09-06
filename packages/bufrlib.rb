@@ -6,21 +6,18 @@ class Bufrlib < Package
   def install
     if CompilerSet.fortran.gcc?
       flags = '-fno-underscoring'
-      inreplace 'preproc.sh', {
-        '-C' => '',
-        'cpp' => 'cpp -traditional-cpp'
-      }
     elsif CompilerSet.fortran.intel?
       flags = '-assume nounderscore'
-      inreplace 'preproc.sh', 'cpp', 'fpp'
     else
       flags = ''
     end
-    # Since macOS isn't case-sensitive, we need to build in a new directory!
     inreplace 'preproc.sh', {
+      '-C' => '',
+      'cpp' => 'cpp -traditional-cpp',
       '`ls *.F`' => '`ls ../*.F`',
       'bufrlib.PRM' => '../bufrlib.PRM'
     }
+    # Since macOS isn't case-sensitive, we need to build in a new directory!
     mkdir 'build' do
       ln '../*.h', '.'
       ln '../*.c', '.'
