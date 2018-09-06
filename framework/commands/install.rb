@@ -11,10 +11,13 @@ EOS
     @parser.on '-cNAME', '--compiler-set NAME', 'Set the active compiler set by its name set in conf file.' do |compiler_set|
       @@args[:compiler_set] = compiler_set
     end
-    @parser.on '-k', '--skip-test', 'Skip possible build test (e.g., make test)' do
+    @parser.on '-k', '--skip-test', 'Skip possible build test (e.g., make test).' do
       @@args[:skip_test] = true
     end    
-    @parser.on '-f', '--force', 'Install packages anyway' do
+    @parser.on '-j', '--make-jobs', 'Set the number of make jobs.' do |make_jobs|
+      @@args[:make_jobs] = make_jobs
+    end
+    @parser.on '-f', '--force', 'Install packages anyway.' do
       @@args[:force] = true
     end
     # Parse package names and load them.
@@ -28,6 +31,7 @@ EOS
       end
     end
     @parser.parse!
+    @@args[:make_jobs] ||= 2
     # Reinitialize settings since compiler set may be set in command line.
     Settings.init
     CompilerSet.init
