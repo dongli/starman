@@ -40,11 +40,15 @@ EOS
             append_path package.bin if Dir.exist? package.bin
             append_ld_library_path package.lib if Dir.exist? package.lib
             append_ld_library_path package.lib64 if Dir.exist? package.lib64
+            append_pkg_config_path package.lib + '/pkgconfig' if Dir.exist? package.lib + '/pkgconfig'
+            append_pkg_config_path package.lib64 + '/pkgconfig' if Dir.exist? package.lib64 + '/pkgconfig'
             append_manpath package.man if Dir.exist? package.man
           else
             append_path package.link_bin if Dir.exist? package.link_bin
             append_ld_library_path package.link_lib if Dir.exist? package.link_lib
             append_ld_library_path package.link_lib64 if Dir.exist? package.link_lib64
+            append_pkg_config_path package.link_lib + '/pkgconfig' if Dir.exist? package.link_lib + '/pkgconfig'
+            append_pkg_config_path package.link_lib64 + '/pkgconfig' if Dir.exist? package.link_lib64 + '/pkgconfig'
             append_manpath package.link_man if Dir.exist? package.link_man
           end
           package.export_env
@@ -55,6 +59,7 @@ EOS
       print "export PATH=#{ENV['PATH']}\n"
       print "export #{OS.ld_library_path}=#{ENV[OS.ld_library_path]}\n"
       print "export MANPATH=#{ENV['MANPATH']}\n"
+      print "export PKG_CONFIG_PATH=#{ENV['PKG_CONFIG_PATH']}\n"
       PackageLoader.loaded_packages.each do |name, package|
         next unless PackageLoader.from_cmd_line? package
         print "export #{name.to_s.gsub('-', '_').upcase}_ROOT=#{package.link_root}\n"
