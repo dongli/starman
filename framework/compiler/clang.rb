@@ -1,4 +1,4 @@
-class Clang < Compiler
+class ClangCompiler < Compiler
   vendor :clang
 
   version do |language|

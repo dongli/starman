@@ -38,6 +38,13 @@ EOS
   end
 
   def run
+    if CompilerSet.c.command.include?('Packages/gcc')
+      PackageLoader.loads 'gcc'
+      gcc = PackageLoader.loaded_packages[:gcc]
+      append_ld_library_path gcc.lib if Dir.exist? gcc.lib
+      append_ld_library_path gcc.lib64 if Dir.exist? gcc.lib64
+      gcc.export_env
+    end
     PackageLoader.loaded_packages.each do |name, package|
       if package.has_label? :skip_if_exist and not CommandParser.args[:force]
         if package.skipped?
@@ -78,7 +85,6 @@ EOS
               when String
                 patch_data patch
               when PackageSpec
-p FileUtils.pwd
                 patch_file "#{Settings.cache_root}/#{patch.file_name}"
               else
                 CLI.error 'Unprocessed patch!'

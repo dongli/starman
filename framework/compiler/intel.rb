@@ -1,4 +1,4 @@
-class Intel < Compiler
+class IntelCompiler < Compiler
   vendor :intel
 
   version do |language|

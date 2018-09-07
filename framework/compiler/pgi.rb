@@ -1,4 +1,4 @@
-class Pgi < Compiler
+class PgiCompiler < Compiler
   vendor :pgi
 
   version do |language|

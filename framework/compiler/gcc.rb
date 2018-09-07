@@ -1,4 +1,4 @@
-class Gcc < Compiler
+class GccCompiler < Compiler
   vendor :gcc
 
   version do |language|
