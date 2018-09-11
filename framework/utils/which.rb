@@ -1,9 +1,12 @@
 module Utils
   def which cmd
     begin
-      `which #{cmd}`.chomp
+      `which #{cmd} 2> /dev/null`.chomp
     rescue
-      CLI.error "System command #{CLI.red 'which'} does not exist! Install it with system package manager, and come back!"
+      ENV['PATH'].split(':').each do |dir|
+        path = "#{dir}/#{cmd}"
+        return path if Dir.exist? dir and File.exist? path
+      end
     end
   end
 end

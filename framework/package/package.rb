@@ -103,6 +103,8 @@ class Package
     return false unless self.has_label? :skip_if_exist
     if self.labels[:skip_if_exist].has_key? :file and File.file? self.labels[:skip_if_exist][:file]
       return true
+    elsif self.labels[:skip_if_exist].has_key? :binary_file
+      return !which(self.labels[:skip_if_exist][:binary_file]).empty?
     elsif self.labels[:skip_if_exist].has_key? :include_file
       ['/usr/include', '/usr/local/include'].each do |dir|
         if File.file? "#{dir}/#{self.labels[:skip_if_exist][:include_file]}"

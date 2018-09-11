@@ -5,6 +5,7 @@ class NetcdfC < Package
 
   grouped_by :netcdf
 
+  depends_on :m4
   depends_on :hdf5
 
   option 'disable-netcdf-4', 'Disable NetCDF4 interfaces.'
