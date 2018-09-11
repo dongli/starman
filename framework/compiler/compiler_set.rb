@@ -22,6 +22,7 @@ class CompilerSet
       }
     }
     [:c, :cxx, :fortran].each do |language|
+      next unless Settings.compilers[language.to_s]
       case Settings.compilers[language.to_s]
       when command_patterns[:gcc][language]
         self.class_variable_set :"@@#{language}_compiler", GccCompiler.new(language)
