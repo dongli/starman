@@ -46,6 +46,8 @@ module PackageLoader
       end
       if possible_packages.size > 1
         CLI.error "You should install one of #{possible_packages.map(&:name).join(', ')} first!"
+      elsif possible_packages.size == 0
+        CLI.error "Unknown input #{CLI.red name}!"
       else
         scan name
         @@loaded_packages[name].version = options[:version] if options[:version]
