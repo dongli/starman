@@ -20,7 +20,7 @@ module PackageLoader
     if package_file_path(name, options[:version])
       eval open(package_file_path(name, options[:version]), 'r').read
       package = eval("#{name.to_s.split('-').collect(&:capitalize).join}").new
-      unless options[:nodeps]
+      if not options[:nodeps] and not package.skipped?
         package.dependencies.keys.each do |depend_name|
           depend_package = scan depend_name, package.dependencies[depend_name]
           if depend_package and depend_package.name != depend_name
