@@ -2,6 +2,7 @@ class OdbApi < Package
   url 'https://software.ecmwf.int/wiki/download/attachments/61117379/odb_api_bundle-0.18.0-Source.tar.gz?api=v2'
   sha256 '9cab8fc4adf31c41651694bcfa8fa846a8972e7a0d4c15729cd70c834b92fa5c'
 
+  depends_on :yacc
   depends_on :eccodes
   depends_on :netcdf
 

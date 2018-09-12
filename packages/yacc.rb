@@ -4,6 +4,7 @@ class Yacc < Package
   version '2017.07.09'
 
   label :common
+  label :skip_if_exist, binary_file: 'yacc'
 
   def install
     args = %W[
