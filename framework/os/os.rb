@@ -47,6 +47,10 @@ class OS
     [:centos, :redhat, :ubuntu].include? @@os.type
   end
 
+  def self.centos?
+    @@os.type == :centos
+  end
+
   def self.ld_library_path
     mac? ? 'DYLD_LIBRARY_PATH' : 'LD_LIBRARY_PATH'
   end

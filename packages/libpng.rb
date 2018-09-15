@@ -4,6 +4,8 @@ class Libpng < Package
 
   if OS.mac?
     label :skip_if_exist, file: '/System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libPng.dylib'
+  elsif OS.linux?
+    label :skip_if_exist, library_file: 'libpng.so'
   end
 
   def install

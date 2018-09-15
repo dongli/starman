@@ -25,8 +25,18 @@ EOS
     # Add possible package option and parse.
     PackageLoader.loaded_packages.each_value do |package|
       package.options.each do |name, option|
-        @parser.on "--#{name.to_s.gsub('_', '-')}", option[:desc] do
-          option[:value] = true
+        case option[:type]
+        when :boolean
+          @parser.on "--#{name.to_s.gsub('_', '-')}", option[:desc] do
+            option[:value] = true
+          end
+        else
+          @parser.on "--#{name.to_s.gsub('_', '-')} VALUE", option[:desc] do |value|
+            if option[:choices] and not option[:choices].include? value
+              CLI.error "Invalid value #{CLI.red value} for argument #{CLI.blue '--' + name.to_s.gsub('_', '-')}! Choose one of #{option[:choices]}."
+            end
+            option[:value] = value
+          end
         end
       end
     end
