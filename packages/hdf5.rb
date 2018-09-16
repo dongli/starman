@@ -6,7 +6,7 @@ class Hdf5 < Package
   depends_on :zlib
 
   option 'with-cxx', 'Build C++ bindings.'
-  option 'with-fortran', 'Build Fortran bindings.'
+  option 'without-fortran', 'Do not build Fortran bindings.'
   option 'enable-threadsafe', 'Enable thread safe.'
 
   def install
@@ -20,7 +20,7 @@ class Hdf5 < Package
       --enable-shared=yes
     ]
     args << with_cxx? ? '--enable-cxx' : '--disable-cxx'
-    args << '--enable-fortran' if with_fortran?
+    args << '--enable-fortran' unless without_fortran?
     args << '--enable-threadsafe --enable-unsupported' if enable_threadsafe?
     ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
     run './configure', *args
