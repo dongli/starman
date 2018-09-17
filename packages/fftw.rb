@@ -10,12 +10,16 @@ class Fftw < Package
   def install
     args = %W[
       --prefix=#{prefix}
+      --enable-fortran
+      --enable-shared
+      --disable-debug
+      --disable-dependency-tracking
     ]
     args << '--enable-openmp' if with_openmp?
     args << '--enable-mpi' if with_mpi?
     run './configure', *args
     run 'make'
-    run 'make', 'check'
+    run 'make', 'check' unless skip_test?
     run 'make', 'install'
   end
 end

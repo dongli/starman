@@ -3,10 +3,12 @@ class Emoslib < Package
   sha256 '88e3ca91268df5ae2db1909460445ed43e95de035d62b02cab26ce159851a4c1'
 
   depends_on :eccodes
+  depends_on :fftw
 
   def install
     args = std_cmake_args
     args << "-DECCODES_PATH=#{Eccodes.link_root}"
+    args << "-DFFTW_ROOT=#{Fftw.link_root}"
     mkdir 'build' do
       run 'cmake', '..', *args
       run 'make'
