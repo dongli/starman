@@ -24,9 +24,15 @@ EOS
       append_path Package.link_bin if Dir.exist? Package.link_bin
       append_ld_library_path Package.link_lib if Dir.exist? Package.link_lib
       append_ld_library_path Package.link_lib64 if Dir.exist? Package.link_lib64
+      append_pkg_config_path Package.link_lib + '/pkgconfig' if Dir.exist? Package.link_lib + '/pkgconfig'
+      append_pkg_config_path Package.link_lib64 + '/pkgconfig' if Dir.exist? Package.link_lib64 + '/pkgconfig'
+      append_manpath Package.link_man if Dir.exist? Package.link_man
       append_path Package.common_bin if Package.common_bin
       append_ld_library_path Package.common_lib if Dir.exist? Package.common_lib
       append_ld_library_path Package.common_lib64 if Dir.exist? Package.common_lib64
+      append_pkg_config_path Package.common_lib + '/pkgconfig' if Dir.exist? Package.common_lib + '/pkgconfig'
+      append_pkg_config_path Package.common_lib64 + '/pkgconfig' if Dir.exist? Package.common_lib64 + '/pkgconfig'
+      append_manpath Package.common_man if Dir.exist? Package.common_man
     else
       PackageLoader.loaded_packages.each do |name, package|
         next unless PackageLoader.from_cmd_line? package
@@ -36,21 +42,12 @@ EOS
           CLI.warning "Package #{CLI.red package.name}@#{CLI.blue package.name} has not been installed."
         else
           CLI.notice "Load package #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]
-          if package.has_label? :alone
-            append_path package.bin if Dir.exist? package.bin
-            append_ld_library_path package.lib if Dir.exist? package.lib
-            append_ld_library_path package.lib64 if Dir.exist? package.lib64
-            append_pkg_config_path package.lib + '/pkgconfig' if Dir.exist? package.lib + '/pkgconfig'
-            append_pkg_config_path package.lib64 + '/pkgconfig' if Dir.exist? package.lib64 + '/pkgconfig'
-            append_manpath package.man if Dir.exist? package.man
-          else
-            append_path package.link_bin if Dir.exist? package.link_bin
-            append_ld_library_path package.link_lib if Dir.exist? package.link_lib
-            append_ld_library_path package.link_lib64 if Dir.exist? package.link_lib64
-            append_pkg_config_path package.link_lib + '/pkgconfig' if Dir.exist? package.link_lib + '/pkgconfig'
-            append_pkg_config_path package.link_lib64 + '/pkgconfig' if Dir.exist? package.link_lib64 + '/pkgconfig'
-            append_manpath package.link_man if Dir.exist? package.link_man
-          end
+          append_path package.bin if Dir.exist? package.bin
+          append_ld_library_path package.lib if Dir.exist? package.lib
+          append_ld_library_path package.lib64 if Dir.exist? package.lib64
+          append_pkg_config_path package.lib + '/pkgconfig' if Dir.exist? package.lib + '/pkgconfig'
+          append_pkg_config_path package.lib64 + '/pkgconfig' if Dir.exist? package.lib64 + '/pkgconfig'
+          append_manpath package.man if Dir.exist? package.man
           package.export_env
         end
       end
@@ -62,7 +59,7 @@ EOS
       print "export PKG_CONFIG_PATH=#{ENV['PKG_CONFIG_PATH']}\n"
       PackageLoader.loaded_packages.each do |name, package|
         next unless PackageLoader.from_cmd_line? package
-        print "export #{name.to_s.gsub('-', '_').upcase}_ROOT=#{package.link_root}\n"
+        print "export #{name.to_s.gsub('-', '_').upcase}_ROOT=#{package.prefix}\n"
       end
     end
   end
