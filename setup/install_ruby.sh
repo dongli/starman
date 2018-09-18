@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Check Ruby availability.
-RUBY_URL=https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.0.tar.gz
-RUBY_SHA=d44a3c50a0e742341ed3033d5db79d865151a4f4
+RUBY_URL=https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.1.tar.gz
+RUBY_SHA=93fafd57a724974b951957c522cdc4478a6bdc2e
 RUBY_PACKAGE=$(basename $RUBY_URL)
 RUBY_PACKAGE_DIR=$(basename $RUBY_PACKAGE .tar.gz)
 
@@ -34,17 +34,23 @@ function install_ruby
   rm -rf $RUBY_PACKAGE_DIR
   tar -xzf $RUBY_PACKAGE
   cd $RUBY_PACKAGE_DIR
-  echo "[Notice]: Building Ruby, please wait for a moment! If anything is wrong, please see $STARMAN_ROOT/ruby/out!"
+  echo "[Notice]: Building Ruby, please wait for a moment!"
   if ! which gcc 2>&1 1> /dev/null 2>&1; then
     echo '[Error]: There is no GCC compiler!'
     exit 1
   fi
   export LD_LIBRARY_PATH=
-  CC=gcc CFLAGS=-fPIC ./configure --prefix=$STARMAN_ROOT/ruby --disable-install-rdoc 1> $STARMAN_ROOT/ruby/out 2>&1
+  # In some environment, openssl cannot been compiled with successfully, so disable the openssl ext.
+  CC=gcc CFLAGS=-fPIC ./configure --prefix=$STARMAN_ROOT/ruby --with-out-ext=openssl --disable-install-rdoc 1> $STARMAN_ROOT/ruby/out 2>&1
   make install 1>> $STARMAN_ROOT/ruby/out 2>&1
-  cd $STARMAN_ROOT/ruby
-  rm -rf $RUBY_PACKAGE_DIR
-  export PATH=$STARMAN_ROOT/ruby/bin:$PATH
+  if [[ $? == 0 ]]; then
+    cd $STARMAN_ROOT/ruby
+    rm -rf $RUBY_PACKAGE_DIR
+    export PATH=$STARMAN_ROOT/ruby/bin:$PATH
+  else
+    echo "[Error]: Failed to build Ruby! please see $STARMAN_ROOT/ruby/out!"
+    exit 1
+  fi
 }
 
 if ! which ruby 2>&1 1> /dev/null 2>&1; then
