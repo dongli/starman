@@ -47,6 +47,9 @@ module PackageDSL
       self.class.send :define_method, :"#{name}?" do
         self.class_variable_get("@@#{self.name.split('::').last}_spec").options[name][:value]
       end
+      define_method(:"#{name}=") do |val|
+        @spec.options[name][:value] = val
+      end
     else
       define_method(:"#{name}") do
         @spec.options[name][:value] || @spec.options[name][:default]

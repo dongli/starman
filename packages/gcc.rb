@@ -31,6 +31,12 @@ class Gcc < Package
   end
 
   def install
+    ENV['LIBRARY_PATH'] = ''
+    if CompilerSet.c.version <= '4.4.7'
+      CLI.warning 'Using old GCC (<= 4.4.7), so STARMAN made some tricks!'
+      inreplace 'gcc/Makefile.in', 'mv tmp-specs $(SPECS)', '#mv tmp-specs $(SPECS)'
+      self.disable_lto = true
+    end
     args = %W[
       --prefix=#{prefix}
       --libdir=#{lib}/gcc/#{version.to_s.slice(/\d/)}
@@ -53,9 +59,9 @@ class Gcc < Package
     mv 'mpc-1.1.0', 'mpc'
     install_resource :isl, '.'
     mv 'isl-0.18', 'isl'
-    mkdir 'build' do
-      run '../configure', *args
-      run 'make', 'bootstrap'
+    mkdir '../gcc-build' do
+      run "../gcc-#{version}/configure", *args
+      run 'make', '-j4', 'bootstrap'
       #run 'ulimit -s 32768 && make -k check' unless skip_test?
       run 'make', '-j4', 'install'
     end
