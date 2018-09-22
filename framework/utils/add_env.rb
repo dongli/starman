@@ -5,6 +5,6 @@ module Utils
   end
 
   def added_env
-    @@added_env || {}
+    @@added_env rescue {}
   end
 end

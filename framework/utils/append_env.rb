@@ -1,6 +1,6 @@
 module Utils
   def append_path path
-    ENV['PATH'] = "#{path}:#{ENV['PATH'].gsub(/:?#{path}:?/, '') if ENV['PATH']}"
+    ENV['PATH'] = "#{path}:#{ENV['PATH'].gsub(/#{path}:?/, '') if ENV['PATH']}"
   end
 
   def append_ld_library_path path
