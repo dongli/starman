@@ -64,6 +64,9 @@ EOS
         next unless PackageLoader.from_cmd_line? package
         print "export #{name.to_s.gsub('-', '_').upcase}_ROOT=#{package.prefix}\n"
       end
+      added_env.each do |key, val|
+        print "export #{key}=#{val}\n"
+      end
     end
   end
 end

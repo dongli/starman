@@ -23,6 +23,14 @@ class Python3 < Package
     sha256 '0a2e54558a0628f2145d2fc822137e322412115173e8a2ddbe1c9024338ae83c'
   end
 
+  def site_packages
+    "#{link_lib}/python3.7/site-packages"
+  end
+
+  def export_env
+    add_env 'PYTHONPATH', site_packages
+  end
+
   def install
     ENV['PYTHONHOME'] = nil
     ENV['PYTHONPATH'] = nil
@@ -50,7 +58,6 @@ class Python3 < Package
     install_resource :setuptools, libexec
     install_resource :pip, "#{libexec}/pip", strip_leading_dirs: 1
     install_resource :wheel, "#{libexec}/wheel", strip_leading_dirs: 1
-    site_packages = "#{link_lib}/python3.7/site-packages"
     mkdir site_packages
     ENV['PYTHONPATH'] = site_packages
     # Remove possible previous installed resouces.

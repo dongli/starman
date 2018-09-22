@@ -11,6 +11,7 @@ require 'uri'
 require 'yaml'
 require 'rubygems/package' rescue nil
 
+require 'utils/add_env'
 require 'utils/append_env'
 require 'utils/cli'
 require 'utils/cd'
