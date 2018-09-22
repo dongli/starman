@@ -48,7 +48,7 @@ class Package
     self.new.link_root
   end
 
-  [:bin, :inc, :lib, :lib64, :share, :man].each do |dir|
+  [:bin, :inc, :lib, :lib64, :libexec, :share, :man].each do |dir|
     define_method(dir) do
       dir = dir == :inc ? :include : dir
       dir = dir == :man ? 'share/man' : dir
@@ -99,6 +99,10 @@ class Package
     end
   end
 
+  def self.skipped?
+    instance = self.new
+    instance.skipped?
+  end
   def skipped?
     return false unless self.has_label? :skip_if_exist
     if self.labels[:skip_if_exist].has_key? :file and File.file? self.labels[:skip_if_exist][:file]

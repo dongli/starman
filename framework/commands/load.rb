@@ -8,6 +8,9 @@ EOS
     @parser.on '-cNAME', '--compiler-set NAME', 'Set the active compiler set by its name set in conf file.' do |compiler_set|
       @@args[:compiler_set] = compiler_set
     end
+    @parser.on '-w', '--without-deps', 'Do not load dependencies.' do
+      @@args[:without_deps] = true
+    end
     @parser.on '-a', '--all', 'Load all packages for current compiler set.' do
       @@args[:all] = true
     end
@@ -35,7 +38,7 @@ EOS
       append_manpath Package.common_man if Dir.exist? Package.common_man
     else
       PackageLoader.loaded_packages.each do |name, package|
-        next unless PackageLoader.from_cmd_line? package
+        next if (not PackageLoader.from_cmd_line? package and CommandParser.args[:without_deps]) or package.skipped?
         if package.has_label? :group
           CLI.notice "Load package group #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]
         elsif History.installed?(package) == false

@@ -23,6 +23,7 @@ commands = {
   install: InstallCommand,
   uninstall: UninstallCommand,
   load: LoadCommand,
+  debug_load: LoadCommand,
   config: ConfigCommand,
   edit: EditCommand,
   link: LinkCommand,

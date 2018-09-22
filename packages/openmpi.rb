@@ -6,6 +6,8 @@ class Openmpi < Package
 
   conflicts_with :mpich, :mvapich2
 
+  option 'with-ucx', 'Do not use UCX library.'
+
   def install
     args = %W[
       --prefix=#{prefix}
@@ -15,8 +17,8 @@ class Openmpi < Package
       --enable-shared
       --with-verbs
       --with-hwloc=internal
-      --with-ucx
     ]
+    args << '--with-ucx' if with_ucx?
     run './configure', *args
     run 'make', 'all', '-j', '8'
     run 'make', 'check' if not skip_test?
