@@ -15,7 +15,8 @@ class CLI
   end
 
   def self.width
-    `tput cols`.strip.to_i rescue 80
+    res = `tput cols`.strip.to_i rescue 80
+    res < 80 ? 80 : res
   end
 
   def self.truncate str
