@@ -3,6 +3,7 @@ class OdbApi < Package
   sha256 '9cab8fc4adf31c41651694bcfa8fa846a8972e7a0d4c15729cd70c834b92fa5c'
 
   depends_on :yacc
+  depends_on :ncurses
   depends_on :eccodes
   depends_on :netcdf
 
