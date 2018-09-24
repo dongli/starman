@@ -4,7 +4,7 @@ module Utils
   end
 
   def append_ld_library_path path
-    ENV[OS.ld_library_path] = "#{path}:#{ENV[OS.ld_library_path].gsub(/:?#{path}:?/, '') if ENV[OS.ld_library_path]}"
+    ENV[OS.ld_library_path] = "#{path}:#{ENV[OS.ld_library_path].gsub(/#{path}:?/, '') if ENV[OS.ld_library_path]}"
   end
 
   def append_pkg_config_path path
