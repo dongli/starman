@@ -8,6 +8,8 @@ class Python3 < Package
   depends_on :openssl
   depends_on :libffi
 
+  option 'without-dtrace', 'Disable DTrace support.'
+
   resource :setuptools do
     url 'https://files.pythonhosted.org/packages/ef/1d/201c13e353956a1c840f5d0fbf0461bd45bbd678ea4843ebf25924e8984c/setuptools-40.2.0.zip'
     sha256 '47881d54ede4da9c15273bac65f9340f8929d4f0213193fa7894be384f2dcfa6'
@@ -38,10 +40,10 @@ class Python3 < Package
       --prefix=#{prefix}
       --enable-ipv6
       --without-ensurepip
-      --with-dtrace
       --with-openssl=#{Openssl.prefix}
       --enable-optimizations
     ]
+    args << without_dtrace? ? '--without-dtrace' : '--with-dtrace'
     if not Readline.skipped?
       inreplace 'setup.py',
         "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
