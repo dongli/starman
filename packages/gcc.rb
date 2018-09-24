@@ -32,8 +32,8 @@ class Gcc < Package
 
   def install
     ENV['LIBRARY_PATH'] = ''
-    if CompilerSet.c.version <= '4.4.7'
-      CLI.warning 'Using old GCC (<= 4.4.7), so STARMAN made some tricks!'
+    if CompilerSet.c.version <= '4.8.5'
+      CLI.warning 'Using old GCC (<= 4.8.5), so STARMAN made some tricks!'
       inreplace 'gcc/Makefile.in', 'mv tmp-specs $(SPECS)', '#mv tmp-specs $(SPECS)'
       self.disable_lto = true
     end
@@ -42,7 +42,6 @@ class Gcc < Package
       --libdir=#{lib}/gcc/#{version.to_s.slice(/\d/)}
       --enable-languages=c,c++,fortran
       --disable-multilib
-      --with-system-zlib
       --enable-libstdcxx-time=yes
       --enable-stage1-checking
       --enable-checking=release

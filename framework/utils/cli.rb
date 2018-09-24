@@ -15,8 +15,7 @@ class CLI
   end
 
   def self.width
-    res = `tput cols`.strip.to_i rescue 80
-    res < 80 ? 80 : res
+    `tput -T xterm-256color cols`.strip.to_i rescue 80
   end
 
   def self.truncate str
