@@ -104,6 +104,7 @@ class Package
     instance.skipped?
   end
   def skipped?
+    return true if self.has_label? :alone
     return false unless self.has_label? :skip_if_exist
     if self.labels[:skip_if_exist].has_key? :file and File.file? self.labels[:skip_if_exist][:file]
       return true
