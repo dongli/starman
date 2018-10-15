@@ -3,7 +3,7 @@ class Libpng < Package
   sha256 '23912ec8c9584917ed9b09c5023465d71709dce089be503c7867fec68a93bcd7'
 
   if OS.mac?
-    label :skip_if_exist, file: '/System/Library/Frameworks/ImageIO.framework/Versions/A/Resources/libPng.dylib'
+    label :alone
   elsif OS.linux?
     label :skip_if_exist, library_file: 'libpng.so'
   end
