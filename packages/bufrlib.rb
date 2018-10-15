@@ -4,13 +4,7 @@ class Bufrlib < Package
   version '11.0.0'
 
   def install
-    if CompilerSet.fortran.gcc?
-      flags = '-fno-underscoring'
-    elsif CompilerSet.fortran.intel?
-      flags = '-assume nounderscore'
-    else
-      flags = ''
-    end
+    flags = CompilerSet.fortran.gcc? ? '-fno-second-underscore' : ''
     inreplace 'preproc.sh', {
       '-C' => '',
       'cpp' => 'cpp -traditional-cpp',
@@ -22,8 +16,8 @@ class Bufrlib < Package
       ln '../*.h', '.'
       ln '../*.c', '.'
       ln '../*.f', '.'
-      run '$CC -c `../preproc.sh` *.c'
-      run '$FC ', flags, ' -c modv*.f moda*.f `ls -1 *.f | grep -v "mod[av]_"`'
+      run '$CC -c -DUNDERSCORE `../preproc.sh` *.c'
+      run '$FC -c -DUNDERSCORE ', flags, ' modv*.f moda*.f `ls -1 *.f | grep -v "mod[av]_"`'
       run 'ar crv libbufr.a *.o'
     end
     mkdir inc
