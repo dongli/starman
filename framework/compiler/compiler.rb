@@ -5,7 +5,7 @@ class Compiler
   def_delegators :@spec, :vendor, :version, :command
 
   def initialize language
-    @spec = self.class.class_variable_get "@@#{self.class}_spec"
+    @spec = self.class.class_variable_get("@@#{self.class}_spec").clone
     @spec.eval language
   end
 
