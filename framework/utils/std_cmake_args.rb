@@ -1,5 +1,5 @@
 module Utils
-  def std_cmake_args
+  def std_cmake_args options = {}
     args = %W[
       -DCMAKE_SYSTEM_PREFIX_PATH=#{Settings.link_root}
       -DCMAKE_C_FLAGS_RELEASE=-DNDEBUG
@@ -10,6 +10,7 @@ module Utils
       -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
     ]
+    args << "-DCMAKE_PREFIX_PATH=#{options[:search_paths].join}" unless options[:search_paths].empty?
     args
   end
 end

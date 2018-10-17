@@ -9,6 +9,7 @@ class Ncurses < Package
 
   def install
     args = %W[
+      --prefix=#{prefix}
       --enable-pc-files
       --with-pkg-config-libdir=#{lib}/pkgconfig
       --enable-sigwinch
