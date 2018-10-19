@@ -10,7 +10,7 @@ module Utils
       -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
     ]
-    args << "-DCMAKE_PREFIX_PATH=#{options[:search_paths].join}" unless options[:search_paths].empty?
+    args << "-DCMAKE_PREFIX_PATH=#{options[:search_paths].join}" if options[:search_paths] and not options[:search_paths].empty?
     args
   end
 end

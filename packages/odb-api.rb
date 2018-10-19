@@ -10,7 +10,7 @@ class OdbApi < Package
   option 'with-python', 'Build Python2 bindings.'
 
   def install
-    args = std_cmake_args
+    args = std_cmake_args search_paths: [Eccodes.link_root]
     args << '-DENABLE_NETCDF=On'
     args << '-DENABLE_FORTRAN=On'
     args << "-DENABLE_PYTHON=#{with_python? ? 'On' : 'Off'}"
