@@ -34,7 +34,7 @@ class Version
     end
     return if tmp.size == 2
     @revision = tmp[2].to_i
-    CLI.warning "Nonstandard version identifer #{CLI.red version_string}!" if tmp.size > 3
+    # CLI.warning "Nonstandard version identifer #{CLI.red version_string}!" if tmp.size > 3
   end
 
   def >= other

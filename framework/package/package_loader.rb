@@ -4,7 +4,7 @@ module PackageLoader
   end
 
   def self.loads *package_names
-    @@direct_packages = package_names.map &:to_sym
+    @@direct_packages ||= package_names.map &:to_sym
     @@loaded_packages ||= {}
     package_names.each do |package_name|
       # package_name may be in <name>@<version> form.

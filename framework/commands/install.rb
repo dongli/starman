@@ -51,6 +51,7 @@ EOS
     if CompilerSet.c.command.include?('Packages/gcc')
       PackageLoader.loads 'gcc'
       gcc = PackageLoader.loaded_packages[:gcc]
+      PackageLoader.loaded_packages.delete :gcc
       append_ld_library_path gcc.lib if Dir.exist? gcc.lib
       append_ld_library_path gcc.lib64 if Dir.exist? gcc.lib64
       gcc.export_env
