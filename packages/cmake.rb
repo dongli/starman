@@ -6,6 +6,7 @@ class Cmake < Package
   label :skip_if_exist, version: lambda { `cmake --version`.match(/(\d+\.\d+\.\d+(\.\d+)?)/)[1] rescue nil }, condition: '>= 3'
 
   def install
+    CLI.error 'Use Clang compilers to build CMake!' if OS.mac? and CompilerSet.c.gcc?
     run './bootstrap', "--prefix=#{prefix}", '--', '-DCMAKE_BUILD_TYPE=Release'
     run 'make'
     run 'make', 'install'

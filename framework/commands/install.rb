@@ -71,6 +71,10 @@ EOS
       elsif res == :old_version_installed and PackageLoader.from_cmd_line? package
         CLI.warning "Package #{CLI.blue package.name} #{CLI.red package.version} has been installed! Use --force/-f to override."
       else
+        if res == :old_version_installed_but_unlink_it
+          CLI.notice "Unlink package #{CLI.green package.name} ..."
+          PackageLinker.unlink package
+        end
         package.resources.each_value do |resource|
           PackageDownloader.download resource
         end

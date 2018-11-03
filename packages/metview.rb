@@ -5,6 +5,7 @@ class Metview < Package
   label :common
 
   depends_on :proj
+  depends_on :gdbm
   depends_on :netcdf
   depends_on 'odb-api'
   depends_on :eccodes
@@ -23,7 +24,8 @@ class Metview < Package
     args << "-DNETCDF_PATH=#{Netcdf.link_root}"
     args << "-DODB_API_PATH=#{OdbApi.link_root}"
     args << "-DPROJ4_PATH=#{Proj.link_root}"
-    args << "-DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt/5.11.1" if OS.mac?
+    # FIXME: We assume user installed Qt by using Homebrew.
+    args << "-DCMAKE_PREFIX_PATH='#{Dir.glob('/usr/local/Cellar/qt/*').first if OS.mac?};#{Gdbm.link_root}'"
     mkdir 'build' do
       run 'cmake', '..', *args
       run 'make'

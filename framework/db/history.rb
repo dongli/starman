@@ -37,7 +37,7 @@ class History
       # he/she must use force option to override with newer version.
       if package.version != columns[2] or package.prefix != columns[3]
         if CommandParser.args[:force]
-          return false
+          return :old_version_installed_but_unlink_it
         else
           package.version = columns[2]
           return :old_version_installed

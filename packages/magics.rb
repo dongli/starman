@@ -27,11 +27,15 @@ class Magics < Package
     args << "-DODB_API_PATH=#{OdbApi.link_root}"
     args << "-DPROJ4_PATH=#{Proj.link_root}"
     args << "-DENABLE_PYTHON=#{enable_python? ? 'On' : 'Off'}"
-    args << "-DCMAKE_PREFIX_PATH=/usr/local/Cellar/qt/5.11.1" if OS.mac?
+    # FIXME: We assume user installed Qt by using Homebrew.
+    args << "-DCMAKE_PREFIX_PATH=#{Dir.glob('/usr/local/Cellar/qt/*').first}" if OS.mac?
+    ['tools/xml2cc_mv.py', 'tools/xml2cc.py'].each do |file|
+      inreplace file, '#!/usr/bin/env python', '#!/usr/bin/env python3'
+    end
     mkdir 'build' do
       run 'cmake', '..', *args
       run 'make'
-      run 'MAGPLUS=$(PWD)/..', 'make', 'check' unless skip_test?
+      run 'MAGPLUS=$(pwd)/..', 'make', 'check' unless skip_test?
       run 'make', 'install'
     end
   end
