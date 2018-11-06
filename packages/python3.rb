@@ -34,6 +34,7 @@ class Python3 < Package
   end
 
   def install
+    CLI.error 'Use Clang compilers to build Python3!' if OS.mac? and CompilerSet.c.gcc?
     ENV['PYTHONHOME'] = nil
     ENV['PYTHONPATH'] = nil
     args = %W[
