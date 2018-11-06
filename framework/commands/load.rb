@@ -63,6 +63,8 @@ EOS
       PackageLoader.loaded_packages.each do |name, package|
         next unless PackageLoader.from_cmd_line? package
         print "export #{name.to_s.gsub('-', '_').upcase}_ROOT=#{package.prefix}\n"
+        print "export #{name.to_s.gsub('-', '_').upcase}_DIR=#{package.prefix}\n"
+        print "export #{name.to_s.gsub('-', '_').upcase}_PATH=#{package.prefix}\n"
       end
       added_env.each do |key, val|
         print "export #{key}=#{val}\n"
