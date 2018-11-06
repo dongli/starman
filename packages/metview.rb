@@ -26,6 +26,8 @@ class Metview < Package
     args << "-DPROJ4_PATH=#{Proj.link_root}"
     # FIXME: We assume user installed Qt by using Homebrew.
     args << "-DCMAKE_PREFIX_PATH='#{Dir.glob('/usr/local/Cellar/qt/*').first if OS.mac?};#{Gdbm.link_root}'"
+    inreplace 'CMakeLists.txt', 'find_path( GDBM_INCLUDE gdbm.h )',
+      "find_path( GDBM_INCLUDE gdbm.h )\ninclude_directories(${GDBM_INCLUDE})\nlink_directories(${GDBM_LIB})"
     mkdir 'build' do
       run 'cmake', '..', *args
       run 'make'
