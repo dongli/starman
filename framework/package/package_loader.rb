@@ -17,8 +17,9 @@ module PackageLoader
 
   def self.scan name, options = {}
     return if @@loaded_packages.has_key? name
-    if package_file_path(name, options[:version])
-      eval open(package_file_path(name, options[:version]), 'r').read
+    file_path = package_file_path(name, options[:version])
+    if file_path
+      eval open(file_path, 'r').read
       package = eval("#{name.to_s.split('-').collect(&:capitalize).join}").new
       if not options[:nodeps] and not package.skipped?
         package.dependencies.keys.each do |depend_name|
