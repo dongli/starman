@@ -3,7 +3,7 @@ class Jpeg < Package
   sha256 '240fd398da741669bf3c90366f58452ea59041cacc741a489b99f2f6a0bad052'
   version 'v9b'
 
-  label :alone if OS.mac?
+  label :conflict_with_system if OS.mac?
 
   def install
     args = %W[
