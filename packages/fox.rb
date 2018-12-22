@@ -10,5 +10,6 @@ class Fox < Package
     run './configure', *args
     run 'make'
     run 'make', 'install'
+    run 'mv', "#{prefix}/finclude", "#{prefix}/include"
   end
 end
