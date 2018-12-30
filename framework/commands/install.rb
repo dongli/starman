@@ -117,8 +117,10 @@ EOS
       end
       # Change environment to affect following packages.
       append_path package.bin if package.bin
-      append_ld_library_path package.lib if Dir.exist? package.lib
-      append_ld_library_path package.lib64 if Dir.exist? package.lib64
+      if not package.has_label? :conflict_with_system
+        append_ld_library_path package.lib if Dir.exist? package.lib
+        append_ld_library_path package.lib64 if Dir.exist? package.lib64
+      end
       package.export_env
     end
   end

@@ -1,5 +1,5 @@
 module Utils
-	def decompress path, options = {}
+  def decompress path, options = {}
     args = []
     case path
     when /\.tar.Z$/i
@@ -14,6 +14,9 @@ module Utils
       system "bzip2 -d #{path}"
     when /\.(zip)$/i
       system "unzip -o #{path} 1> /dev/null"
+      if options[:strip_leading_dirs]
+        system 'mv ./*/* .'
+      end
     else
       CLI.report_error "Unknown compression type of #{CLI.red path}!" if options[:exit]
     end

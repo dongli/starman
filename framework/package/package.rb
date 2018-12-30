@@ -89,12 +89,13 @@ class Package
   end
 
   def install_resource name, dir, options = {}
+    dir += '/' + name.to_s if dir == '.'
     FileUtils.mkdir_p dir if not Dir.exist? dir
     if options[:plain_file]
       FileUtils.cp "#{Settings.cache_root}/#{resource(name).file_name}", dir
     else
       work_in dir do
-        decompress "#{Settings.cache_root}/#{resource(name).file_name}", options
+        decompress "#{Settings.cache_root}/#{resource(name).file_name}", options.merge(strip_leading_dirs: 1)
       end
     end
   end
