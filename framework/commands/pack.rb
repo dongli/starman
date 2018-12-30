@@ -8,7 +8,7 @@ class PackCommand < CommandParser
     >>> starman pack <package_name>
 EOS
     # Parse package names and load them.
-    parse_packages
+    parse_packages relax: true
     # Add possible package option and parse.
     PackageLoader.loaded_packages.each_value do |package|
       package.options.each do |name, option|

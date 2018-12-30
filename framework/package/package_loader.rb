@@ -3,9 +3,10 @@ module PackageLoader
     @@loaded_packages
   end
 
-  def self.loads *package_names
+  def self.loads package_names, options = {}
     @@direct_packages ||= package_names.map &:to_sym
     @@loaded_packages ||= {}
+    @@relax = options[:relax]
     package_names.each do |package_name|
       # package_name may be in <name>@<version> form.
       name, version = package_name.to_s.split '@'
@@ -45,7 +46,7 @@ module PackageLoader
           return scan(possible_packages.last.name)
         end
       end
-      if possible_packages.size > 1
+      if possible_packages.size > 1 and @@relax != true
         CLI.error "You should install one of #{possible_packages.map(&:name).join(', ')} first!"
       elsif possible_packages.size == 0
         CLI.error "Unknown input #{CLI.red name}!"
