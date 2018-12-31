@@ -5,7 +5,7 @@
 layout: home
 ---
 
-Want to know what STARMAN is? Look [here](/about/).
+Want to know what STARMAN is? Look [here](/starman/about/).
 
 # Quick start
 
