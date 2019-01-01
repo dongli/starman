@@ -51,3 +51,12 @@ Install the packages you want (of couse, they must be supported by STARMAN):
 ```
 $ starman install netcdf
 ```
+You can choose different compiler set if you have added one in command line:
+```
+$ starman install netcdf -c ifort_17.5.239
+```
+The packages will be installed to `install_root` as set in configuration file, you could load packages as:
+```
+$ starman load netcdf [-c ...]
+```
+You can also specify which compiler set to use.
