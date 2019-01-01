@@ -49,7 +49,7 @@ EOS
 
   def run
     if CompilerSet.c.command.include?('Packages/gcc')
-      PackageLoader.loads 'gcc'
+      PackageLoader.loads ['gcc']
       gcc = PackageLoader.loaded_packages[:gcc]
       PackageLoader.loaded_packages.delete :gcc
       append_ld_library_path gcc.lib if Dir.exist? gcc.lib
