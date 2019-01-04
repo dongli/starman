@@ -64,14 +64,14 @@ class PackageSpec
     @labels.has_key? val
   end
 
-  attr_reader :dependencies
+  attr_accessor :dependencies
   def depends_on val, options = {}
     @dependencies[val.to_sym] = options
   end
 
   attr_reader :options
   def option val, options = {}
-    @options[val] = options
+    @options[val] ||= options
   end
 
   attr_reader :resources

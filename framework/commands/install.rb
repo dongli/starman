@@ -41,6 +41,8 @@ EOS
       end
     end
     @parser.parse!
+    # Reparse packages because the command options may change dependencies.
+    parse_packages force: true
     @@args[:make_jobs] ||= 2
     # Reinitialize settings since compiler set may be set in command line.
     Settings.init

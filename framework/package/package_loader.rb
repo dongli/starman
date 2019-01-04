@@ -5,7 +5,11 @@ module PackageLoader
 
   def self.loads package_names, options = {}
     @@direct_packages ||= package_names.map &:to_sym
-    @@loaded_packages ||= {}
+    if options[:force]
+      @@loaded_packages = {}
+    else
+      @@loaded_packages ||= {}
+    end
     @@relax = options[:relax]
     package_names.each do |package_name|
       # package_name may be in <name>@<version> form.
@@ -19,6 +23,11 @@ module PackageLoader
   def self.scan name, options = {}
     return if @@loaded_packages.has_key? name
     file_path = package_file_path(name, options[:version])
+    # Clean dependencies if set previously.
+    class_name = name.to_s.gsub('-', '_').capitalize
+    if PackageLoader.const_defined? class_name and const_get(class_name).method_defined? :spec
+      const_get(class_name).spec.dependencies = {}
+    end
     if file_path
       eval open(file_path, 'r').read
       package = eval("#{name.to_s.split('-').collect(&:capitalize).join}").new
