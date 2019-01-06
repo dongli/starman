@@ -30,6 +30,10 @@ class Esmf < Package
       CLI.error "Unsupported compiler set!"
     end
     ENV['ESMF_INSTALL_PREFIX'] = prefix
+    ENV['ESMF_INSTALL_BINDIR'] = bin
+    ENV['ESMF_INSTALL_HEADERDIR'] = inc
+    ENV['ESMF_INSTALL_LIBDIR'] = lib
+    ENV['ESMF_INSTALL_MODDIR'] = inc
     if use_mkl?
       ENV['ESMF_LAPACK'] = 'mkl'
     else
@@ -47,8 +51,8 @@ class Esmf < Package
     else
       CLI.error "You should set #{CLI.blue '--mpi-type'} option!"
     end
-    run 'make'
-    run 'make', 'tests' if not skip_test?
+    run 'make', '-j8'
+    run 'make', 'unit_tests' if not skip_test?
     run 'make', 'install'
   end
 end
