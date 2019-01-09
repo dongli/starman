@@ -39,7 +39,7 @@ class Esmf < Package
     else
       ENV['ESMF_LAPACK'] = 'system'
       ENV['ESMF_LAPACK_LIBPATH'] = Lapack.link_lib
-      ENV['ESMF_LAPACK_LIBS'] = '-llapck -lblas'
+      ENV['ESMF_LAPACK_LIBS'] = '-llapack -lblas'
     end
     ENV['ESMF_NETCDF'] = 'nc-config'
     ENV['ESMF_PNETCDF'] = 'pnetcdf-config' if use_pnetcdf?
