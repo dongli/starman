@@ -6,7 +6,7 @@ class Openmpi < Package
 
   conflicts_with :mpich, :mvapich2
 
-  option 'with-ucx', 'Do not use UCX library.'
+  option 'with-ucx', 'Use UCX library.'
 
   def install
     args = %W[
