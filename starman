@@ -15,11 +15,13 @@ aliases = {
   rm: :uninstall,
   c: :config,
   e: :edit,
-  u: :update
+  u: :update,
+  ls: :list
 }
 
 commands = {
   setup: SetupCommand,
+  list: ListCommand,
   install: InstallCommand,
   uninstall: UninstallCommand,
   load: LoadCommand,

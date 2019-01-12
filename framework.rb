@@ -70,6 +70,7 @@ require 'package/package_special_labels'
 
 require 'commands/command_parser'
 require 'commands/setup'
+require 'commands/list'
 require 'commands/install'
 require 'commands/uninstall'
 require 'commands/load'

@@ -4,6 +4,9 @@ module PackageLoader
   end
 
   def self.loads package_names, options = {}
+    if package_names.empty?
+      package_names = Dir.glob("#{ENV['STARMAN_ROOT']}/packages/*").map { |x| File.basename(x, '.rb') }
+    end
     @@direct_packages ||= package_names.map &:to_sym
     if options[:force]
       @@loaded_packages = {}
@@ -24,13 +27,13 @@ module PackageLoader
     return if @@loaded_packages.has_key? name
     file_path = package_file_path(name, options[:version])
     # Clean dependencies if set previously.
-    class_name = name.to_s.gsub('-', '_').capitalize
+    class_name = name.to_s.split(/[-_]/).map(&:capitalize).join
     if PackageLoader.const_defined? class_name and const_get(class_name).method_defined? :spec
       const_get(class_name).spec.dependencies = {}
     end
     if file_path
       eval open(file_path, 'r').read
-      package = eval("#{name.to_s.split('-').collect(&:capitalize).join}").new
+      package = eval("#{name.to_s.split(/[-_]/).map(&:capitalize).join}").new
       if not options[:nodeps] and not package.skipped?
         package.dependencies.keys.each do |depend_name|
           depend_package = scan depend_name, package.dependencies[depend_name]
