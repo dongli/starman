@@ -56,17 +56,18 @@ EOS
       end
     end
     if @@args[:print]
-      print "export PATH=#{ENV['PATH']}\n"
-      print "export #{OS.ld_library_path}=#{ENV[OS.ld_library_path]}\n"
-      print "export MANPATH=#{ENV['MANPATH']}\n"
-      print "export PKG_CONFIG_PATH=#{ENV['PKG_CONFIG_PATH']}\n"
       PackageLoader.loaded_packages.each do |name, package|
         next unless PackageLoader.from_cmd_line? package
-        print "export #{name.to_s.gsub('-', '_').upcase}_ROOT=#{package.prefix}\n"
-        print "export #{name.to_s.gsub('-', '_').upcase}_DIR=#{package.prefix}\n"
-        print "export #{name.to_s.gsub('-', '_').upcase}_PATH=#{package.prefix}\n"
+        env_name = name.to_s.gsub('-', '_').upcase
+        print "export #{env_name}_ROOT=#{package.prefix}\n"
+        print "export #{env_name}_DIR=#{package.prefix}\n"
+        print "export #{env_name}_PATH=#{package.prefix}\n"
+        print "export #{env_name}=#{package.prefix}\n"
       end
       added_env.each do |key, val|
+        print "export #{key}=#{val}\n"
+      end
+      appended_env.each do |key, val|
         print "export #{key}=#{val}\n"
       end
     end

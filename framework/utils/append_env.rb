@@ -1,17 +1,26 @@
 module Utils
   def append_path path
-    ENV['PATH'] = "#{path}:#{ENV['PATH'].gsub(/#{path}:?/, '') if ENV['PATH']}"
+    append_env 'PATH', path
   end
 
   def append_ld_library_path path
-    ENV[OS.ld_library_path] = "#{path}:#{ENV[OS.ld_library_path].gsub(/#{path}:?/, '') if ENV[OS.ld_library_path]}"
+    append_env OS.ld_library_path, path
   end
 
   def append_pkg_config_path path
-    ENV['PKG_CONFIG_PATH'] = "#{path}:#{ENV['PKG_CONFIG_PATH'].gsub(/:?#{path}:?/, '') if ENV['PKG_CONFIG_PATH']}"
+    append_env 'PKG_CONFIG_PATH', path
   end
 
   def append_manpath path
-    ENV['MANPATH'] = "#{path}:#{ENV['MANPATH'].gsub(/:?#{path}:?/, '') if ENV['MANPATH']}"
+    append_env 'MANPATH', path
+  end
+
+  def append_env key, val
+    @@appended_env ||= {}
+    @@appended_env[key] = "#{val}:#{ENV[key].gsub(/:?#{val}:?/, '') if ENV[key]}"
+  end
+
+  def appended_env
+    @@appended_env rescue {}
   end
 end
