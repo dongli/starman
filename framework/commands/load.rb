@@ -62,7 +62,6 @@ EOS
         print "export #{env_name}_ROOT=#{package.prefix}\n"
         print "export #{env_name}_DIR=#{package.prefix}\n"
         print "export #{env_name}_PATH=#{package.prefix}\n"
-        print "export #{env_name}=#{package.prefix}\n"
       end
       added_env.each do |key, val|
         print "export #{key}=#{val}\n"
