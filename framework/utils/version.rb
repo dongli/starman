@@ -7,7 +7,11 @@ class Version
     begin
       @major = Integer(tmp[0])
     rescue
-      CLI.error "Bad version identifer #{CLI.red version_string}!", options
+      if options[:raise_exception]
+        raise "Bad version identifer #{CLI.red version_string}!"
+      else
+        CLI.error "Bad version identifer #{CLI.red version_string}!", options
+      end
     end
     # The alpha, beta, release candidate identifers may be appended to the
     # minor version identifer

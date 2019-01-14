@@ -36,7 +36,11 @@ class PackageSpec
   attr_writer :mirror, :sha256, :version, :group
 
   def version= val
-    @version = val
+    begin
+      @version = Version.new val, raise_exception: true
+    rescue
+      @version = val
+    end
   end
 
   def file_name val = nil
@@ -44,13 +48,13 @@ class PackageSpec
     @file_name = val
     # Assume a reasonable file name pattern to extract version information.
     match = /.*-(\d+\.\d+(\.\d+(\.\d+)?)?)/.match(val)
-    @version = match[1] if match
+    self.version = match[1] if match
   end
   def file_name= val
     @file_name = val
     # Assume a reasonable file name pattern to extract version information.
     match = /.*-(\d+\.\d+(\.\d+(\.\d+)?)?)/.match(val)
-    @version = match[1] if match
+    self.version = match[1] if match
   end
   def file_path
     Settings.cache_root + '/' + file_name
