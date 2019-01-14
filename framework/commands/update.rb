@@ -5,7 +5,7 @@ class UpdateCommand < CommandParser
     super
     @parser.banner += <<-EOS
 
-    >>> starman unpdate
+    >>> starman update
 EOS
     @parser.parse!
   end
