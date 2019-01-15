@@ -124,6 +124,8 @@ EOS
         append_ld_library_path package.lib64 if Dir.exist? package.lib64
       end
       package.export_env
+      added_env.each { |key, val| ENV[key] = val }
+      appended_env.each { |key, val| ENV[key] = val }
     end
   end
 end
