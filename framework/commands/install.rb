@@ -59,7 +59,7 @@ EOS
       gcc.export_env
     end
     PackageLoader.loaded_packages.each do |name, package|
-      if package.has_label? :skip_if_exist and not CommandParser.args[:force]
+      if package.has_label? :skip_if_exist and not (PackageLoader.from_cmd_line?(package) and CommandParser.args[:force])
         if package.skipped?
           CLI.notice "Use system #{CLI.green name}."
           next
