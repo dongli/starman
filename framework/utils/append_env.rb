@@ -17,7 +17,7 @@ module Utils
 
   def append_env key, val
     @@appended_env ||= {}
-    @@appended_env[key] = "#{val}:#{ENV[key].gsub(/:?#{val}:?/, '') if ENV[key]}"
+    @@appended_env[key] = "#{val}:#{ENV[key].gsub(val, '') if ENV[key]}".gsub('::', ':')
   end
 
   def appended_env
