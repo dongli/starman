@@ -12,6 +12,7 @@ class Esmf < Package
   else
     depends_on :lapack
   end
+  depends_on :mpi
   depends_on :netcdf
   depends_on :pnetcdf if use_pnetcdf?
 
