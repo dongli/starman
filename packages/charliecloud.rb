@@ -7,6 +7,6 @@ class Charliecloud < Package
 
   def install
     run 'make'
-    exit
+    run 'make', 'install', "PREFIX=#{prefix}"
   end
 end
