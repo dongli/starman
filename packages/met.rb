@@ -8,7 +8,7 @@ class Met < Package
   depends_on :bufrlib
   depends_on :g2clib
   depends_on :hdf4
-  depends_on :hdf_eos2, version: '2.19v1.00'
+  depends_on :hdf_eos2, version: '2.19'
   depends_on :netcdf
   depends_on :gsl
   depends_on :zlib
