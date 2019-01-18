@@ -8,7 +8,7 @@ class Met < Package
   depends_on :bufrlib
   depends_on :g2clib
   depends_on :hdf4
-  depends_on :hdf_eos2, version: '2.19'
+  depends_on 'hdf-eos2', version: '2.19'
   depends_on :netcdf
   depends_on :gsl
   depends_on :zlib
@@ -25,7 +25,7 @@ class Met < Package
       MET_BUFRLIB=#{Bufrlib.link_root}
       MET_HDF5=#{Hdf5.link_root}
       MET_HDF=#{Hdf4.link_root}
-      MET_HDFEOS=#{Hdf_eos2.link_root}
+      MET_HDFEOS=#{HdfEos2.link_root}
       LDFLAGS='-L#{Netcdf.link_lib} #{OS.mac? ? "-L#{Libpng.lib}" : ''}'
     ]
     if OS.mac?
