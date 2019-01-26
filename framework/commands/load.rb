@@ -56,12 +56,16 @@ EOS
       end
     end
     if @@args[:print]
-      PackageLoader.loaded_packages.each do |name, package|
-        next unless PackageLoader.from_cmd_line? package
-        env_name = name.to_s.gsub('-', '_').upcase
-        print "export #{env_name}_ROOT=#{package.prefix}\n"
-        print "export #{env_name}_DIR=#{package.prefix}\n"
-        print "export #{env_name}_PATH=#{package.prefix}\n"
+      if @@args[:all]
+        print "export STARMAN_INSTALL_ROOT=#{Package.link_root}\n"
+      else
+        PackageLoader.loaded_packages.each do |name, package|
+          next unless PackageLoader.from_cmd_line? package
+          env_name = name.to_s.gsub('-', '_').upcase
+          print "export #{env_name}_ROOT=#{package.prefix}\n"
+          print "export #{env_name}_DIR=#{package.prefix}\n"
+          print "export #{env_name}_PATH=#{package.prefix}\n"
+        end
       end
       added_env.each do |key, val|
         print "export #{key}=#{val}\n"
