@@ -4,7 +4,7 @@ module PackageLoader
   end
 
   def self.loads package_names, options = {}
-    if package_names.empty?
+    if package_names.empty? and options[:empty_is_ok] != true
       package_names = Dir.glob("#{ENV['STARMAN_ROOT']}/packages/*").map { |x| File.basename(x, '.rb') }
     end
     @@direct_packages ||= package_names.map &:to_sym

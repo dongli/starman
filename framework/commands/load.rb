@@ -19,7 +19,7 @@ EOS
       @@args[:verbose] = false
     end
     @parser.parse!
-    parse_packages
+    parse_packages empty_is_ok: true
   end
 
   def run
