@@ -20,11 +20,11 @@ EOS
     @parser.on '-cVALUE', '--compiler-set VALUE', 'Set compiler set tag or name.' do |compiler_set|
       @@args[:compiler_set] = compiler_set
     end
-    @@args[:cc] = 'gcc'
+    @@args[:cc] = OS.mac? ? 'clang' : 'gcc'
     @parser.on '--cc VALUE', 'Set C compiler command.' do |cc|
       @@args[:cc] = cc
     end
-    @@args[:cxx] = 'g++'
+    @@args[:cxx] = OS.mac? ? 'clang++' : 'g++'
     @parser.on '--cxx VALUE', 'Set C++ compiler command.' do |cxx|
       @@args[:cxx] = cxx
     end
