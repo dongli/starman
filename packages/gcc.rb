@@ -5,8 +5,8 @@ class Gcc < Package
   label :compiler
 
   resource :mpfr do
-    url 'http://www.mpfr.org/mpfr-current/mpfr-4.0.1.tar.bz2'
-    sha256 'a4d97610ba8579d380b384b225187c250ef88cfe1d5e7226b89519374209b86b'
+    url 'http://www.mpfr.org/mpfr-current/mpfr-4.0.2.tar.bz2'
+    sha256 'c05e3f02d09e0e9019384cdd58e0f19c64e6db1fd6f5ecf77b4b1c61ca253acc'
   end
 
   resource :gmp do
@@ -51,7 +51,7 @@ class Gcc < Package
     ]
     args << '--enable-lto' unless disable_lto?
     install_resource :mpfr, '.'
-    mv 'mpfr-4.0.1', 'mpfr'
+    mv 'mpfr-4.0.2', 'mpfr'
     install_resource :gmp, '.'
     mv 'gmp-6.1.2', 'gmp'
     install_resource :mpc, '.'
