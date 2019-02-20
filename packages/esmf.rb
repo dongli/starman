@@ -64,8 +64,8 @@ class Esmf < Package
     if with_esmpy?
       work_in 'src/addon/ESMPy' do
         ENV['ESMFMKFILE'] = "#{lib}/esmf.mk"
-        run 'python3', 'setup.py', "--ESMFMKFILE=#{lib}/esmf.mk"
-        run 'python3', 'setup.py', "--prefix=#{prefix}/esmpy"
+        run 'python3', 'setup.py', 'build', "--ESMFMKFILE=#{lib}/esmf.mk"
+        run 'python3', 'setup.py', 'install', "--prefix=#{prefix}"
       end
     end
   end
