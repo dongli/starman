@@ -44,7 +44,7 @@ class Esmf < Package
       ENV['ESMF_LAPACK'] = 'mkl'
     else
       ENV['ESMF_LAPACK'] = 'system'
-      ENV['ESMF_LAPACK_LIBPATH'] = Lapack.link_lib
+      ENV['ESMF_LAPACK_LIBPATH'] = Dir.exist?(Lapack.link_lib64) ? Lapack.link_lib64 : Lapack.link_lib
       ENV['ESMF_LAPACK_LIBS'] = '-llapack -lblas'
     end
     ENV['ESMF_NETCDF'] = 'nc-config'
