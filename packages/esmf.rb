@@ -18,7 +18,7 @@ class Esmf < Package
   depends_on :pnetcdf if use_pnetcdf?
 
   def export_env
-    append_env 'PYTHONPATH', "#{prefix}/esmpy" if Dir.exist? "#{prefix}/esmpy"
+    append_env 'PYTHONPATH', "#{lib}/python3.6/site-packages" if Dir.exist? "#{lib}/python3.6/site-packages"
   end
 
   def install
