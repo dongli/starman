@@ -27,7 +27,7 @@ EOS
       else
         CLI.notice "Uninstall package #{CLI.green package.name} #{CLI.blue package.version} ..."
         PackageLinker.unlink package
-        FileUtils.rm_rf package.prefix
+        FileUtils.rm_rf package.prefix if Dir.exist? package.prefix
         # Remove empty directory.
         FileUtils.rmdir File.dirname(package.prefix) if Dir.glob("#{File.dirname(package.prefix)}/*").size == 0
         History.remove_install package
