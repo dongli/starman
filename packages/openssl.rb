@@ -6,6 +6,8 @@ class Openssl < Package
   label :common
   label :alone
 
+  depends_on :zlib
+
   def install
     # OpenSSL will prefer the PERL environment variable if set over $PATH
     # which can cause some odd edge cases & isn't intended. Unset for safety,
