@@ -82,7 +82,7 @@ class Python3 < Package
     ]
     append_ld_library_path lib
     work_in "#{libexec}/setuptools-#{resource(:setuptools).version}" do
-      run "#{bin}/python3", 'bootstrap.py'
+      run "#{bin}/python3", 'bootsrap.py'
       run "#{bin}/python3", *setup_args
     end
     work_in "#{libexec}/pip" do
