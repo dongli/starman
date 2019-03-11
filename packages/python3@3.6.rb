@@ -59,7 +59,7 @@ class Python3 < Package
     run 'make'
     run 'make', 'install'
     # Install pip related tools.
-    install_resource :setuptools, libexec
+    install_resource :setuptools, "#{libexec}/setuptools"
     install_resource :pip, "#{libexec}/pip", strip_leading_dirs: 1
     install_resource :wheel, "#{libexec}/wheel", strip_leading_dirs: 1
     mkdir site_packages
@@ -81,8 +81,8 @@ class Python3 < Package
       --install-lib=#{site_packages}
     ]
     append_ld_library_path lib
-    work_in "#{libexec}/setuptools-#{resource(:setuptools).version}" do
-      run "#{bin}/python3", 'bootsrap.py'
+    work_in "#{libexec}/setuptools" do
+      run "#{bin}/python3", 'bootstrap.py'
       run "#{bin}/python3", *setup_args
     end
     work_in "#{libexec}/pip" do
