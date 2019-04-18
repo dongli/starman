@@ -28,7 +28,13 @@ class Magics < Package
     args << "-DPROJ4_PATH=#{Proj.link_root}"
     args << "-DENABLE_PYTHON=#{enable_python? ? 'On' : 'Off'}"
     # FIXME: We assume user installed Qt by using Homebrew.
-    args << "-DCMAKE_PREFIX_PATH=#{Dir.glob('/usr/local/Cellar/qt/*').first}" if OS.mac?
+    if OS.mac?
+      CLI.error 'Install libffi first!' if not Dir.exist? '/usr/local/opt/libffi/lib/pkgconfig'
+      ENV['PKG_CONFIG_PATH'] = '/usr/local/opt/libffi/lib/pkgconfig'
+      CLI.error 'Install qt first!' if not Dir.exist? '/usr/local/Cellar/qt'
+      args << "-DCMAKE_PREFIX_PATH=#{Dir.glob('/usr/local/Cellar/qt/*').first}"
+      CLI.error 'Install Jinja2 for Python3 first!' if not success? 'pip3 list | grep Jinja2'
+    end
     ['tools/xml2cc_mv.py', 'tools/xml2cc.py'].each do |file|
       inreplace file, '#!/usr/bin/env python', '#!/usr/bin/env python3'
     end
