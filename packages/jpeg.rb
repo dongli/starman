@@ -1,6 +1,6 @@
 class Jpeg < Package
-  url 'http://www.ijg.org/files/jpegsrc.v9b.tar.gz'
-  sha256 '240fd398da741669bf3c90366f58452ea59041cacc741a489b99f2f6a0bad052'
+  url 'https://fossies.org/linux/misc/jpegsrc.v9c.tar.gz'
+  sha256 '650250979303a649e21f87b5ccd02672af1ea6954b911342ea491f351ceb7122'
   version 'v9b'
 
   label :conflict_with_system if OS.mac?

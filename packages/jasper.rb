@@ -1,6 +1,6 @@
 class Jasper < Package
-  url 'http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz'
-  sha256 '0021684d909de1eb2f7f5a4d608af69000ce37773d51d1fb898e03b8d488087d'
+  url 'http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip'
+  sha256 '6b905a9c2aca2e275544212666eefc4eb44d95d0a57e4305457b407fe63f9494'
 
   depends_on :jpeg
 

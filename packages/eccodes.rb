@@ -31,6 +31,8 @@ class Eccodes < Package
       CLI.warning "Ignore #{CLI.red '--with-python2'} option." if with_python2?
     elsif with_python2?
       args << "-DENABLE_PYTHON=On"
+    else
+      args << "-DENABLE_PYTHON=Off"
     end
     mkdir 'build' do
       run 'cmake', '..', *args
