@@ -34,6 +34,7 @@ class Magics < Package
       CLI.error 'Install qt first!' if not Dir.exist? '/usr/local/Cellar/qt'
       args << "-DCMAKE_PREFIX_PATH=#{Dir.glob('/usr/local/Cellar/qt/*').first}"
       CLI.error 'Install Jinja2 for Python3 first!' if not success? 'pip3 list | grep Jinja2'
+      inreplace 'src/terralib/kernel/TeUtils.cpp', '#include <sys/sysctl.h>', "#define _Atomic volatile\n#include <sys/sysctl.h>"
     end
     ['tools/xml2cc_mv.py', 'tools/xml2cc.py'].each do |file|
       inreplace file, '#!/usr/bin/env python', '#!/usr/bin/env python3'
