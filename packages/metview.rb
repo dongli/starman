@@ -1,6 +1,6 @@
 class Metview < Package
-  url 'https://software.ecmwf.int/wiki/download/attachments/3964985/Metview-5.1.0-Source.tar.gz?api=v2'
-  sha256 '32be5bfe8acb46bce83dad6e73d5db54b730d679eac1de49e5dbbe551e16a0d9'
+  url 'https://software.ecmwf.int/wiki/download/attachments/3964985/Metview-5.5.0-Source.tar.gz'
+  sha256 '3841b097de7bc68e467a0cf7b829cdd0ac4485768eec9ae6426865ce56a48652'
 
   label :common
 
@@ -12,12 +12,52 @@ class Metview < Package
   depends_on :emoslib
   depends_on :magics
 
-  patch :DATA
+  # patch :DATA
+
+  resource 'lsm.10min.mask' do
+    url 'http://download.ecmwf.org/test-data/mir/share/mir/masks/lsm.10min.mask'
+    sha256 '85eb9083f3256756280ed86a8e6cff5c96ab7f7bff99f3cfc77c307199973be4'
+  end
+
+  resource 'lsm.1km.mask' do
+    url 'http://download.ecmwf.org/test-data/mir/share/mir/masks/lsm.1km.mask'
+    sha256 '6a5cfd72b433e9fd54d7f92b9d1965745bdc2882e535760cab29059825aa7a59'
+  end
+
+  resource 'lsm.N128.grib' do
+    url 'http://download.ecmwf.org/test-data/mir/share/mir/masks/lsm.N128.grib'
+    sha256 'ed4028473a3dbc3d1f15e17ed9cd463b54392c4300c500fabaac0a45e5f420e9'
+  end
+
+  resource 'lsm.N256.grib' do
+    url 'http://download.ecmwf.org/test-data/mir/share/mir/masks/lsm.N256.grib'
+    sha256 'a020553f01c9b03099f6f217b2cc598345cd4680797a35afebd15fd36b13dc78'
+  end
+
+  resource 'lsm.N320.grib' do
+    url 'http://download.ecmwf.org/test-data/mir/share/mir/masks/lsm.N320.grib'
+    sha256 'c95880d6506cb7a1fcb5576dada21c07e7cbc13ffd5a2fae5fd3cd7c92293120'
+  end
+
+  resource 'lsm.O1280.grib' do
+    url 'http://download.ecmwf.org/test-data/mir/share/mir/masks/lsm.O1280.grib'
+    sha256 'e756e038a83de9b2728915f38228b35aff3c194547ca4a2cd14170f559872c88'
+  end
+
+  resource 'lsm.O320.grib' do
+    url 'http://download.ecmwf.org/test-data/mir/share/mir/masks/lsm.O320.grib'
+    sha256 '2e08f031a458b2af57f148f1956aac295f78507f7d8ed009e9aeabcaeb9c9469'
+  end
+
+  resource 'lsm.O640.grib' do
+    url 'http://download.ecmwf.org/test-data/mir/share/mir/masks/lsm.O640.grib'
+    sha256 '67e38ca5d76be6021a7268dcb706e6015f8e4b4bcfaa1fc32de51314b76e082a'
+  end
 
   def install
     args = std_cmake_args
-    args << '-DENABLE_QT5=On'
-    args << '-DENABLE_ODB=On'
+    args << '-DENABLE_QT5=ON'
+    args << '-DENABLE_ODB=ON'
     args << "-DECCODES_PATH=#{Eccodes.link_root}"
     args << "-DEMOS_PATH=#{Emoslib.link_root}"
     args << "-DMAGICS_PATH=#{Magics.link_root}"
@@ -26,9 +66,20 @@ class Metview < Package
     args << "-DPROJ4_PATH=#{Proj.link_root}"
     # FIXME: We assume user installed Qt by using Homebrew.
     args << "-DCMAKE_PREFIX_PATH='#{Dir.glob('/usr/local/Cellar/qt/*').first if OS.mac?};#{Gdbm.link_root}'"
+    # Walk around upstream bug on mac.
+    inreplace 'metview/CMakeLists.txt', '-Werror=return-type', '' if OS.mac?
     inreplace 'CMakeLists.txt', 'find_path( GDBM_INCLUDE gdbm.h )',
       "find_path( GDBM_INCLUDE gdbm.h )\ninclude_directories(${GDBM_INCLUDE})\nlink_directories(${GDBM_LIB})"
     mkdir 'build' do
+      mkdir 'share/mir/masks'
+      install_resource 'lsm.10min.mask', 'share/mir/masks', plain_file: true
+      install_resource 'lsm.1km.mask', 'share/mir/masks', plain_file: true
+      install_resource 'lsm.N128.grib', 'share/mir/masks', plain_file: true
+      install_resource 'lsm.N256.grib', 'share/mir/masks', plain_file: true
+      install_resource 'lsm.N320.grib', 'share/mir/masks', plain_file: true
+      install_resource 'lsm.O1280.grib', 'share/mir/masks', plain_file: true
+      install_resource 'lsm.O320.grib', 'share/mir/masks', plain_file: true
+      install_resource 'lsm.O640.grib', 'share/mir/masks', plain_file: true
       run 'cmake', '..', *args
       run 'make'
       run 'make', 'install'
