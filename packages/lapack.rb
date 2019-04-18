@@ -5,6 +5,9 @@ class Lapack < Package
   depends_on :cmake
 
   def install
+    inreplace 'SRC/dsytrf_aa_2stage.f', 'DLACGV, ', ''
+    inreplace 'SRC/ssytrf_aa_2stage.f', 'SLACGV, ', ''
+
     mkdir 'build' do
       run 'cmake', '..',
                    '-DBUILD_SHARED_LIBS:BOOL=ON',
