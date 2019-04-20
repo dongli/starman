@@ -64,6 +64,7 @@ class Metview < Package
     args << "-DNETCDF_PATH=#{Netcdf.link_root}"
     args << "-DODB_API_PATH=#{OdbApi.link_root}"
     args << "-DPROJ4_PATH=#{Proj.link_root}"
+    args << "-DPYTHON_EXECUTABLE=$(which python3)"
     # FIXME: We assume user installed Qt by using Homebrew.
     args << "-DCMAKE_PREFIX_PATH='#{Dir.glob('/usr/local/Cellar/qt/*').first if OS.mac?};#{Gdbm.link_root}'"
     # Walk around upstream bug on mac.
