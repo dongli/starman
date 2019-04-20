@@ -38,6 +38,12 @@ class Vim < Package
     file_name 'vim_ncl.f4019e.zip'
   end
 
+  resource :numbertoggle do
+    url 'https://github.com/jeffkreeftmeijer/vim-numbertoggle/archive/2.1.1.zip'
+    sha256 '29212786f53743a55ac8f54f681e4287110e67da953f9cf615ba7eb4570b54ed'
+    file_name 'numbertoggle.cfaecb9.zip'
+  end
+
   def install
     args = %W[
       --prefix=#{prefix}
@@ -61,6 +67,7 @@ class Vim < Package
       install_resource :neosnippet, '.'
       install_resource :nerdtree, '.'
       install_resource :vim_ncl, '.'
+      install_resource :numbertoggle, '.'
     end
   end
 end
