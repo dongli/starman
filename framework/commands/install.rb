@@ -50,6 +50,15 @@ EOS
   end
 
   def run
+    # Clean up system environment to avoid possible pollution.
+    clean_path = []
+    ENV['PATH'].split(':').each do |path|
+      if path.include? Settings.install_root and not clean_path.include? path
+        clean_path << path
+      end
+    end
+    clean_path << '/usr/local/bin' << '/bin' << '/usr/bin' << '/sbin'
+    ENV['PATH'] = clean_path.join(':')
     if CompilerSet.c.command.include?('Packages/gcc')
       PackageLoader.loads ['gcc']
       gcc = PackageLoader.loaded_packages[:gcc]
