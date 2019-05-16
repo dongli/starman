@@ -31,7 +31,7 @@ EOS
             option[:value] = true
           end
         else
-          @parser.on "--#{name.to_s.gsub('_', '-')} VALUE", option[:desc] do |value|
+          @parser.on "--#{name.to_s.gsub('_', '-')} VALUE", "#{option[:desc]}#{' (' + option[:choices].join(', ') + ')' if option.has_key? :choices}" do |value|
             if option[:choices] and not option[:choices].include? value
               CLI.error "Invalid value #{CLI.red value} for argument #{CLI.blue '--' + name.to_s.gsub('_', '-')}! Choose one of #{option[:choices]}."
             end

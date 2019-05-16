@@ -56,7 +56,6 @@ class Gcc < Package
     args = %W[
       --prefix=#{prefix}
       --build=#{build_name}
-      --libdir=#{lib}/gcc/#{version.to_s.slice(/\d/)}
       --enable-languages=c,c++,fortran
       --disable-multilib
       --enable-libstdcxx-time=yes
