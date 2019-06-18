@@ -68,8 +68,8 @@ module PackageDSL
     spec.resource name, res
   end
 
-  def patch data = nil, &block
-    if data == :DATA
+  def patch options=nil, &block
+    if options == :DATA
       data = ''
       start = false
       File.open("#{ENV['STARMAN_ROOT']}/packages/#{Package.package_name self}.rb", 'r').each do |line|
@@ -80,6 +80,8 @@ module PackageDSL
         data << line if start
       end
       spec.patch data
+    elsif options.class == Hash
+      spec.patch options, &block
     else
       spec.patch &block
     end

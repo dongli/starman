@@ -111,7 +111,7 @@ EOS
               when String
                 patch_data patch
               when PackageSpec
-                patch_file "#{Settings.cache_root}/#{patch.file_name}"
+                patch_file "#{Settings.cache_root}/#{patch.file_name}", patch.options
               else
                 CLI.error 'Unprocessed patch!'
               end
@@ -128,6 +128,7 @@ EOS
       end
       # Change environment to affect following packages.
       append_path package.bin if package.bin
+      append_pkg_config_path package.lib + '/pkgconfig'
       if not package.has_label? :conflict_with_system
         append_ld_library_path package.lib if Dir.exist? package.lib
         append_ld_library_path package.lib64 if Dir.exist? package.lib64

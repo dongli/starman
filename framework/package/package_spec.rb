@@ -73,7 +73,7 @@ class PackageSpec
     @dependencies[val.to_sym] = options
   end
 
-  attr_reader :options
+  attr_accessor :options
   def option val, options = {}
     @options[val] ||= options
   end
@@ -85,12 +85,14 @@ class PackageSpec
   end
 
   attr_reader :patches
-  def patch data = nil, &block
-    if data
+  def patch options=nil, &block
+    if options.class == String
       @patches << data
     else
       spec = PackageSpec.new
       spec.instance_exec &block
+      return if @patches.any? { |patch| patch.sha256 == spec.sha256 }
+      spec.options = options if options.class == Hash
       @patches << spec
     end
   end
