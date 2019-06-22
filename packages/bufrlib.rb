@@ -5,7 +5,7 @@ class Bufrlib < Package
 
   def install
     flags = CompilerSet.fortran.gcc? ? '-fno-second-underscore' : ''
-    run '$CC -c `./getdefflags_C.sh` *.c'
+    run '$CC -DUNDERSCORE -c `./getdefflags_C.sh` *.c'
     run '$FC -c `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"`', flags
     run 'ar crv libbufr.a *.o'
     mkdir inc
