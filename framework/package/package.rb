@@ -45,7 +45,11 @@ class Package
     Settings.link_root self
   end
   def self.link_root
-    self.new.link_root
+    if self == Package
+      "#{Settings.install_root}/#{Settings.compiler_set}"
+    else
+      self.new.link_root
+    end
   end
 
   [:bin, :inc, :lib, :lib64, :libexec, :share, :man].each do |dir|

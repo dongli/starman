@@ -1,7 +1,7 @@
 class HdfEos2 < Package
-  url 'https://observer.gsfc.nasa.gov/ftp/edhs/hdfeos/latest_release/HDF-EOS2.20v1.00.tar.Z'
-  sha256 'cb0f900d2732ab01e51284d6c9e90d0e852d61bba9bce3b43af0430ab5414903'
-  version '2.20'
+  url 'https://observer.gsfc.nasa.gov/ftp/edhs/hdfeos/previous_releases/HDF-EOS2.19v1.00.tar.Z'
+  sha256 '3fffa081466e85d2b9436d984bc44fe97bbb33ad9d8b7055a322095dc4672e31'
+  version '2.19'
 
   depends_on :hdf4
   depends_on :jpeg

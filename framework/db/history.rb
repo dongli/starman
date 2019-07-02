@@ -29,22 +29,25 @@ class History
 
   def self.installed? package
     res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split("\n")
-    return nil if res.empty?
-    res.each do |record|
-      columns = record.split('|')
+    return false if res.empty?
+    res.map! { |record| record.split('|') }
+    res.sort_by! { |columns| columns[2] }
+    res.each do |columns|
       next unless package.has_label?(:common) or package.has_label?(:compiler) or columns[3] =~ /#{Settings.compiler_set}/
       # If old version package has been installed, we should tell user that
       # he/she must use force option to override with newer version.
       if package.version != columns[2] or package.prefix != columns[3]
         if CommandParser.args[:force]
-          return :old_version_installed_but_unlink_it
+          res = :old_version_installed_but_unlink_it
         else
           package.version = columns[2]
-          return :old_version_installed
+          res = :old_version_installed
         end
       else
+        # If name and version match, just return.
         return true
       end
     end
+    res
   end
 end

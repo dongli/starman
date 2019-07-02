@@ -80,7 +80,7 @@ class Python3 < Package
       --install-lib=#{site_packages}
     ]
     append_ld_library_path lib
-    work_in "#{libexec}/setuptools-#{resource(:setuptools).version}" do
+    work_in "#{libexec}/setuptools" do
       run "#{bin}/python3", 'bootstrap.py'
       run "#{bin}/python3", *setup_args
     end

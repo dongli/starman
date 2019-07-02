@@ -7,8 +7,8 @@ module Utils
     CLI.error 'Failed to apply patch!' unless $?.success?
   end
 
-  def patch_file path
-    system "patch --ignore-whitespace -N -p0 < #{path}"
+  def patch_file path, options={}
+    system "patch --ignore-whitespace -N -p#{options[:strip] || 0} < #{path}"
     CLI.error 'Failed to apply patch!' unless $?.success?
   end
 end

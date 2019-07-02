@@ -1,12 +1,12 @@
 class Gcc < Package
-  url 'http://mirrors.ustc.edu.cn/gnu/gcc/gcc-8.2.0/gcc-8.2.0.tar.xz'
-  sha256 '196c3c04ba2613f893283977e6011b2345d1cd1af9abeac58e916b1aab3e0080'
+  url 'http://mirrors.ustc.edu.cn/gnu/gcc/gcc-9.1.0/gcc-9.1.0.tar.xz'
+  sha256 '79a66834e96a6050d8fe78db2c3b32fb285b230b855d0a66288235bc04b327a0'
 
   label :compiler
 
   resource :mpfr do
-    url 'http://www.mpfr.org/mpfr-current/mpfr-4.0.1.tar.bz2'
-    sha256 'a4d97610ba8579d380b384b225187c250ef88cfe1d5e7226b89519374209b86b'
+    url 'http://www.mpfr.org/mpfr-current/mpfr-4.0.2.tar.bz2'
+    sha256 'c05e3f02d09e0e9019384cdd58e0f19c64e6db1fd6f5ecf77b4b1c61ca253acc'
   end
 
   resource :gmp do
@@ -30,6 +30,16 @@ class Gcc < Package
     append_ld_library_path "#{lib}/gcc/lib64"
   end
 
+  def build_name
+    if OS.mac?
+      'x86_64-apple-darwin'
+    elsif OS.linux?
+      'x86_64-pc-linux-gnu'
+    else
+      'unknown'
+    end
+  end
+
   def install
     ENV['LIBRARY_PATH'] = ''
     if CompilerSet.c.version <= '4.8.5'
@@ -37,9 +47,15 @@ class Gcc < Package
       inreplace 'gcc/Makefile.in', 'mv tmp-specs $(SPECS)', '#mv tmp-specs $(SPECS)'
       self.disable_lto = true
     end
+    if OS.redhat?
+      CLI.warning 'STARMAN is trying hard to fix GCC build for Red Hat Enterprise Linux!'
+      Dir.glob('libgfortran/generated/*.F90').concat(['libgfortran/libgfortran.h', 'libgfortran/ieee/ieee_exceptions.F90', 'libgfortran/ieee/ieee_arithmetic.F90']).each do |file|
+        inreplace file, '"config.h"', "\"#{pwd}/../gcc-build/#{build_name}/libgfortran/config.h\""
+      end
+    end
     args = %W[
       --prefix=#{prefix}
-      --libdir=#{lib}/gcc/#{version.to_s.slice(/\d/)}
+      --build=#{build_name}
       --enable-languages=c,c++,fortran
       --disable-multilib
       --enable-libstdcxx-time=yes
@@ -51,7 +67,7 @@ class Gcc < Package
     ]
     args << '--enable-lto' unless disable_lto?
     install_resource :mpfr, '.'
-    mv 'mpfr-4.0.1', 'mpfr'
+    mv 'mpfr-4.0.2', 'mpfr'
     install_resource :gmp, '.'
     mv 'gmp-6.1.2', 'gmp'
     install_resource :mpc, '.'
@@ -60,9 +76,9 @@ class Gcc < Package
     mv 'isl-0.18', 'isl'
     mkdir '../gcc-build' do
       run "../gcc-#{version}/configure", *args
-      run 'make', '-j4', 'bootstrap'
+      run 'make', '-j8', 'bootstrap'
       #run 'ulimit -s 32768 && make -k check' unless skip_test?
-      run 'make', '-j4', 'install'
+      run 'make', '-j8', 'install'
     end
   end
 

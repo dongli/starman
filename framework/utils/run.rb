@@ -16,4 +16,10 @@ module Utils
       FileUtils.rm_f "#{Settings.cache_root}/stderr.#{Process.pid}"
     end
   end
+
+  def success? cmd, *options
+    cmd_line = "#{cmd} #{options.select { |option| option.class == String }.join(' ')}"
+    system "#{cmd_line} &> /dev/null"
+    $?.success?
+  end
 end

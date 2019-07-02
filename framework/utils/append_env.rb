@@ -1,4 +1,6 @@
 module Utils
+  @@appended_env = {}
+
   def append_path path
     append_env 'PATH', path
   end
@@ -16,8 +18,9 @@ module Utils
   end
 
   def append_env key, val
-    @@appended_env ||= {}
-    @@appended_env[key] = "#{val}:#{ENV[key].gsub(val, '') if ENV[key]}".gsub('::', ':')
+    @@appended_env[key] = ENV[key] if not @@appended_env.has_key? key
+    @@appended_env[key] = "#{val}:#{@@appended_env[key].gsub(val, '') if @@appended_env[key]}".gsub('::', ':')
+    ENV[key] = @@appended_env[key]
   end
 
   def appended_env

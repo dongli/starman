@@ -31,7 +31,7 @@ EOS
             option[:value] = true
           end
         else
-          @parser.on "--#{name.to_s.gsub('_', '-')} VALUE", option[:desc] do |value|
+          @parser.on "--#{name.to_s.gsub('_', '-')} VALUE", "#{option[:desc]}#{' (' + option[:choices].join(', ') + ')' if option.has_key? :choices}" do |value|
             if option[:choices] and not option[:choices].include? value
               CLI.error "Invalid value #{CLI.red value} for argument #{CLI.blue '--' + name.to_s.gsub('_', '-')}! Choose one of #{option[:choices]}."
             end
@@ -50,6 +50,15 @@ EOS
   end
 
   def run
+    # Clean up system environment to avoid possible pollution.
+    clean_path = []
+    ENV['PATH'].split(':').each do |path|
+      if path.include? Settings.install_root and not clean_path.include? path
+        clean_path << path
+      end
+    end
+    clean_path << '/usr/local/bin' << '/bin' << '/usr/bin' << '/sbin'
+    ENV['PATH'] = clean_path.join(':')
     if CompilerSet.c.command.include?('Packages/gcc')
       PackageLoader.loads ['gcc']
       gcc = PackageLoader.loaded_packages[:gcc]
@@ -102,7 +111,7 @@ EOS
               when String
                 patch_data patch
               when PackageSpec
-                patch_file "#{Settings.cache_root}/#{patch.file_name}"
+                patch_file "#{Settings.cache_root}/#{patch.file_name}", patch.options
               else
                 CLI.error 'Unprocessed patch!'
               end
@@ -119,6 +128,7 @@ EOS
       end
       # Change environment to affect following packages.
       append_path package.bin if package.bin
+      append_pkg_config_path package.lib + '/pkgconfig'
       if not package.has_label? :conflict_with_system
         append_ld_library_path package.lib if Dir.exist? package.lib
         append_ld_library_path package.lib64 if Dir.exist? package.lib64

@@ -18,7 +18,7 @@ class Esmf < Package
   depends_on :pnetcdf if use_pnetcdf?
 
   def export_env
-    append_env 'PYTHONPATH', "#{prefix}/esmpy" if Dir.exist? "#{prefix}/esmpy"
+    append_env 'PYTHONPATH', "#{lib}/python3.6/site-packages" if Dir.exist? "#{lib}/python3.6/site-packages"
   end
 
   def install
@@ -44,7 +44,7 @@ class Esmf < Package
       ENV['ESMF_LAPACK'] = 'mkl'
     else
       ENV['ESMF_LAPACK'] = 'system'
-      ENV['ESMF_LAPACK_LIBPATH'] = Lapack.link_lib
+      ENV['ESMF_LAPACK_LIBPATH'] = Dir.exist?(Lapack.link_lib64) ? Lapack.link_lib64 : Lapack.link_lib
       ENV['ESMF_LAPACK_LIBS'] = '-llapack -lblas'
     end
     ENV['ESMF_NETCDF'] = 'nc-config'
@@ -57,6 +57,9 @@ class Esmf < Package
     else
       CLI.error "You should set #{CLI.blue '--mpi-type'} option!"
     end
+    inreplace 'build_config/Linux.gfortran.default/ESMC_Conf.h', {
+      'typedef size_t ESMCI_FortranStrLenArg;' => "#include <stddef.h>\ntypedef size_t ESMCI_FortranStrLenArg;"
+    }
     run 'make', '-j8'
     run 'make', 'unit_tests' if not skip_test?
     run 'make', 'install'

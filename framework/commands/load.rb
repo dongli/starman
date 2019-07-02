@@ -19,7 +19,7 @@ EOS
       @@args[:verbose] = false
     end
     @parser.parse!
-    parse_packages
+    parse_packages empty_is_ok: true
   end
 
   def run
@@ -41,8 +41,8 @@ EOS
         next if (not PackageLoader.from_cmd_line? package and CommandParser.args[:without_deps]) or package.skipped?
         if package.has_label? :group
           CLI.notice "Load package group #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]
-        elsif History.installed?(package) == false
-          CLI.warning "Package #{CLI.red package.name}@#{CLI.blue package.name} has not been installed."
+        elsif not History.installed?(package)
+          CLI.warning "Package #{CLI.red package.name}@#{CLI.blue package.version} has not been installed."
         else
           CLI.notice "Load package #{CLI.green package.name}@#{CLI.blue package.version} ..." if CommandParser.args[:verbose]
           append_path package.bin if Dir.exist? package.bin
@@ -56,12 +56,16 @@ EOS
       end
     end
     if @@args[:print]
-      PackageLoader.loaded_packages.each do |name, package|
-        next unless PackageLoader.from_cmd_line? package
-        env_name = name.to_s.gsub('-', '_').upcase
-        print "export #{env_name}_ROOT=#{package.prefix}\n"
-        print "export #{env_name}_DIR=#{package.prefix}\n"
-        print "export #{env_name}_PATH=#{package.prefix}\n"
+      if @@args[:all]
+        print "export STARMAN_INSTALL_ROOT=#{Package.link_root}\n"
+      else
+        PackageLoader.loaded_packages.each do |name, package|
+          next unless PackageLoader.from_cmd_line? package
+          env_name = name.to_s.gsub('-', '_').upcase
+          print "export #{env_name}_ROOT=#{package.prefix}\n"
+          print "export #{env_name}_DIR=#{package.prefix}\n"
+          print "export #{env_name}_PATH=#{package.prefix}\n"
+        end
       end
       added_env.each do |key, val|
         print "export #{key}=#{val}\n"

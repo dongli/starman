@@ -1,6 +1,6 @@
 class Magics < Package
-  url 'https://software.ecmwf.int/wiki/download/attachments/3473464/Magics-3.1.0-Source.tar.gz?api=v2'
-  sha256 'c5c1cf1d1c06982927a40b61245b656ea8cadabe00201418bc69ccbe4156d658'
+  url 'https://confluence.ecmwf.int/download/attachments/3473464/Magics-4.0.2-Source.tar.gz'
+  sha256 '2cf7bfdaac4b6921a86d1090bf61258862d5ff47ee8770a42af3436820ea7868'
 
   label :common
 
@@ -10,8 +10,6 @@ class Magics < Package
   depends_on :eccodes
   depends_on :emoslib
   depends_on 'odb-api'
-
-  option 'enable-python', 'Enable Python interface.'
 
   def install
     args = std_cmake_args
@@ -26,9 +24,15 @@ class Magics < Package
     args << '-DENABLE_ODB=On'
     args << "-DODB_API_PATH=#{OdbApi.link_root}"
     args << "-DPROJ4_PATH=#{Proj.link_root}"
-    args << "-DENABLE_PYTHON=#{enable_python? ? 'On' : 'Off'}"
+    args << "-DPYTHON_EXECUTABLE=$(which python3)"
     # FIXME: We assume user installed Qt by using Homebrew.
-    args << "-DCMAKE_PREFIX_PATH=#{Dir.glob('/usr/local/Cellar/qt/*').first}" if OS.mac?
+    if OS.mac?
+      CLI.error 'Install libffi first!' if not Dir.exist? '/usr/local/opt/libffi/lib/pkgconfig'
+      ENV['PKG_CONFIG_PATH'] = '/usr/local/opt/libffi/lib/pkgconfig'
+      CLI.error 'Install qt first!' if not Dir.exist? '/usr/local/Cellar/qt'
+      args << "-DCMAKE_PREFIX_PATH=#{Dir.glob('/usr/local/Cellar/qt/*').first}"
+      inreplace 'src/terralib/kernel/TeUtils.cpp', '#include <sys/sysctl.h>', "#define _Atomic volatile\n#include <sys/sysctl.h>"
+    end
     ['tools/xml2cc_mv.py', 'tools/xml2cc.py'].each do |file|
       inreplace file, '#!/usr/bin/env python', '#!/usr/bin/env python3'
     end
