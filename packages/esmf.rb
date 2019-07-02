@@ -6,14 +6,20 @@ class Esmf < Package
   option 'use-mkl', 'Use MKL for LAPACK dependency.'
   option 'use-pnetcdf', 'Use Parallel-NetCDF dependency.'
   option 'mpi-type', 'Set MPI type.', type: :string, choices: ['mpich', 'mpich2', 'mpich3', 'lam', 'openmpi', 'intelmpi']
+  option 'with-esmpy', 'Install ESMPy interface.'
 
   if use_mkl?
     CLI.notice 'Use MKL for LAPACK.'
   else
     depends_on :lapack
   end
+  depends_on :mpi
   depends_on :netcdf
   depends_on :pnetcdf if use_pnetcdf?
+
+  def export_env
+    append_env 'PYTHONPATH', "#{prefix}/esmpy" if Dir.exist? "#{prefix}/esmpy"
+  end
 
   def install
     ENV['ESMF_DIR'] = pwd
@@ -54,5 +60,13 @@ class Esmf < Package
     run 'make', '-j8'
     run 'make', 'unit_tests' if not skip_test?
     run 'make', 'install'
+
+    if with_esmpy?
+      work_in 'src/addon/ESMPy' do
+        ENV['ESMFMKFILE'] = "#{lib}/esmf.mk"
+        run 'python3', 'setup.py', 'build', "--ESMFMKFILE=#{lib}/esmf.mk"
+        run 'python3', 'setup.py', 'install', "--prefix=#{prefix}"
+      end
+    end
   end
 end
