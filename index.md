@@ -52,6 +52,19 @@ compiler_sets:
     cxx: /usr/bin/g++
     fortran: /usr/bin/gfortran
 ```
+When you want to use MPI, you may need to specify the MPI compiler wrappers for each languages if MPI library is not installed by STARMAN:
+```yaml
+...
+compiler_sets:
+  gcc_4.8.5:
+    c: /usr/bin/gcc
+    mpi_c: <path to mpicc or mpiicc>
+    cxx: /usr/bin/g++
+    mpi_cxx: <path to mpicxx or mpiicpc>
+    fortran: /usr/bin/gfortran
+    mpi_fortran: <path to mpif90 or mpiifort>
+```
+Then STARMAN will use those `mpi_*`.
 
 ## Step 4
 
