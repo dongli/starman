@@ -11,7 +11,9 @@ class Eccodes < Package
   option 'with-python3', 'Build Python 3 bindings.'
 
   def export_env
-    append_env 'PYTHONPATH', "#{Dir.glob(lib + '/python*').first}/site-packages"
+    if Dir.exist? lib + '/python*'
+      append_env 'PYTHONPATH', "#{Dir.glob(lib + '/python*').first}/site-packages"
+    end
   end
 
   def install
