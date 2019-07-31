@@ -43,7 +43,7 @@ class PackageLinker
         dir = "#{package.link_root}/#{subdir}"
         FileUtils.rm_f "#{dir}/#{basename}"
         # Remove empty directory.
-        FileUtils.rmdir dir if Dir.glob("#{dir}/*").size == 0
+        FileUtils.rmdir dir if Dir.glob("#{dir}/*").size == 0 rescue nil
       end
     else
       package.links.each do |src, dst|
