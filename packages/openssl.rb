@@ -29,6 +29,7 @@ class Openssl < Package
 
     args = %W[
       --prefix=#{prefix}
+      --with-zlib-include=#{Zlib.inc}
       no-ssl2
       zlib-dynamic
       shared
