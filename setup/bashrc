@@ -1,6 +1,10 @@
 export STARMAN_ROOT=$(cd $(dirname $BASH_SOURCE) && cd .. && pwd)
 export PATH=$STARMAN_ROOT:$PATH
 
+if [[ -d $STARMAN_ROOT/ruby/bin ]]; then
+  export PATH=$STARMAN_ROOT/ruby/bin:$PATH
+fi
+
 function before_command {
   if [[ "$BASH_COMMAND" =~ .*starman[[:space:]]+(load) ]]; then
     res=$($BASH_COMMAND --print)

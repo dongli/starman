@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Check Ruby availability.
-RUBY_URL=https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.1.tar.gz
-RUBY_SHA=93fafd57a724974b951957c522cdc4478a6bdc2e
+RUBY_URL=https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.gz
+RUBY_SHA=2347ed6ca5490a104ebd5684d2b9b5eefa6cd33c
 RUBY_PACKAGE=$(basename $RUBY_URL)
 RUBY_PACKAGE_DIR=$(basename $RUBY_PACKAGE .tar.gz)
 
