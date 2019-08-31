@@ -1,7 +1,7 @@
 module Utils
   def run cmd, *options
     cmd_line = "#{cmd} #{options.select { |option| option.class == String }.join(' ')}"
-    if CommandParser.args[:verbose]
+    if CommandParser.args[:verbose] or options.include? :verbose
       CLI.blue_arrow cmd_line
       system cmd_line
     else

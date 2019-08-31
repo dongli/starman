@@ -16,5 +16,7 @@ class Munge < Package
     run './configure', *args
     run 'make'
     run 'make', 'install'
+    run "dd if=/dev/random bs=1 count=1024 > #{prefix}/etc/munge/munge.key", :verbose
+    run "chmod 0400 #{prefix}/etc/munge/munge.key"
   end
 end

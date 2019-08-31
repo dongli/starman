@@ -56,8 +56,9 @@ class Python3 < Package
       ENV['LDFLAGS'] = "-L#{Libffi.common_lib} -L#{Libffi.common_lib64} -lffi"
     end
     run './configure', *args
-    run 'make'
-    run 'make', 'install'
+    run 'make', skip_test? ? 'build_all' : ''
+    run 'make', skip_test? ? 'altinstall' : 'install'
+    run "ln -s #{bin}/python3.6 #{bin}/python3" if not File.exist? "#{bin}/python3"
     # Install pip related tools.
     install_resource :setuptools, "#{libexec}/setuptools"
     install_resource :pip, "#{libexec}/pip", strip_leading_dirs: 1
