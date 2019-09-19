@@ -20,6 +20,8 @@ class Ncurses < Package
     ]
     run './configure', *args
     run 'make', 'install'
+    # Why there is no libncurses.so file?
+    run 'ln -s', lib + '/libncursesw.' + OS.soname, lib + '/libncurses.' + OS.soname
   end
 end
 

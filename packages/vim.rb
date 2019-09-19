@@ -7,6 +7,7 @@ class Vim < Package
   label :common
 
   depends_on :lua
+  depends_on :ncurses
 
   resource :neocomplete do
     url 'https://github.com/Shougo/neocomplete.vim/archive/4be617947f3fcf2d725fab20b0e12f8b46c9e2f3.zip'
@@ -55,6 +56,8 @@ class Vim < Package
       --without-x
       --with-tlib=ncurses
       --with-features=huge
+      CPPFLAGS='-I#{Ncurses.inc}'
+      LDFLAGS='-L#{Ncurses.lib}'
     ]
     run './configure', *args
     run 'make'
