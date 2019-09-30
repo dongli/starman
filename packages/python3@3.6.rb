@@ -7,6 +7,7 @@ class Python3 < Package
   depends_on :readline
   depends_on :openssl
   depends_on :libffi
+  depends_on :zlib
 
   option 'without-dtrace', 'Disable DTrace support.'
 
@@ -56,6 +57,10 @@ class Python3 < Package
       ENV['LDFLAGS'] = "-L#{Libffi.common_lib} -L#{Libffi.common_lib64} -lffi"
     end
     run './configure', *args
+    # Fix missing zlib module error.
+    inreplace 'Modules/Setup', {
+      '#zlib zlibmodule.c -I$(prefix)/include -L$(exec_prefix)/lib -lz' => "zlib zlibmodule.c -I#{Zlib.link_inc} -L#{Zlib.link_lib} -lz"
+    }
     run 'make', skip_test? ? 'build_all' : ''
     run 'make', skip_test? ? 'altinstall' : 'install'
     run "ln -s #{bin}/python3.6 #{bin}/python3" if not File.exist? "#{bin}/python3"
