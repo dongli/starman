@@ -1,12 +1,15 @@
 class Vim < Package
-  url 'https://github.com/vim/vim/archive/v8.1.1150.tar.gz'
-  sha256 '3f5a614ffe829a5d1ce47ae1ccaa471af105c33a5e1b2316aabd4dd9894ec7c7'
-  version '8.1.1150'
-  file_name 'vim-8.0.1150.tar.gz'
+  url 'https://github.com/vim/vim/archive/v8.1.2102.tar.gz'
+  sha256 'e2ec8449a8a419db73d266762cef20fd125cf9da9516832b9211f970b03c0d7c'
+  version '8.1.2102'
+  file_name 'vim-8.1.2102.tar.gz'
 
   label :common
 
+  option 'with-python', 'Build Python3 support.'
+
   depends_on :lua
+  depends_on :python3 if with_python?
   depends_on :ncurses
 
   resource :neocomplete do
@@ -59,6 +62,10 @@ class Vim < Package
       CPPFLAGS='-I#{Ncurses.inc}'
       LDFLAGS='-L#{Ncurses.lib}'
     ]
+    if with_python?
+      args << '--enable-python3interp=yes'
+      args << "--with-python3-command='#{Python3.bin}/python3'"
+    end
     run './configure', *args
     run 'make'
     run 'make', 'install', "prefix=#{prefix}", 'STRIP=true'

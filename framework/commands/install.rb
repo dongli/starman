@@ -80,7 +80,9 @@ EOS
       elsif res == true
         CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} has been installed."
       elsif res == :old_version_installed
-        CLI.warning "Package #{CLI.blue package.name} #{CLI.red package.version} has been installed! Use --force/-f to override."
+        if package.from_cmd_line?
+          CLI.warning "Package #{CLI.blue package.name} #{CLI.red package.version} has been installed! Use --force/-f to override."
+        end
       else
         if res == :old_version_installed_but_unlink_it
           CLI.notice "Unlink package #{CLI.green package.name} ..."

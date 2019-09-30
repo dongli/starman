@@ -41,7 +41,7 @@ EOS
         break
       end
     end
-    Settings.init
+    Settings.init silent: true
     History.init
     CompilerSet.init
     # NOTE: Package names should be prior to options.

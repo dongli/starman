@@ -96,7 +96,7 @@ class Settings
         CLI.error "#{CLI.red 'compiler_set'} is not set in #{CLI.blue conf_file}!"
       end
       set_compile_env
-      if CommandParser.args[:verbose]
+      if CommandParser.args[:verbose] and not options[:silent]
         CLI.notice "Use #{CLI.blue compiler_set} compilers."
         ['CC', 'CXX', 'FC', 'MPICC', 'MPICXX', 'MPIFC', 'MPIF90', 'MPIF77'].each do |env|
           CLI.notice "#{env} = #{CLI.blue ENV[env]}" if ENV[env]

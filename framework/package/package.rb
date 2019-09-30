@@ -136,6 +136,10 @@ class Package
     return false
   end
 
+  def from_cmd_line?
+    PackageLoader.from_cmd_line? self
+  end
+
   # Default actions.
   def post_install
   end
