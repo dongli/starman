@@ -8,11 +8,15 @@ class Libpng < Package
     label :skip_if_exist, library_file: 'libpng.so'
   end
 
+  depends_on :zlib
+
   def install
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
       --disable-silent-rules
+      CPPFLAGS='-I#{Zlib.link_inc}'
+      LDFLAGS='-L#{Zlib.link_lib}'
     ]
     run './configure', *args
     run 'make'
