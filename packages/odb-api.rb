@@ -16,15 +16,17 @@ class OdbApi < Package
     args << '-DENABLE_FORTRAN=On'
     args << "-DENABLE_PYTHON=#{with_python? ? 'On' : 'Off'}"
     args << "-DNETCDF_PATH='#{link_inc}'"
-    args << "-DCURSES_INCLUDE_PATH=#{Ncurses.inc}"
-    args << "-DCURSES_LIBRARY=#{Ncurses.lib}/libncursesw.#{OS.soname}"
     if OS.mac?
       inreplace 'odb_api/CMakeLists.txt', 'ecbuild_add_cxx_flags("-fPIC -Wl,--as-needed")', 'ecbuild_add_cxx_flags("-fPIC")'
     end
-    inreplace 'eckit/src/eckit/cmd/term.c', {
-      '<curses.h>' => '<ncursesw/curses.h>',
-      '<term.h>' => '<ncursesw/term.h>'
-    }
+    if not Ncurses.skipped?
+      args << "-DCURSES_INCLUDE_PATH=#{Ncurses.inc}"
+      args << "-DCURSES_LIBRARY=#{Ncurses.lib}/libncursesw.#{OS.soname}"
+      inreplace 'eckit/src/eckit/cmd/term.c', {
+        '<curses.h>' => '<ncursesw/curses.h>',
+        '<term.h>' => '<ncursesw/term.h>'
+      }
+    end
     mkdir 'build' do
       run 'cmake', '..', *args
       run 'make', 'install'
