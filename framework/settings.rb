@@ -16,7 +16,7 @@ class Settings
   end
 
   def self.link_root package = nil
-    if package
+    if package and package != Package
       if package.has_label? :not_link
         package.prefix
       elsif package.has_label? :alone

@@ -37,6 +37,12 @@ class Package
     self.class.prefix
   end
 
+  def self.has_label? label
+    package_class = self.name.split('::').last
+    spec = self.class_variable_get("@@#{package_class}_spec")
+    spec.has_label? label
+  end
+
   def install_root
     Settings.link_root
   end
@@ -76,7 +82,7 @@ class Package
     self.class.send :define_method, :"link_#{dir}" do
       dir = dir == :inc ? :include : dir
       dir = dir == :man ? 'share/man' : dir
-      "#{Settings.link_root}/#{dir}"
+      "#{Settings.link_root self}/#{dir}"
     end
     self.class.send :define_method, :"common_#{dir}" do
       dir = dir == :inc ? :include : dir
