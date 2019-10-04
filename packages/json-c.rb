@@ -12,5 +12,6 @@ class JsonC < Package
       run 'make'
       run 'make', 'install'
     end
+    cp 'json_object_iterator.h', inc + '/json-c'
   end
 end

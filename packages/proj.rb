@@ -1,14 +1,17 @@
 class Proj < Package
-  url 'https://github.com/OSGeo/proj.4/releases/download/5.0.1/proj-5.0.1.tar.gz'
-  sha256 'a792f78897482ed2c4e2af4e8a1a02e294c64e32b591a635c5294cb9d49fdc8c'
+  url 'https://download.osgeo.org/proj/proj-6.2.0.tar.gz'
+  sha256 'b300c0f872f632ad7f8eb60725edbf14f0f8f52db740a3ab23e7b94f1cd22a50'
 
   label :common
+
+  depends_on :sqlite3
 
   def install
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
     ]
+    args << "SQLITE3_LIBS=#{Sqlite3.lib}/libsqlite3.#{OS.soname}" unless Sqlite3.skipped?
     run './configure', *args
     run 'make', 'install'
   end
