@@ -1,10 +1,9 @@
 class Pgi < Package
   if OS.linux?
-    url 'http://static.longrunweather.com/packages/pgilinux-2018-184-x86-64.tar.gz'
-    #url 'https://download.pgroup.com/secure/pgilinux-2018-184-x86-64.tar.gz?VdJBUwzGhcDhR_F3XFcB0WZvCDTW0JFYbFrmkqEXgBvGhK0fXDSriGDROlUg5P0ieLDl_ajD59uZ2J5-KxvZeVuHCWgrdg_UAv0DrSsoy6FBLKaX_hMvFv82LbVLu-PJfzHsrmM'
-    sha256 '81e0dcf6000b026093ece180d42d77854c23269fb8409cedcf51c674ca580a0f'
+    url 'https://download.pgroup.com/secure/pgilinux-2019-194-x86-64.tar.gz?QH7Z2eu7G8DIXUZ1IwCi2cK_1UI46qoOoj5w61jiqQNnhe0f75PupZnznSn_V_KxnynVIrGgRmam-FsE0jGqyPHwUP12vzPs-yQVj-J26f4AKB3MK_IVlNRvJumuBNCTKc6KX6U'
+    sha256 ''
   end
-  version '18.4'
+  version '19.4'
 
   label :compiler
   label :alone
