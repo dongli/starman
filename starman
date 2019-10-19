@@ -31,7 +31,8 @@ commands = {
   link: LinkCommand,
   unlink: UnlinkCommand,
   pack: PackCommand,
-  update: UpdateCommand
+  update: UpdateCommand,
+  fix: FixCommand
 }
 
 OS.init

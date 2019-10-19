@@ -13,27 +13,40 @@ EOS
     @parser.on '--with-deps', 'Also uninstall dependency packages.' do
       @@args[:with_deps] = true
     end
+    @parser.on '--all', 'Remove all packages.' do
+      @@args[:all] = true
+    end
     parse_packages
     @parser.parse!
   end
 
   def run
-    PackageLoader.loaded_packages.each do |name, package|
-      next if not PackageLoader.from_cmd_line? package and not CommandParser.args[:with_deps]
-      if package.has_label? :group
-        CLI.notice "Package group #{CLI.green package.name} is uninstalled."
-      elsif not History.installed? package
-        CLI.warning "Package #{CLI.red package.name} has not been installed."
-      else
-        CLI.notice "Uninstall package #{CLI.green package.name} #{CLI.blue package.version} ..."
-        PackageLinker.unlink package
-        if Dir.exist? package.prefix
-          FileUtils.rm_rf package.prefix
-          # Remove empty directory.
-          FileUtils.rmdir File.dirname(package.prefix) if Dir.glob("#{File.dirname(package.prefix)}/*").size == 0
-        end
-        History.remove_install package
+    if CommandParser.args[:all]
+      History.installed_packages.each do |name, package|
+        remove package
       end
+    else
+      PackageLoader.loaded_packages.each do |name, package|
+        next if not PackageLoader.from_cmd_line? package and not CommandParser.args[:with_deps]
+        remove package
+      end
+    end
+  end
+
+  def remove package
+    if package.has_label? :group
+      CLI.notice "Package group #{CLI.green package.name} is uninstalled."
+    elsif not History.installed? package
+      CLI.warning "Package #{CLI.red package.name} has not been installed."
+    else
+      CLI.notice "Uninstall package #{CLI.green package.name} #{CLI.blue package.version} ..."
+      PackageLinker.unlink package
+      if Dir.exist? package.prefix
+        FileUtils.rm_rf package.prefix
+        # Remove empty directory.
+        FileUtils.rmdir File.dirname(package.prefix) if Dir.glob("#{File.dirname(package.prefix)}/*").size == 0
+      end
+      History.remove_install package
     end
   end
 end
