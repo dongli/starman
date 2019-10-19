@@ -16,11 +16,12 @@ EOS
     @parser.on '--all', 'Remove all packages.' do
       @@args[:all] = true
     end
-    parse_packages
+    parse_packages empty_is_ok: true
     @parser.parse!
   end
 
   def run
+    @@package_group = nil
     if CommandParser.args[:all]
       History.installed_packages.each do |name, package|
         remove package
@@ -36,10 +37,13 @@ EOS
   def remove package
     if package.has_label? :group
       CLI.notice "Package group #{CLI.green package.name} is uninstalled."
-    elsif not History.installed? package
+      @@package_group = package.name
+    elsif not History.installed? package and not package.skipped? and not package.group == @@package_group
       CLI.warning "Package #{CLI.red package.name} has not been installed."
     else
-      CLI.notice "Uninstall package #{CLI.green package.name} #{CLI.blue package.version} ..."
+      if not @@package_group or not package.group == @@package_group
+        CLI.notice "Uninstall package #{CLI.green package.name} #{CLI.blue package.version} ..."
+      end
       PackageLinker.unlink package
       if Dir.exist? package.prefix
         FileUtils.rm_rf package.prefix

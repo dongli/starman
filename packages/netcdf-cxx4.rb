@@ -1,8 +1,8 @@
 class NetcdfCxx4 < Package
-  url 'https://github.com/Unidata/netcdf-cxx4/archive/v4.3.0.tar.gz'
+  url 'https://github.com/Unidata/netcdf-cxx4/archive/v4.3.1.tar.gz'
   sha256 '25da1c97d7a01bc4cee34121c32909872edd38404589c0427fefa1301743f18f'
-  version '4.3.0'
-  file_name 'netcdf-cxx4-4.3.0.tar.gz'
+  version '4.3.1'
+  file_name 'netcdf-cxx4-4.3.1.tar.gz'
 
   grouped_by :netcdf
 
