@@ -1,0 +1,17 @@
+export STARMAN_ROOT=$(cd $(dirname $0) && cd .. && pwd)
+export PATH=$STARMAN_ROOT:$PATH
+
+if [[ -d $STARMAN_ROOT/ruby/bin ]]; then
+  export PATH=$STARMAN_ROOT/ruby/bin:$PATH
+fi
+
+function before_command {
+  if [[ "$1" =~ .*starman[[:space:]]+(load) ]]; then
+    res=$(eval "$1 --print")
+    if [[ ! "$res" =~ Warning && ! "$res" =~ Error ]]; then
+      $(echo $res)
+    fi
+  fi
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook preexec before_command
