@@ -84,6 +84,7 @@ module PackageLoader
       name, version = package_name.to_s.split '@'
       name = name.to_sym
       loaded_package = @@loaded_packages[name]
+      next if not loaded_package
       loaded_package.dependencies.has_key? package.name and loaded_package.has_label? :group
     end
   end
