@@ -26,8 +26,8 @@ EOS
     else
       res.map! { |record| record.split('|') }
       res.each do |columns|
-        if not columns[3]
-          compiler_set = columns[2].delete_prefix(Settings.install_root + '/').split('/').first
+        if columns.length == 3
+          compiler_set = columns[2].gsub(Settings.install_root + '/', '').split('/').first
           if compiler_set != 'common'
             res = `echo 'update install set compiler_set = "#{compiler_set}" where id = "#{columns[0]}";' | #{History.db_cmd} #{History.db_path}`
             if $?.exitstatus != 0
