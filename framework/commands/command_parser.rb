@@ -47,7 +47,6 @@ EOS
     # NOTE: Package names should be prior to options.
     finish = false
     package_names = []
-    package_names << 'gcc' if CompilerSet.needs_load?
     ARGV.each do |arg|
       finish = true if arg[0] == '-'
       package_names << arg unless finish
