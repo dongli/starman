@@ -1,11 +1,12 @@
 class Nco < Package
-  url 'https://github.com/nco/nco/archive/4.7.6.tar.gz'
-  sha256 'c7926163b204573b7bf7b6e3c9bcfa15b2cc04c0f494dbc0c6829ee8c2f015b3'
-  file_name 'nco-4.7.6.tar.gz'
+  url 'https://github.com/nco/nco/archive/4.8.1.tar.gz'
+  sha256 'ddae3fed46c266798ed1176d6a70b36376d2d320fa933c716a623172d1e13c68'
+  file_name 'nco-4.8.1.tar.gz'
 
   label :common
 
   depends_on :antlr2
+  depends_on :flex
   depends_on :gsl
   depends_on :netcdf
   depends_on :udunits
