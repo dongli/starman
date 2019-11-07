@@ -45,6 +45,10 @@ module PackageLoader
           end
         end
       end
+      # Reset version if not the same.
+      if options[:version] != nil and options[:version] != package.version.to_s
+        package.version = options[:version]
+      end
       scan package.group, nodeps: true if package.group
       @@loaded_packages[name] = package
     else
@@ -73,7 +77,6 @@ module PackageLoader
     path = "#{ENV['STARMAN_ROOT']}/packages/#{name.to_s.gsub('_', '-')}#{version ? '@' + version : ''}.rb"
     if not File.file? path
       path = "#{ENV['STARMAN_ROOT']}/packages/#{name.to_s.gsub('_', '-')}.rb"
-      path = nil unless File.file? path and (version and open(path).read.match(version))
     end
     return path
   end
