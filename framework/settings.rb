@@ -50,7 +50,7 @@ class Settings
   end
 
   def self.c_compiler
-    compilers['c'] || compilers[:c]
+    compilers['c'] || compilers[:c] rescue CLI.error 'Invalid C compiler!'
   end
 
   def self.cxx_compiler
