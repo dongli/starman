@@ -94,7 +94,7 @@ Copyright (C) 2015-2018 - All Rights Reserved.
     -v, --verbose                    Print more information including build output.
     -c, --compiler-set NAME          Set the active compiler set by its name set in conf file.
     -k, --skip-test                  Skip possible build test (e.g., make test).
-	-j, --make-jobs NUMBER           Set the number of making jobs (currently only works for hdf5 and netcdf).
+    -j, --make-jobs NUMBER           Set the number of making jobs (currently only works for hdf5 and netcdf).
     -h, --help                       Print this help message.
 ```
 
