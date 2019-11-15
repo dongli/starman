@@ -92,7 +92,7 @@ module PackageDSL
   end
 
   def multiple_jobs?
-    CommandParser.args[:multiple_jobs]
+    CommandParser.args.has_key? :make_job
   end
 
   def jobs_number

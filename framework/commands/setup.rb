@@ -28,7 +28,7 @@ EOS
     @parser.on '--cxx VALUE', 'Set C++ compiler command.' do |cxx|
       @@args[:cxx] = cxx
     end
-    @@args[:fc] = 'gfortran'
+	@@args[:fc] = 'gfortran' unless OS.mac?
     @parser.on '--fc VALUE', 'Set Fortran compiler command.' do |fc|
       @@args[:fc] = fc
     end
