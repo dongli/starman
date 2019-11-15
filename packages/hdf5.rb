@@ -24,8 +24,9 @@ class Hdf5 < Package
     args << '--enable-threadsafe --enable-unsupported' if enable_threadsafe?
     ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
     run './configure', *args
-    run 'make'
-    run 'make', 'check' unless skip_test?
-    run 'make', 'install'
+    args = multiple_jobs? ? '-j'+jobs_number : ''
+    run 'make', *args
+    run 'make', 'check', *args unless skip_test?
+    run 'make', 'install', *args
   end
 end

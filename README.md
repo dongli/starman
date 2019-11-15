@@ -93,7 +93,8 @@ Copyright (C) 2015-2018 - All Rights Reserved.
     -d, --debug                      Print debug information.
     -v, --verbose                    Print more information including build output.
     -c, --compiler-set NAME          Set the active compiler set by its name set in conf file.
-    -k, --skip-test                  Skip possible build test (e.g., make test)
+    -k, --skip-test                  Skip possible build test (e.g., make test).
+	-j, --make-jobs NUMBER           Set the number of making jobs (currently only works for hdf5 and netcdf).
     -h, --help                       Print this help message.
 ```
 
@@ -102,6 +103,12 @@ Install package
 
 ```
 $ starman install netcdf
+```
+
+or
+
+```
+$ starman install hdf5 -j 4           # Currently only works for hdf5 and netcdf.
 ```
 
 Load package
