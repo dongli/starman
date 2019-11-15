@@ -16,7 +16,7 @@ EOS
     end    
     @parser.on '-j', '--make-jobs NUMBER', 'Set the number of making jobs (currently only works for hdf5 and netcdf).' do |make_jobs|
       @@args[:make_jobs] = make_jobs
-	  @@args[:multiple_jobs] = true
+      @@args[:multiple_jobs] = true
     end
     @parser.on '-f', '--force', 'Install packages anyway.' do
       @@args[:force] = true
