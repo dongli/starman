@@ -43,6 +43,7 @@ require 'os/os_dsl'
 require 'os/os'
 require 'os/mac'
 require 'os/centos'
+require 'os/deepin'
 require 'os/redhat'
 require 'os/ubuntu'
 
