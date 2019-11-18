@@ -9,7 +9,10 @@ require 'optparse'
 require 'pathname'
 require 'uri'
 require 'yaml'
-require 'rubygems/package' rescue nil
+begin
+  require 'rubygems/package'
+rescue LoadError
+end
 
 require 'utils/add_env'
 require 'utils/append_env'

@@ -87,7 +87,7 @@ class PackageSpec
   attr_reader :patches
   def patch options=nil, &block
     if options.class == String
-      @patches << data
+      @patches << options
     else
       spec = PackageSpec.new
       spec.instance_exec &block

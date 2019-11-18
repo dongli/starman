@@ -1,4 +1,6 @@
 class History
+  extend Utils
+
   def self.db_path
     "#{Runtime.rc_root}/history.db"
   end
@@ -8,6 +10,9 @@ class History
   end
 
   def self.init
+    if not system_command? 'sqlite3'
+      CLI.error 'There is no sqlite3!'
+    end
     # Create history database if not exists.
     if not File.file? db_path
       CLI.notice "Initialize history database at #{CLI.blue db_path}."
