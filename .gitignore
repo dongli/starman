@@ -2,3 +2,5 @@
 .runtime
 ruby
 sqlite
+*.DS_Store
+Thumbs.db
