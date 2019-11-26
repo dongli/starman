@@ -35,7 +35,7 @@ EOS
   end
 
   def remove package
-    if package.has_label? :group
+    if package.has_label? :group and History.installed? package
       CLI.notice "Package group #{CLI.green package.name} is uninstalled."
       @@package_group = package.name
     elsif not History.installed? package and not package.skipped? and not package.group == @@package_group
