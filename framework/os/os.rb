@@ -19,6 +19,8 @@ class OS
       case `cat /etc/*release`
       when /CentOS/
         @@os = CentOS.new
+      when /Deepin/
+        @@os = Deepin.new
       when /Red Hat Enterprise Linux Server/
         @@os = RedHatOS.new
       when /Ubuntu/

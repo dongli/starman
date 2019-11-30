@@ -22,4 +22,9 @@ class Hdf4 < Package
     run './configure', *args
     run 'make', 'install'
   end
+
+  def post_install
+    mv bin + '/ncdump', bin + '/ncdump_hdf4'
+    mv bin + '/ncgen', bin + '/ncgen_hdf4'
+  end
 end

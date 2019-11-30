@@ -14,7 +14,7 @@ EOS
     @parser.on '-k', '--skip-test', 'Skip possible build test (e.g., make test).' do
       @@args[:skip_test] = true
     end    
-    @parser.on '-j', '--make-jobs', 'Set the number of make jobs.' do |make_jobs|
+    @parser.on '-j', '--make-jobs NUMBER', 'Set the number of making jobs (currently only works for hdf5 and netcdf).' do |make_jobs|
       @@args[:make_jobs] = make_jobs
     end
     @parser.on '-f', '--force', 'Install packages anyway.' do
@@ -45,7 +45,6 @@ EOS
     parse_packages force: true
     # Load GCC installed by STARMAN if necessary.
     PackageLoader.loads [:gcc] if CompilerSet.needs_load?
-    @@args[:make_jobs] ||= 2
     # Reinitialize settings since compiler set may be set in command line.
     Settings.init
     CompilerSet.init
