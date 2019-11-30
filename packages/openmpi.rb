@@ -7,6 +7,13 @@ class Openmpi < Package
   conflicts_with :mpich, :mvapich2
 
   option 'with-ucx', 'Use UCX library.'
+  option 'with-verbs', 'Use VERBS library.'
+
+  def export_env
+    ENV['MPICC'] = "#{bin}/mpicc"
+    ENV['MPICXX'] = "#{bin}/mpic++"
+    ENV['MPIFC'] = "#{bin}/mpifort"
+  end
 
   def install
     args = %W[
@@ -15,10 +22,10 @@ class Openmpi < Package
       --disable-silent-rules
       --disable-debug
       --enable-shared
-      --with-verbs
       --with-hwloc=internal
     ]
     args << '--with-ucx' if with_ucx?
+    args << '--with-verbs' if with_verbs?
     run './configure', *args
     run 'make', 'all', '-j', '8'
     run 'make', 'check' if not skip_test?
