@@ -6,6 +6,7 @@ class Flex < Package
   label :skip_if_exist, binary_file: 'flex'
 
   depends_on :gettext
+  depends_on :m4
 
   def install
     args = %W[

@@ -1,10 +1,10 @@
-class Ubuntu < OS
-  type :ubuntu
+class Deepin < OS
+  type :deepin
 
   version do
-    # VERSION="18.04 (Bionic Beaver)"
-    # DISTRIB_RELEASE=18.04
-    `cat /etc/lsb-release`.match(/(VERSION|RELEASE)="?(\d+[\.\d+]*)/)[2]
+    # VERSION="15.11"
+    # DISTRIB_RELEASE=15.11
+    `cat /etc/os-release`.match(/(VERSION|RELEASE)="?(\d+[\.\d+]*)/)[2]
   end
 
   command :add_user do |name, options = {}|

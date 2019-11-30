@@ -1,5 +1,15 @@
 #!/bin/bash
 
+export STARMAN_ROOT=$(cd $(dirname $BASH_SOURCE) && cd .. && pwd)
+
+# Check some commands presence.
+for cmd in wget gcc make; do
+  if ! (which $cmd > /dev/null); then
+    echo "[Error]: No $cmd is installed by system! Please install one by apt-get or yum according to your OS."
+    exit 1
+  fi
+done
+
 # Check Ruby availability.
 RUBY_URL=https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.gz
 RUBY_SHA=2347ed6ca5490a104ebd5684d2b9b5eefa6cd33c
@@ -35,13 +45,9 @@ function install_ruby
   tar -xzf $RUBY_PACKAGE
   cd $RUBY_PACKAGE_DIR
   echo "[Notice]: Building Ruby, please wait for a moment!"
-  if ! which gcc 2>&1 1> /dev/null 2>&1; then
-    echo '[Error]: There is no GCC compiler!'
-    exit 1
-  fi
   export LD_LIBRARY_PATH=
   # In some environment, openssl cannot been compiled with successfully, so disable the openssl ext.
-  CC=gcc CFLAGS=-fPIC ./configure --prefix=$STARMAN_ROOT/ruby --with-out-ext=openssl --disable-install-rdoc 1> $STARMAN_ROOT/ruby/out 2>&1
+  CC=gcc CFLAGS=-fPIC ./configure --prefix=$STARMAN_ROOT/ruby --with-out-ext=openssl,zlib --disable-install-rdoc 1> $STARMAN_ROOT/ruby/out 2>&1
   make install 1>> $STARMAN_ROOT/ruby/out 2>&1
   if [[ $? == 0 ]]; then
     cd $STARMAN_ROOT/ruby

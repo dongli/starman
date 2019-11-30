@@ -1,4 +1,6 @@
 class History
+  extend Utils
+
   def self.db_path
     "#{Runtime.rc_root}/history.db"
   end
@@ -8,6 +10,9 @@ class History
   end
 
   def self.init
+    if not system_command? 'sqlite3'
+      CLI.error 'There is no sqlite3!'
+    end
     # Create history database if not exists.
     if not File.file? db_path
       CLI.notice "Initialize history database at #{CLI.blue db_path}."
@@ -39,7 +44,11 @@ class History
   end
 
   def self.installed? package
-    res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split("\n")
+    if package.has_label? :group
+      res = `echo 'select * from install where like(\"#{File.dirname(package.prefix)}%\", prefix);' | #{db_cmd} #{db_path}`.split("\n")
+    else
+      res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split("\n")
+    end
     return false if res.empty?
     res.map! { |record| record.split('|') }
     res.sort_by! { |columns| columns[2] }

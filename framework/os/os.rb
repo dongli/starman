@@ -21,6 +21,8 @@ class OS
         @@os = Fedora.new
       when /CentOS/
         @@os = CentOS.new
+      when /Deepin/
+        @@os = Deepin.new
       when /Red Hat Enterprise Linux Server/
         @@os = RedHatOS.new
       when /Ubuntu/

@@ -91,6 +91,14 @@ module PackageDSL
     CommandParser.args[:skip_test]
   end
 
+  def multiple_jobs?
+    CommandParser.args.has_key? :make_job
+  end
+
+  def jobs_number
+    CommandParser.args[:make_jobs]
+  end
+
   def link src, dst
     spec.link src, dst
   end

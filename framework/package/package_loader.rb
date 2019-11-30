@@ -31,7 +31,7 @@ module PackageLoader
     if PackageLoader.const_defined? class_name and const_get(class_name).method_defined? :spec
       const_get(class_name).spec.dependencies = {}
     end
-    if file_path
+    if File.exist? file_path
       eval open(file_path, 'r').read
       package = eval("#{name.to_s.split(/[-_]/).map(&:capitalize).join}").new
       if not options[:nodeps] and not package.skipped?
