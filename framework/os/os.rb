@@ -17,6 +17,8 @@ class OS
       @@os = Mac.new
     when :Linux
       case `cat /etc/*release`
+      when /Fedora/
+        @@os = Fedora.new
       when /CentOS/
         @@os = CentOS.new
       when /Red Hat Enterprise Linux Server/
@@ -44,11 +46,15 @@ class OS
   end
 
   def self.linux?
-    [:centos, :redhat, :ubuntu].include? @@os.type
+    [:centos, :fedora, :redhat, :ubuntu].include? @@os.type
   end
 
   def self.centos?
     @@os.type == :centos
+  end
+
+  def self.fedora?
+    @@os.type == :fedora
   end
 
   def self.redhat?
