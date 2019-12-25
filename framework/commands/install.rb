@@ -11,6 +11,9 @@ EOS
     @parser.on '-cNAME', '--compiler-set NAME', 'Set the active compiler set by its name set in conf file.' do |compiler_set|
       @@args[:compiler_set] = compiler_set
     end
+    @parser.on '-aNAME', '--http-cache NAME', 'Set a HTTP cache to get packages.' do |http_cache|
+      @@args[:http_cache] = http_cache
+    end
     @parser.on '-k', '--skip-test', 'Skip possible build test (e.g., make test).' do
       @@args[:skip_test] = true
     end    

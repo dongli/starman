@@ -8,17 +8,27 @@ class PackageDownloader
 
   def self.download package
     if not downloaded? package
-      CLI.notice "Downloading #{package.url} ..."
+      if CommandParser.args[:http_cache]
+        url = "#{CommandParser.args[:http_cache]}/#{package.file_name}"
+      else
+        url = package.url
+      end
+      CLI.notice "Downloading #{url} ..."
       FileUtils.mkdir_p Settings.cache_root if not File.directory? Settings.cache_root
-      curl package.url, Settings.cache_root, rename: package.file_name
+      curl url, Settings.cache_root, rename: package.file_name
     end
     # Download patches if exist.
     package.patches.each_with_index do |patch, index|
       case patch
       when PackageSpec
         next if downloaded? patch
-        CLI.notice "Downloading #{patch.url} ..."
-        curl patch.url, Settings.cache_root, rename: patch.file_name
+        if CommandParser.args[:http_cache]
+          url = "#{CommandParser.args[:http_cache]}/#{patch.file_name}"
+        else
+          url = patch.url
+        end
+        CLI.notice "Downloading #{url} ..."
+        curl url, Settings.cache_root, rename: patch.file_name
       end
     end
   end
