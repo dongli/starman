@@ -1,7 +1,7 @@
 class Pnetcdf < Package
-  url 'https://github.com/Parallel-NetCDF/PnetCDF/archive/checkpoint.1.12.0.tar.gz'
-  sha256 '12e491aac4059e6129dad8620600f487834cc5779509c6ce7c4eba21b254a5b3'
-  file_name 'pnetcdf-1.12.0.tar.gz'
+  url 'https://github.com/Parallel-NetCDF/PnetCDF/archive/checkpoint.1.12.1.tar.gz'
+  sha256 ''
+  file_name 'pnetcdf-1.12.1.tar.gz'
 
   option 'without-cxx', 'Disable C++ bindings'
   option 'without-fortran', 'Disable Fortran bindings'
