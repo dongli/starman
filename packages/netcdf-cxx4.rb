@@ -1,8 +1,8 @@
 class NetcdfCxx4 < Package
-  url 'https://github.com/Unidata/netcdf-cxx4/archive/v4.3.1.tar.gz'
-  sha256 'e3fe3d2ec06c1c2772555bf1208d220aab5fee186d04bd265219b0bc7a978edc'
-  version '4.3.1'
-  file_name 'netcdf-cxx4-4.3.1.tar.gz'
+  url 'https://github.com/Unidata/netcdf-cxx4/archive/v4.3.0.tar.gz'
+  sha256 '25da1c97d7a01bc4cee34121c32909872edd38404589c0427fefa1301743f18f'
+  version '4.3.0'
+  file_name 'netcdf-cxx4-4.3.0.tar.gz'
 
   grouped_by :netcdf
 
@@ -20,9 +20,8 @@ class NetcdfCxx4 < Package
       --enable-shared
     ]
     run './configure', *args
-    args = multiple_jobs? ? '-j'+jobs_number : ''
-    run 'make', *args
-    run 'make', 'check', *args unless skip_test?
-    run 'make', 'install', *args
+    run 'make'
+    run 'make', 'check' unless skip_test?
+    run 'make', 'install'
   end
 end
