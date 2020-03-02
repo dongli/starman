@@ -1,6 +1,6 @@
 class Cdo < Package
-  url 'https://code.mpimet.mpg.de/attachments/download/20124/cdo-1.9.7.1.tar.gz'
-  sha256 '3771952e065bcf935d43e492707370ed2a0ecb59a06bea24f9ab69d77943962c'
+  url 'https://code.mpimet.mpg.de/attachments/download/20826/cdo-1.9.8.tar.gz'
+  sha256 'f2660ac6f8bf3fa071cf2a3a196b3ec75ad007deb3a782455e80f28680c5252a'
 
   label :common
 
@@ -29,7 +29,6 @@ class Cdo < Package
     ]
     run './configure', *args
     run 'make'
-    inreplace 'test/tsformat.test', 'test -n "$CDO"      || CDO=cdo', 'CDO="../src/cdo -L"'
     run 'make', 'check' unless skip_test?
     run 'make', 'install'
   end
