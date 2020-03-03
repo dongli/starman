@@ -67,9 +67,7 @@ EOS
       PackageLoader.loads ['gcc']
       gcc = PackageLoader.loaded_packages[:gcc]
       PackageLoader.loaded_packages.delete :gcc
-      append_ld_library_path gcc.lib if Dir.exist? gcc.lib
-      append_ld_library_path gcc.lib64 if Dir.exist? gcc.lib64
-      gcc.export_env
+      load_package gcc
     end
     PackageLoader.loaded_packages.each do |name, package|
       if package.has_label? :skip_if_exist and not (PackageLoader.from_cmd_line?(package) and CommandParser.args[:force])

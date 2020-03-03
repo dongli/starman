@@ -53,6 +53,10 @@ class Gcc < Package
         inreplace file, '"config.h"', "\"#{pwd}/../gcc-build/#{build_name}/libgfortran/config.h\""
       end
     end
+    if CompilerSet.c.vendor == :gcc
+      ENV['CC']  += " -I#{`gcc --print-file-name=include`.chomp}"
+      ENV['CXX'] += " -I#{`gcc --print-file-name=include`.chomp}"
+    end
     args = %W[
       --prefix=#{prefix}
       --build=#{build_name}

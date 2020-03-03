@@ -40,6 +40,7 @@ require 'utils/pwd'
 require 'utils/ssh'
 require 'utils/patch'
 require 'utils/mpi'
+require 'utils/load_package'
 
 require 'os/os_spec'
 require 'os/os_dsl'
