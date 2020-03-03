@@ -1,8 +1,8 @@
 class Vim < Package
-  url 'https://github.com/vim/vim/archive/v8.1.2102.tar.gz'
-  sha256 'e2ec8449a8a419db73d266762cef20fd125cf9da9516832b9211f970b03c0d7c'
-  version '8.1.2102'
-  file_name 'vim-8.1.2102.tar.gz'
+  url 'https://github.com/vim/vim/archive/v8.2.0348.tar.gz'
+  sha256 '63a178c80f1dfffd85071eaeec52b7614955237c4920aa726bef694a13ec440e'
+  version '8.2.0348'
+  file_name 'vim-8.2.0348.tar.gz'
 
   label :common
 
