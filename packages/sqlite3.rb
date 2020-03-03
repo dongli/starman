@@ -1,9 +1,10 @@
 class Sqlite3 < Package
-  url 'https://sqlite.org/2019/sqlite-autoconf-3290000.tar.gz'
-  sha256 '8e7c1e2950b5b04c5944a981cb31fffbf9d2ddda939d536838ebc854481afd5b'
-  version ' 3.29.0'
+  url 'https://sqlite.org/2020/sqlite-autoconf-3310100.tar.gz'
+  sha256 '62284efebc05a76f909c580ffa5c008a7d22a1287285d68b7825a2b6b51949ae'
+  version ' 3.31.1'
 
   label :common
+  label :alone
   label :skip_if_exist, library_file: "libsqlite3.#{OS.soname}"
 
   depends_on :readline

@@ -1,6 +1,6 @@
 class Proj < Package
-  url 'https://download.osgeo.org/proj/proj-6.2.0.tar.gz'
-  sha256 'b300c0f872f632ad7f8eb60725edbf14f0f8f52db740a3ab23e7b94f1cd22a50'
+  url 'https://download.osgeo.org/proj/proj-6.3.1.tar.gz'
+  sha256 '6de0112778438dcae30fcc6942dee472ce31399b9e5a2b67e8642529868c86f8'
 
   label :common
 
@@ -11,7 +11,10 @@ class Proj < Package
       --prefix=#{prefix}
       --disable-dependency-tracking
     ]
-    args << "SQLITE3_LIBS=#{Sqlite3.lib}/libsqlite3.#{OS.soname}" unless Sqlite3.skipped?
+    if not Sqlite3.skipped?
+      args << "SQLITE3_CFLAGS='-I#{Sqlite3.inc}'"
+      args << "SQLITE3_LIBS='-L#{Sqlite3.lib} -lsqlite3'"
+    end
     run './configure', *args
     run 'make', 'install'
   end

@@ -6,7 +6,7 @@ class Hdf5 < Package
   depends_on :zlib
 
   option 'with-cxx', 'Build C++ bindings.'
-  option 'with-fortran', 'Do not build Fortran bindings.'
+  option 'with-fortran', 'Build Fortran bindings.'
 
   def install
     args = %W[
