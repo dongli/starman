@@ -5,8 +5,8 @@ class Hdf5 < Package
   depends_on :szip
   depends_on :zlib
 
-  option 'with-cxx', 'Build C++ bindings.'
-  option 'with-fortran', 'Build Fortran bindings.'
+  option 'with-cxx', 'Enable C++ bindings.'
+  option 'without-fortran', 'Disable Fortran bindings.'
 
   def install
     args = %W[
@@ -21,7 +21,7 @@ class Hdf5 < Package
       --enable-unsupported
     ]
     args << with_cxx? ? '--enable-cxx' : '--disable-cxx'
-    args << '--enable-fortran' if with_fortran?
+    args << '--enable-fortran' unless without_fortran?
     ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
     run './configure', *args
     args = multiple_jobs? ? '-j'+jobs_number : ''
