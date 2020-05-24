@@ -20,6 +20,9 @@ class Eccodes < Package
     inreplace 'cmake/FindOpenJPEG.cmake', {
       'include/openjpeg-2.1 )' => "include/openjpeg-2.1 include/openjpeg-#{Openjpeg.version.major_minor} )"
     }
+    inreplace 'cmake/ecbuild_check_os.cmake', {
+      '-Wl,--allow-shlib-undefined' => ''
+    }
     args = std_cmake_args search_paths: [link_root]
     args << '-DENABLE_JPG=On'
     args << '-DENABLE_NETCDF=On'
