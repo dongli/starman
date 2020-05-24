@@ -9,7 +9,7 @@ class Met < Package
   depends_on :g2clib
   depends_on :hdf4
   depends_on 'hdf-eos2', version: '2.19'
-  depends_on :netcdf
+  depends_on 'netcdf-cxx4'
   depends_on :gsl
   depends_on :zlib
 
@@ -19,7 +19,7 @@ class Met < Package
       --disable-dependency-tracking
       --enable-grib2
       --disable-mode_graphics
-      MET_NETCDF=#{Netcdf.link_root}
+      MET_NETCDF=#{NetcdfCxx4.link_root}
       MET_GRIB2C=#{G2clib.link_root}
       MET_GSL=#{Gsl.link_root}
       MET_BUFRLIB=#{Bufrlib.link_root}
