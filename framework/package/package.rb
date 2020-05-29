@@ -43,6 +43,10 @@ class Package
     spec.has_label? label
   end
 
+  def common_root
+    Settings.common_root
+  end
+
   def install_root
     Settings.link_root
   end

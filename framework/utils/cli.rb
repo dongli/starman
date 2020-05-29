@@ -103,6 +103,7 @@ class CLI
     message.each_line do |line|
       print line
     end
+    print "\n"
     repeat '#', times, 'red', "\n"
   end
 
