@@ -33,19 +33,19 @@ class Gdal < Package
       --with-pam
       --with-pcidsk=internal
       --with-pcraster=internal
-      --with-expat=#{Expat.link_root}
-      --with-geos=#{Geos.link_root}
-      --with-geotiff=#{Libgeotiff.link_root}
-      --with-gif=#{Giflib.link_root}
-      --with-jpeg=#{Jpeg.link_root}
-      --with-libjson-c=#{JsonC.link_root}
-      --with-libtiff=#{Libtiff.link_root}
-      --with-png=#{Libpng.link_root}
-      --with-proj=#{Proj.link_root}
-      --with-hdf5=#{Hdf5.link_root}
-      --with-netcdf=#{Netcdf.link_root}
-      --with-jasper=#{Jasper.link_root}
-      --with-webp=#{Webp.link_root}
+      --with-expat=#{Expat.prefix}
+      --with-geos=#{Geos.prefix}
+      --with-geotiff=#{Libgeotiff.prefix}
+      --with-gif=#{Giflib.prefix}
+      --with-jpeg=#{Jpeg.prefix}
+      --with-libjson-c=#{JsonC.prefix}
+      --with-libtiff=#{Libtiff.prefix}
+      --with-png=#{Libpng.prefix}
+      --with-proj=#{Proj.prefix}
+      --with-hdf5=#{Hdf5.prefix}
+      --with-netcdf=#{Netcdf.prefix}
+      --with-jasper=#{Jasper.prefix}
+      --with-webp=#{Webp.prefix}
       --with-armadillo=no
       --with-qhull=no
       --without-grass
