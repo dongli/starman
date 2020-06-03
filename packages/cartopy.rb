@@ -7,6 +7,11 @@ class Cartopy < Package
   depends_on :proj
   depends_on :geos
 
+  resource :shapely do
+    url 'https://pypi.tuna.tsinghua.edu.cn/packages/44/ec/4eddbf9d17a917c51fb4ad159aa7137f506681e91ab559cf87d120e1d78d/Shapely-1.7.0.tar.gz'
+    sha256 'e21a9fe1a416463ff11ae037766fe410526c95700b9e545372475d2361cc951e'
+  end
+
   resource :pyshp do
     url 'https://pypi.tuna.tsinghua.edu.cn/packages/27/16/3bf15aa864fb77845fab8007eda22c2bd67bd6c1fd13496df452c8c43621/pyshp-2.1.0.tar.gz'
     sha256 'e65c7f24d372b97d0920b864bbeb78322bb37b83f2606e2a2212631d5d51e5c0'
@@ -15,6 +20,10 @@ class Cartopy < Package
   def install
     site_packages = "python#{Version.new(`python3 --version`.split[1]).major_minor}/site-packages"
     ENV['PYTHONPATH'] = "#{lib64}/#{site_packages}:#{lib}/#{site_packages}"
+    install_resource :shapely, '.'
+    work_in 'shapely' do
+      run 'python3', 'setup.py', 'install', "--prefix=#{prefix}"
+    end
     install_resource :pyshp, '.'
     work_in 'pyshp' do
       run 'python3', 'setup.py', 'install', "--prefix=#{prefix}"
