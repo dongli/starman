@@ -28,7 +28,7 @@ class OS
       when /Ubuntu/
         @@os = Ubuntu.new
       else
-        CLI.error "Unsupport Linux!"
+        @@os = UnknownOS.new
       end
     else
       CLI.error "Unknown OS #{CLI.red sys}!"
@@ -48,7 +48,7 @@ class OS
   end
 
   def self.linux?
-    [:centos, :fedora, :redhat, :ubuntu].include? @@os.type
+    [:centos, :fedora, :redhat, :ubuntu, :unknown].include? @@os.type
   end
 
   def self.centos?
