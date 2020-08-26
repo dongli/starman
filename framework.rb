@@ -51,7 +51,7 @@ require 'os/fedora'
 require 'os/deepin'
 require 'os/redhat'
 require 'os/ubuntu'
-require 'os/unknown'
+require 'os/unknown_os'
 
 require 'compiler/compiler_spec'
 require 'compiler/compiler_dsl'
