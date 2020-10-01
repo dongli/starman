@@ -62,7 +62,7 @@ class Package
     end
   end
 
-  [:bin, :inc, :lib, :lib64, :libexec, :share, :man].each do |dir|
+  [:bin, :sbin, :inc, :lib, :lib64, :libexec, :share, :man].each do |dir|
     define_method(dir) do
       dir = dir == :inc ? :include : dir
       dir = dir == :man ? 'share/man' : dir

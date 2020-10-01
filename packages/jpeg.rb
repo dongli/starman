@@ -1,5 +1,5 @@
 class Jpeg < Package
-  url 'https://fossies.org/linux/misc/jpegsrc.v9c.tar.gz'
+  url 'http://www.ijg.org/files/jpegsrc.v9d.tar.gz'
   sha256 '650250979303a649e21f87b5ccd02672af1ea6954b911342ea491f351ceb7122'
   version 'v9b'
 

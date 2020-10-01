@@ -5,11 +5,15 @@ class JsonFortran < Package
 
   depends_on :cmake
 
+  option 'disable-unicode', 'Disable Unicode support so that CK=1'
+
   def install
     mkdir 'build' do
-      run 'cmake', '..', *std_cmake_args,
-                         '-DUSE_GNU_INSTALL_CONVENTION:BOOL=TRUE',
-                         '-DENABLE_UNICODE:BOOL=TRUE'
+      args = %W[
+        -DUSE_GNU_INSTALL_CONVENTION:BOOL=TRUE
+        -DENABLE_UNICODE:BOOL=#{disable_unicode? ? 'FALSE' : 'TRUE'}
+      ]
+      run 'cmake', '..', *std_cmake_args, *args
       run 'make', 'install'
     end
   end
