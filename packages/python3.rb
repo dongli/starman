@@ -1,32 +1,33 @@
 class Python3 < Package
-  url 'https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tar.xz'
-  sha256 '0382996d1ee6aafe59763426cf0139ffebe36984474d0ec4126dd1c40a8b3549'
+  url 'https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tar.xz'
+  sha256 'a9e0b79d27aa056eb9cce8d63a427b5f9bab1465dee3f942dcfdb25a82f4ab8a'
 
   label :common
 
   depends_on :readline
+  depends_on :zlib
   depends_on :openssl
   depends_on :libffi
 
   option 'without-dtrace', 'Disable DTrace support.'
 
   resource :setuptools do
-    url 'https://files.pythonhosted.org/packages/ef/1d/201c13e353956a1c840f5d0fbf0461bd45bbd678ea4843ebf25924e8984c/setuptools-40.2.0.zip'
-    sha256 '47881d54ede4da9c15273bac65f9340f8929d4f0213193fa7894be384f2dcfa6'
+    url 'https://files.pythonhosted.org/packages/7c/1b/9b68465658cda69f33c31c4dbd511ac5648835680ea8de87ce05c81f95bf/setuptools-50.3.0.zip'
+    sha256 '39060a59d91cf5cf403fa3bacbb52df4205a8c3585e0b9ba4b30e0e19d4c4b18'
   end
 
   resource :pip do
-    url 'https://files.pythonhosted.org/packages/69/81/52b68d0a4de760a2f1979b0931ba7889202f302072cc7a0d614211bc7579/pip-18.0.tar.gz'
-    sha256 'a0e11645ee37c90b40c46d607070c4fd583e2cd46231b1c06e389c5e814eed76'
+    url 'https://files.pythonhosted.org/packages/59/64/4718738ffbc22d98b5223dbd6c5bb87c476d83a4c71719402935170064c7/pip-20.2.3.tar.gz'
+    sha256 '30c70b6179711a7c4cf76da89e8a0f5282279dfb0278bec7b94134be92543b6d'
   end
 
   resource :wheel do
-    url 'https://files.pythonhosted.org/packages/2a/fb/aefe5d5dbc3f4fe1e815bcdb05cbaab19744d201bbc9b59cfa06ec7fc789/wheel-0.31.1.tar.gz'
-    sha256 '0a2e54558a0628f2145d2fc822137e322412115173e8a2ddbe1c9024338ae83c'
+    url 'https://files.pythonhosted.org/packages/83/72/611c121b6bd15479cb62f1a425b2e3372e121b324228df28e64cc28b01c2/wheel-0.35.1.tar.gz'
+    sha256 '99a22d87add3f634ff917310a3d87e499f19e663413a52eb9232c447aa646c9f'
   end
 
   def site_packages
-    "#{link_lib}/python3.7/site-packages"
+    "#{link_lib}/python3.8/site-packages"
   end
 
   def export_env
@@ -58,7 +59,7 @@ class Python3 < Package
     run 'make'
     run 'make', 'install'
     # Install pip related tools.
-    install_resource :setuptools, libexec
+    install_resource :setuptools, "#{libexec}/setuptools"
     install_resource :pip, "#{libexec}/pip", strip_leading_dirs: 1
     install_resource :wheel, "#{libexec}/wheel", strip_leading_dirs: 1
     mkdir site_packages
@@ -90,7 +91,7 @@ class Python3 < Package
     work_in "#{libexec}/wheel" do
       run "#{bin}/python3", *setup_args
     end
-    rm "#{libexec}/setuptools*"
+    rm "#{libexec}/setuptools"
     rm "#{libexec}/pip"
     rm "#{libexec}/wheel"
   end
