@@ -6,15 +6,16 @@ class Cartopy < Package
 
   depends_on :proj
   depends_on :geos
+  depends_on :python3
 
   resource :shapely do
-    url 'https://pypi.tuna.tsinghua.edu.cn/packages/44/ec/4eddbf9d17a917c51fb4ad159aa7137f506681e91ab559cf87d120e1d78d/Shapely-1.7.0.tar.gz'
-    sha256 'e21a9fe1a416463ff11ae037766fe410526c95700b9e545372475d2361cc951e'
+    url 'https://pypi.tuna.tsinghua.edu.cn/packages/42/f3/0e1bc2c4f15e05e30c6b99322b9ddaa2babb3f43bc7df2698efdc1553439/Shapely-1.7.1.tar.gz'
+    sha256 '1641724c1055459a7e2b8bbe47ba25bdc89554582e62aec23cb3f3ca25f9b129'
   end
 
   resource :pyshp do
-    url 'https://pypi.tuna.tsinghua.edu.cn/packages/27/16/3bf15aa864fb77845fab8007eda22c2bd67bd6c1fd13496df452c8c43621/pyshp-2.1.0.tar.gz'
-    sha256 'e65c7f24d372b97d0920b864bbeb78322bb37b83f2606e2a2212631d5d51e5c0'
+    url 'https://pypi.tuna.tsinghua.edu.cn/packages/ca/1f/e9cc2c3fce32e2926581f8b6905831165235464c858ba550b6e9b8ef78c3/pyshp-2.1.2.tar.gz'
+    sha256 'a0aa668cd0fc09b873f10facfe96971c0496b7fe4f795684d96cc7306ac5841c'
   end
 
   def install
