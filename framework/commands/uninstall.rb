@@ -38,7 +38,7 @@ EOS
     if package.has_label? :group and History.installed? package
       CLI.notice "Package group #{CLI.green package.name} is uninstalled."
       @@package_group = package.name
-    elsif not History.installed? package and not package.skipped? and not package.group == @@package_group
+    elsif not History.installed? package and not package.skipped? and (not package.group or not package.group == @@package_group)
       CLI.warning "Package #{CLI.red package.name} has not been installed."
     else
       if not @@package_group or not package.group == @@package_group

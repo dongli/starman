@@ -1,3 +1,5 @@
+# This file should be sourced before call starman in any bashrc files!
+
 export STARMAN_ROOT=$(cd $(dirname $BASH_SOURCE) && cd .. && pwd)
 export PATH=$STARMAN_ROOT:$PATH
 
