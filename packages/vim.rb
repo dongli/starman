@@ -13,6 +13,7 @@ class Vim < Package
   depends_on :ncurses
 
   resource :neocomplete do
+    # This plugin is not compatible with above Vim 8.2.1066!
     url 'https://github.com/Shougo/neocomplete.vim/archive/4be617947f3fcf2d725fab20b0e12f8b46c9e2f3.zip'
     sha256 '41ec5f593981d7455f482ea9adb68dbd31d3a93ef09f4a5be2135b9ad3398cc4'
     file_name 'neocomplete.4be617.zip'
@@ -71,7 +72,7 @@ class Vim < Package
     run 'make', 'install', "prefix=#{prefix}", 'STRIP=true'
     ln "#{bin}/vim", "#{bin}/vi"
     # Install handy plugins.
-    mkdir "#{share}/vim/vim81/pack/dist/start" do
+    mkdir "#{share}/vim/vim82/pack/dist/start" do
       install_resource :neocomplete, '.'
       install_resource :neosnippet_snippets, '.'
       install_resource :neosnippet, '.'
@@ -79,5 +80,29 @@ class Vim < Package
       install_resource :vim_ncl, '.'
       install_resource :numbertoggle, '.'
     end
+    # Create a vimrc for users.
+    write_file "#{share}/vim/vimrc", <<-EOS
+" Setup neocomplete and neosnippet.
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+" Left and right arrows are used to close popup menu.
+imap <expr> <Left>  neocomplete#close_popup()."\<Left>"
+imap <expr> <Right> neocomplete#close_popup()."\<Right>"
+" When popup menu is open, close it or just print <CR>.
+imap <expr> <CR>    pumvisible() ? neocomplete#close_popup() : "\<CR>"
+" When popup menu is open, iterate the candidate options or expand expandables.
+imap <expr> <TAB>   pumvisible() ? "\<C-n>" : neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory='~/.vim/snippets'
+" Setup nerdtree.
+autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+map <C-n> :NERDTreeToggle<CR>
+set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
+" Silly VIM does not delete characters by DELETE key default.
+set backspace=indent,eol,start
+EOS
+    CLI.caveat "Please add the following line into your ~/.vimrc.\nsource #{share}/vim/vimrc"
   end
 end
