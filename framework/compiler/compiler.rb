@@ -20,4 +20,8 @@ class Compiler
   def pgi?
     @spec.vendor == :pgi
   end
+
+  def clang?
+    @spec.vendor == :clang
+  end
 end

@@ -5,16 +5,22 @@ class Lua < Package
   label :common
   label :skip_if_exist, include_file: 'lua.h'
 
-  depends_on :readline
-  depends_on :ncurses
+  if not CompilerSet.c.clang?
+    depends_on :readline
+    depends_on :ncurses
+  end
 
   def install
     inreplace 'src/Makefile', {
       /^\s*CC\s*=.*$/ => "CC = #{CompilerSet.c.command}",
-      /^\s*CFLAGS\s*=(.*)$/ => "CFLAGS = \\1 -I#{Readline.inc} -I#{Ncurses.inc}",
-      /^\s*LDFLAGS\s*=(.*)$/ => "LDFLAGS = \\1 -L#{Readline.lib} -L#{Ncurses.lib}",
-      /^\s*LIBS\s*=(.*)$/ => "LIBS = \\1 -lncursesw"
     }
+    if not OS.mac? and not CompilerSet.c.clang?
+      inreplace 'src/Makefile', {
+        /^\s*CFLAGS\s*=(.*)$/ => "CFLAGS = \\1 -I#{Readline.inc} -I#{Ncurses.inc}",
+        /^\s*LDFLAGS\s*=(.*)$/ => "LDFLAGS = \\1 -L#{Readline.lib} -L#{Ncurses.lib}",
+        /^\s*LIBS\s*=(.*)$/ => "LIBS = \\1 -lncursesw"
+      }
+    end
     inreplace 'src/luaconf.h', {
       /#define LUA_ROOT.*/ => "#define LUA_ROOT \"#{prefix}\""
     }

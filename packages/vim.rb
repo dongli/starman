@@ -58,11 +58,16 @@ class Vim < Package
       --enable-luainterp=yes
       --with-lua-prefix='#{Lua.prefix}'
       --without-x
-      --with-tlib=ncurses
       --with-features=huge
-      CPPFLAGS='-I#{Ncurses.inc}'
-      LDFLAGS='-L#{Ncurses.lib}'
     ]
+    if not OS.mac? and not CompilerSet.c.clang?
+      args << "--with-tlib=ncurses CPPFLAGS='-I#{Ncurses.inc}' LDFLAGS='-L#{Ncurses.lib}'"
+    end
+    if CompilerSet.c.clang?
+      inreplace 'src/auto/configure', {
+        '#ifdef HAVE_STDINT_H' => "#include <stdlib.h>\n#ifdef HAVE_STDINT_H"
+      }
+    end
     if with_python?
       args << '--enable-python3interp=yes'
       args << "--with-python3-command='#{Python3.bin}/python3'"
