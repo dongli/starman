@@ -1,6 +1,7 @@
 class Udunits < Package
-  url 'ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.2.25.tar.gz'
-  sha256 'ad486f8f45cba915ac74a38dd15f96a661a1803287373639c17e5a9b59bfd540'
+  url 'https://artifacts.unidata.ucar.edu/repository/downloads-udunits/udunits-2.2.28-Source.tar.gz'
+  sha256 '4cff332db4368c621998116603ad2d35cfd4a605e60a77e9a7270aed7d905711'
+  version '2.2.28'
 
   label :common
 

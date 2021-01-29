@@ -133,7 +133,7 @@ class Package
         end
       end
     elsif self.labels[:skip_if_exist].has_key? :library_file
-      ['/usr/lib', '/usr/lib64', '/usr/local/lib', '/usr/local/lib64'].each do |dir|
+      ['/usr/lib', '/usr/lib64', '/usr/local/lib', '/usr/local/lib64', '/usr/lib/x86_64-linux-gnu'].each do |dir|
         if File.file? "#{dir}/#{self.labels[:skip_if_exist][:library_file]}"
           @spec.system_prefix = File.dirname dir
           return true

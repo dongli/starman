@@ -1,6 +1,6 @@
 class Openmpi < Package
-  url 'https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.bz2'
-  sha256 '900bf751be72eccf06de9d186f7b1c4b5c2fa9fa66458e53b77778dffdfe4057'
+  url 'https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.5.tar.bz2'
+  sha256 'c58f3863b61d944231077f344fe6b4b8fbb83f3d1bc93ab74640bf3e5acac009'
 
   label :mpi
 
