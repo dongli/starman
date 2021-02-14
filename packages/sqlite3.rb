@@ -5,7 +5,6 @@ class Sqlite3 < Package
 
   label :common
   label :alone
-  label :skip_if_exist, library_file: "libsqlite3.#{OS.soname}"
 
   depends_on :readline
 
