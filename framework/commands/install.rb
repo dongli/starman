@@ -11,6 +11,9 @@ EOS
     @parser.on '-cNAME', '--compiler-set NAME', 'Set the active compiler set by its name set in conf file.' do |compiler_set|
       @@args[:compiler_set] = compiler_set
     end
+    @parser.on '--keep-path', 'Keep environment variable PATH.' do
+      @@args[:keep_path] = true
+    end
     @parser.on '-aNAME', '--http-cache NAME', 'Set a HTTP cache to get packages.' do |http_cache|
       @@args[:http_cache] = http_cache
     end
@@ -55,14 +58,16 @@ EOS
 
   def run
     # Clean up system environment to avoid possible pollution.
-    clean_path = []
-    ENV['PATH'].split(':').each do |path|
-      if path.include? Settings.install_root and not clean_path.include? path
-        clean_path << path
+    if not CommandParser.args[:keep_path]
+      clean_path = []
+      ENV['PATH'].split(':').each do |path|
+        if path.include? Settings.install_root and not clean_path.include? path
+          clean_path << path
+        end
       end
+      clean_path << '/usr/local/bin' << '/bin' << '/usr/bin' << '/sbin'
+      ENV['PATH'] = clean_path.join(':')
     end
-    clean_path << '/usr/local/bin' << '/bin' << '/usr/bin' << '/sbin'
-    ENV['PATH'] = clean_path.join(':')
     if CompilerSet.c.command.include?('Packages/gcc')
       PackageLoader.loads ['gcc']
       gcc = PackageLoader.loaded_packages[:gcc]

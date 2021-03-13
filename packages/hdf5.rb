@@ -1,12 +1,14 @@
 class Hdf5 < Package
-  url 'https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.6/src/hdf5-1.10.6.tar.bz2'
-  sha256 '09d6301901685201bb272a73e21c98f2bf7e044765107200b01089104a47c3bd'
+  url 'https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/src/hdf5-1.12.0.tar.bz2'
+  sha256 '97906268640a6e9ce0cde703d5a71c9ac3092eded729591279bf2e3ca9765f61'
 
   depends_on :szip
   depends_on :zlib
+  depends_on :mpi
 
   option 'with-cxx', 'Enable C++ bindings.'
   option 'without-fortran', 'Disable Fortran bindings.'
+  option 'enable-parallel', 'Enable parallel IO.'
 
   def install
     args = %W[
@@ -20,6 +22,13 @@ class Hdf5 < Package
       --enable-threadsafe
       --enable-unsupported
     ]
+    if enable_parallel?
+      args << '--enable-parallel'
+      ENV['CC'] = ENV['MPICC']
+      ENV['CXX'] = ENV['MPICXX']
+      ENV['FC'] = ENV['MPIFC'] unless without_fortran?
+    end
+    ENV['CPPFLAGS'] = '-no-multibyte-chars' if CompilerSet.c.intel?
     args << with_cxx? ? '--enable-cxx' : '--disable-cxx'
     args << '--enable-fortran' unless without_fortran?
     ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
