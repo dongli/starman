@@ -11,8 +11,8 @@ EOS
     @parser.on '-cNAME', '--compiler-set NAME', 'Set the active compiler set by its name set in conf file.' do |compiler_set|
       @@args[:compiler_set] = compiler_set
     end
-    @parser.on '--keep-path', 'Keep environment variable PATH.' do
-      @@args[:keep_path] = true
+    @parser.on '--clean-path', 'Clean PATH environment variable.' do |clean_path|
+      @@args[:clean_path] = true
     end
     @parser.on '-aNAME', '--http-cache NAME', 'Set a HTTP cache to get packages.' do |http_cache|
       @@args[:http_cache] = http_cache
@@ -58,7 +58,7 @@ EOS
 
   def run
     # Clean up system environment to avoid possible pollution.
-    if not CommandParser.args[:keep_path]
+    if CommandParser.args[:clean_path]
       clean_path = []
       ENV['PATH'].split(':').each do |path|
         if path.include? Settings.install_root and not clean_path.include? path
