@@ -4,38 +4,43 @@ class Hdf5 < Package
 
   depends_on :szip
   depends_on :zlib
+  depends_on :cmake
   depends_on :mpi
 
-  option 'with-cxx', 'Enable C++ bindings.'
+  option 'without-cxx', 'Disable C++ bindings.'
   option 'without-fortran', 'Disable Fortran bindings.'
   option 'enable-parallel', 'Enable parallel IO.'
 
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --enable-build-mode=production
-      --disable-dependency-tracking
-      --with-zlib=#{install_root}
-      --with-szlib=#{install_root}
-      --enable-static=yes
-      --enable-shared=yes
-      --enable-threadsafe
-      --enable-unsupported
-    ]
+    ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
+
+    args = std_cmake_args
+    args << "-DHDF5_BUILD_CPP_LIB=#{(without_cxx? ? 'OFF' : 'ON')}"
+    args << "-DHDF5_BUILD_FORTRAN=#{(without_fortran? ? 'OFF' : 'ON')}"
     if enable_parallel?
-      args << '--enable-parallel'
+      args << '-DHDF5_ENABLE_PARALLEL=ON'
+      args << '-DALLOW_UNSUPPORTED=ON'
       ENV['CC'] = ENV['MPICC']
       ENV['CXX'] = ENV['MPICXX']
       ENV['FC'] = ENV['MPIFC'] unless without_fortran?
     end
-    ENV['CPPFLAGS'] = '-no-multibyte-chars' if CompilerSet.c.intel?
-    args << with_cxx? ? '--enable-cxx' : '--disable-cxx'
-    args << '--enable-fortran' unless without_fortran?
-    ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
-    run './configure', *args
-    args = multiple_jobs? ? '-j'+jobs_number : ''
-    run 'make', *args
-    run 'make', 'check', *args unless skip_test?
-    run 'make', 'install', *args
+
+    args << "-DZLIB_DIR=#{install_root}"
+    args << "-DSZIP_DIR=#{install_root}"
+    args << '-DHDF5_ENABLE_Z_LIB_SUPPORT=ON'
+    args << '-DHDF5_ENABLE_SZIP_SUPPORT=ON'
+
+    if OS.mac?
+      # Shared fortran is not supported, build static (according to release_docs/INSTALL_CMake.txt)
+      args << '-DBUILD_SHARED_LIBS=OFF'
+    end
+
+    mkdir 'build' do
+      run 'cmake', '..', *args
+      args = multiple_jobs? ? '-j'+jobs_number : ''
+      run 'make', *args
+      run 'ctest', *args unless skip_test?
+      run 'make', 'install', *args
+    end
   end
 end

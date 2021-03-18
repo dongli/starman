@@ -1,6 +1,6 @@
 class NetcdfC < Package
   url 'https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.7.4.tar.gz'
-  sha256 '"0e476f00aeed95af8771ff2727b7a15b2de353fb7bb3074a0d340b55c2bd4ea8"'
+  sha256 '0e476f00aeed95af8771ff2727b7a15b2de353fb7bb3074a0d340b55c2bd4ea8'
 
   grouped_by :netcdf
 
@@ -15,16 +15,10 @@ class NetcdfC < Package
     # Fix a bug for PGI compiler.
     inreplace 'nc_test4/test_filter_misc.c', '#define DBLVAL 12345678.12345678d', '#define DBLVAL 12345678.12345678'
     inreplace 'nc_test4/tst_filterparser.c', '#define DBLVAL 12345678.12345678d', '#define DBLVAL 12345678.12345678'
-    if CompilerSet.c.pgi?
-      ENV['CPPFLAGS'] += ' -DNDEBUG'
-      ENV['LDFLAGS'] = '-lsz'
-    end
-    if enable_parallel?
-      ENV['CC'] = ENV['MPICC']
-    end
-    ENV['CPPFLAGS'] += " -I#{link_inc}"
-    ENV['LDFLAGS'] += " -L#{link_lib}"
-    args = %W[
+    ENV['CPPFLAGS'] += " -I#{link_inc} -DNDEBUG"
+    ENV['LDFLAGS'] += " -L#{link_lib} -lsz"
+    ENV['CC'] = ENV['MPICC'] if enable_parallel?
+  	args = %W[
       --prefix=#{prefix}
       --enable-utilities
       --enable-shared
@@ -35,6 +29,7 @@ class NetcdfC < Package
     ]
     args << '--disable-netcdf-4' if disable_netcdf_4?
     args << '--enable-parallel-tests' if enable_parallel?
+    ENV['lt_cv_ld_force_load'] = 'no' if OS.mac?
     run './configure', *args
     args = multiple_jobs? ? '-j'+jobs_number : ''
     run 'make', *args
