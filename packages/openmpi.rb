@@ -1,6 +1,6 @@
 class Openmpi < Package
-  url 'https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.5.tar.bz2'
-  sha256 'c58f3863b61d944231077f344fe6b4b8fbb83f3d1bc93ab74640bf3e5acac009'
+  url 'https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.0.tar.bz2'
+  sha256 '73866fb77090819b6a8c85cb8539638d37d6877455825b74e289d647a39fd5b5'
 
   label :mpi
 
@@ -26,6 +26,7 @@ class Openmpi < Package
     ]
     args << '--with-ucx' if with_ucx?
     args << '--with-verbs' if with_verbs?
+    ENV['lt_cv_ld_force_load'] = 'no' if OS.mac?
     run './configure', *args
     run 'make', 'all', '-j', '8'
     run 'make', 'check' if not skip_test?
