@@ -118,12 +118,14 @@ class Settings
             tag = CommandParser.args[:compiler_set]
           else
             if CommandParser.args[:cc] =~ /gcc/
-              res = `#{CommandParser.args[:cc]} -v 2>&1`.match(/^gcc\s+.+\s+(\d+\.\d+\.\d+)/)
+              res = `#{CommandParser.args[:cc]} -v 2>&1`.match(/^gcc\s+.+\s+(\d+\.\d+\.\d+)/)[1] rescue nil
             elsif CommandParser.args[:cc] =~ /clang/
-              res = `#{CommandParser.args[:cc]} -v 2>&1`.match(/version\s(\d+\.\d+\.\d+)/)
+              res = `#{CommandParser.args[:cc]} -v 2>&1`.match(/version\s(\d+\.\d+\.\d+)/)[1] rescue nil
+            elsif CommandParser.args[:cc] =~ /icc/
+              res = `#{CommandParser.args[:cc]} -v 2>&1`.match(/^icc\s*(\(ICC\)|version)*\s*(\d+\.\d+(\.\d+)?)/)[2] rescue nil
             end
             if res
-              version = res[1]
+              version = res
             else
               CLI.error "Failed to check version of #{`which #{CommandParser.args[:cc]}`.chomp}!".chomp
             end
