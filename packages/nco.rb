@@ -1,7 +1,7 @@
 class Nco < Package
-  url 'https://github.com/nco/nco/archive/4.8.1.tar.gz'
-  sha256 'ddae3fed46c266798ed1176d6a70b36376d2d320fa933c716a623172d1e13c68'
-  file_name 'nco-4.8.1.tar.gz'
+  url 'https://github.com/nco/nco/archive/4.9.8.tar.gz'
+  sha256 '1ef3e887f0841cec3b117ec14830b7d002f7a3a4d0e33a95ae1aa66d0d66ee4b'
+  file_name 'nco-4.9.8.tar.gz'
 
   label :common
 
