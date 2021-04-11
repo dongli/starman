@@ -1,5 +1,5 @@
 class Eccodes < Package
-  url 'https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.13.1-Source.tar.gz'
+  url 'https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.19.0-Source.tar.gz'
   sha256 '158021539a85ca597075f4a534117721ea51f5ddea44b5ec27519d553c980f8d'
 
   depends_on :cmake
@@ -42,7 +42,7 @@ class Eccodes < Package
     mkdir 'build' do
       run 'cmake', '..', *args
       run 'make'
-      run 'make', 'check' unless skip_test?
+      run 'ctest' unless skip_test?
       run 'make', 'install'
     end
   end

@@ -4,6 +4,7 @@ class OdbApi < Package
 
   depends_on :cmake
   depends_on :yacc
+  depends_on :flex
   depends_on :ncurses
   depends_on :eccodes
   depends_on :netcdf
