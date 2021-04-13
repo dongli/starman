@@ -20,7 +20,10 @@ class Package
     package_class = self.name.split('::').last
     spec = self.class_variable_get("@@#{package_class}_spec")
     name = package_class.gsub(/(.)([A-Z])/,'\1-\2').downcase
-    if spec.group
+    instance = self.new
+    if instance.skipped?
+      File.dirname(File.dirname(`which #{instance.labels[:skip_if_exist][:binary_file]}`))
+    elsif spec.group
       PackageLoader.loaded_packages[spec.group].prefix
     elsif spec.has_label? :skip_if_exist and spec.system_prefix
       spec.system_prefix
