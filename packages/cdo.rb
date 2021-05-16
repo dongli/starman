@@ -13,6 +13,7 @@ class Cdo < Package
   depends_on :udunits
 
   def install
+    ENV['LDFLAGS'] = "-L#{Eccodes.lib64}"
     args = %W[
       --prefix=#{prefix}
       --with-hdf5=#{Hdf5.prefix}
