@@ -34,6 +34,7 @@ module PackageLoader
     if File.exist? file_path
       eval open(file_path, 'r').read
       package = eval("#{name.to_s.split(/[-_]/).map(&:capitalize).join}").new
+      return if package.has_label? :alone
       if not options[:nodeps] and not package.skipped?
         package.dependencies.keys.each do |depend_name|
           depend_package = scan depend_name, package.dependencies[depend_name]
