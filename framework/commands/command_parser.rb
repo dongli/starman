@@ -14,7 +14,7 @@ class CommandParser
      |_______|  |___|  |__| |__||___|  |_||_|   |_||__| |__||_|  |__|
 
 STARMAN: Another package manager for Linux/Mac programmer.
-Copyright (C) 2015-2018 - All Rights Reserved.
+Copyright (C) 2015-2021 - All Rights Reserved.
 Sponsored by Longrun Weather Inc..
 EOS
     @parser.separator ''
@@ -31,6 +31,14 @@ EOS
       print @parser.help
       exit
     end
+  end
+
+  def self.command= val
+    @@command = val
+  end
+
+  def self.command
+    @@command ||= nil
   end
 
   def parse_packages options = {}
