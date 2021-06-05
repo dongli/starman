@@ -37,10 +37,9 @@ class Hdf5 < Package
 
     mkdir 'build' do
       run 'cmake', '..', *args
-      args = multiple_jobs? ? '-j'+jobs_number : ''
-      run 'make', *args
-      run 'ctest', *args unless skip_test?
-      run 'make', 'install', *args
+      run 'make', multiple_jobs? ? '-j'+jobs_number : ''
+      run 'ctest' unless skip_test?
+      run 'make', 'install'
     end
   end
 end

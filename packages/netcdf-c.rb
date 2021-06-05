@@ -31,9 +31,8 @@ class NetcdfC < Package
     args << '--enable-parallel-tests' if enable_parallel?
     ENV['lt_cv_ld_force_load'] = 'no' if OS.mac?
     run './configure', *args
-    args = multiple_jobs? ? '-j'+jobs_number : ''
-    run 'make', *args
-    run 'make', 'check', *args if not skip_test? and not CompilerSet.c.intel?
-    run 'make', 'install', *args
+    run 'make', multiple_jobs? ? '-j'+jobs_number : ''
+    run 'make', 'check', if not skip_test? and not CompilerSet.c.intel?
+    run 'make', 'install'
   end
 end
