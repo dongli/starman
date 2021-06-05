@@ -1,6 +1,6 @@
 class Expat < Package
-  url 'https://downloads.sourceforge.net/project/expat/expat/2.2.5/expat-2.2.5.tar.bz2'
-  sha256 'd9dc32efba7e74f788fcc4f212a43216fc37cf5f23f4c2339664d473353aedf6'
+  url 'https://github.com/libexpat/libexpat/releases/download/R_2_3_0/expat-2.3.0.tar.xz'
+  sha256 'caa34f99b6e3bcea8502507eb6549a0a84510b244a748dfb287271b2d47467a9'
 
   label :common
 

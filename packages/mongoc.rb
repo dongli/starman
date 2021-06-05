@@ -1,6 +1,6 @@
 class Mongoc < Package
-  url 'https://github.com/mongodb/mongo-c-driver/releases/download/1.15.1/mongo-c-driver-1.15.1.tar.gz'
-  sha256 '4ee47c146ff0059d15ab547a0c2a87f7113f063e1c625e51f8c5174853b07765'
+  url 'https://github.com/mongodb/mongo-c-driver/releases/download/1.17.5/mongo-c-driver-1.17.5.tar.gz'
+  sha256 '4b15b7e73a8b0621493e4368dc2de8a74af381823ae8f391da3d75d227ba16be'
 
   label :common
 

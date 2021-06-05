@@ -1,22 +1,22 @@
 class Gcc < Package
-  url 'https://ftp.gnu.org/gnu/gcc/gcc-9.2.0/gcc-9.2.0.tar.xz'
-  sha256 'ea6ef08f121239da5695f76c9b33637a118dcf63e24164422231917fa61fb206'
+  url 'http://mirrors.aliyun.com/gnu/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz'
+  sha256 '4c4a6fb8a8396059241c2e674b85b351c26a5d678274007f076957afa1cc9ddf'
 
   label :compiler
 
   resource :mpfr do
-    url 'http://www.mpfr.org/mpfr-current/mpfr-4.0.2.tar.bz2'
-    sha256 'c05e3f02d09e0e9019384cdd58e0f19c64e6db1fd6f5ecf77b4b1c61ca253acc'
+    url 'https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.bz2'
+    sha256 'feced2d430dd5a97805fa289fed3fc8ff2b094c02d05287fd6133e7f1f0ec926'
   end
 
   resource :gmp do
-    url 'https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2'
-    sha256 '5275bb04f4863a13516b2f39392ac5e272f5e1bb8057b18aec1c9b79d73d8fb2'
+    url 'http://mirrors.aliyun.com/gnu/gmp/gmp-6.2.1.tar.xz'
+    sha256 'fd4829912cddd12f84181c3451cc752be224643e87fac497b69edddadc49b4f2'
   end
 
   resource :mpc do
-    url 'https://ftp.gnu.org/gnu/mpc/mpc-1.1.0.tar.gz'
-    sha256 '6985c538143c1208dcb1ac42cedad6ff52e267b47e5f970183a3e75125b43c2e'
+    url 'http://mirrors.aliyun.com/gnu/mpc/mpc-1.2.1.tar.gz'
+    sha256 '17503d2c395dfcf106b622dc142683c1199431d095367c6aacba6eec30340459'
   end
 
   resource :isl do

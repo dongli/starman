@@ -27,6 +27,7 @@ EOS
       @@args[:force] = true
     end
     # Parse package names and load them.
+    CommandParser.command = :install
     parse_packages
     # Add possible package option and parse.
     PackageLoader.loaded_packages.each_value do |package|
