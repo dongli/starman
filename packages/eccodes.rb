@@ -41,7 +41,7 @@ class Eccodes < Package
     end
     mkdir 'build' do
       run 'cmake', '..', *args
-      run 'make'
+      run 'make', multiple_jobs? ? '-j'+jobs_number : ''
       run 'ctest' unless skip_test?
       run 'make', 'install'
     end
