@@ -2,6 +2,8 @@ class Python3 < Package
   url 'https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tar.xz'
   sha256 'a9e0b79d27aa056eb9cce8d63a427b5f9bab1465dee3f942dcfdb25a82f4ab8a'
 
+  label :skip_if_exist, binary_file: 'python3'
+
   label :common
 
   depends_on :readline

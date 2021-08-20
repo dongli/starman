@@ -13,6 +13,7 @@ class Cdo < Package
   depends_on :udunits
 
   def install
+    ENV['LDFLAGS'] = "-L#{Eccodes.lib64}"
     args = %W[
       --prefix=#{prefix}
       --with-hdf5=#{Hdf5.prefix}
@@ -28,6 +29,7 @@ class Cdo < Package
       --disable-debug
     ]
     run './configure', *args
+    inreplace 'test/Makefile', 'CDO = $(top_builddir)/src/cdo' => 'CDO = $(top_builddir)/src/cdo -L'
     run 'make'
     run 'make', 'check' unless skip_test?
     run 'make', 'install'

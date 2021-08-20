@@ -13,11 +13,10 @@ class Proj < Package
       --disable-dependency-tracking
       TIFF_CFLAGS='-I#{Libtiff.inc}'
       TIFF_LIBS='-L#{Libtiff.lib} -ltiff'
+      --without-curl
     ]
-    if not Sqlite3.skipped?
-      args << "SQLITE3_CFLAGS='-I#{Sqlite3.inc}'"
-      args << "SQLITE3_LIBS='-L#{Sqlite3.lib} -lsqlite3'"
-    end
+    args << "SQLITE3_CFLAGS='-I#{Sqlite3.inc}'"
+    args << "SQLITE3_LIBS='-L#{Sqlite3.lib} -lsqlite3'"
     run './configure', *args
     run 'make', 'install'
   end

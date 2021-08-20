@@ -19,7 +19,8 @@ EOS
     end
     @parser.on '-k', '--skip-test', 'Skip possible build test (e.g., make test).' do
       @@args[:skip_test] = true
-    end    
+    end
+    @@args[:make_jobs] = 1
     @parser.on '-j', '--make-jobs NUMBER', 'Set the number of making jobs (currently only works for hdf5 and netcdf).' do |make_jobs|
       @@args[:make_jobs] = make_jobs
     end
@@ -27,6 +28,7 @@ EOS
       @@args[:force] = true
     end
     # Parse package names and load them.
+    CommandParser.command = :install
     parse_packages
     # Add possible package option and parse.
     PackageLoader.loaded_packages.each_value do |package|

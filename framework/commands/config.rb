@@ -36,6 +36,7 @@ EOS
     cmd = system_command?('vim') ? 'vim' : 'vi'
     direct_edit = false
     if @@args[:compiler_set] and (@@args[:cc] or @@args[:cxx] or @@args[:fc] or @@args[:mpicc] or @@args[:mpicxx] or @@args[:mpifc])
+      Settings.settings['defaults']['compiler_set'] = @@args[:compiler_set]
       Settings.settings['compiler_sets'][@@args[:compiler_set]] ||= {}
       Settings.settings['compiler_sets'][@@args[:compiler_set]]['c'] = @@args[:cc] if @@args[:cc]
       Settings.settings['compiler_sets'][@@args[:compiler_set]]['cxx'] = @@args[:cxx] if @@args[:cxx]

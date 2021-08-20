@@ -50,5 +50,6 @@ EOS
     mkdir @@args[:cache_root]
     Runtime.write @@args
     Settings.write @@args
+    History.init
   end
 end

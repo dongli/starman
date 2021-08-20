@@ -17,23 +17,35 @@ class History
     if not File.file? db_path
       CLI.notice "Initialize history database at #{CLI.blue db_path}."
       FileUtils.mkdir_p File.dirname(db_path)
+      old_ld_library_path = ENV[OS.ld_library_path]
+      ENV[OS.ld_library_path] = ''
       system "cat #{ENV['STARMAN_ROOT']}/framework/db/tables.sql | #{db_cmd} #{db_path}"
+      ENV[OS.ld_library_path] = old_ld_library_path
     end
   end
 
   def self.save_install package
+    old_ld_library_path = ENV[OS.ld_library_path]
+    ENV[OS.ld_library_path] = ''
     system "echo 'insert into install (name, version, prefix, compiler_set, options, time) " +
     "values (\"#{package.name}\", \"#{package.version}\", \"#{package.prefix}\", \"#{Settings.compiler_set}\", " +
     "\"#{package.options.to_s.gsub('"', '""')}\", \"#{Time.now}\");' | #{db_cmd} #{db_path}"
+    ENV[OS.ld_library_path] = old_ld_library_path
   end
 
   def self.remove_install package
+    old_ld_library_path = ENV[OS.ld_library_path]
+    ENV[OS.ld_library_path] = ''
     system "echo 'delete from install where prefix = \"#{package.prefix}\";' | #{db_cmd} #{db_path}"
+    ENV[OS.ld_library_path] = old_ld_library_path
     CLI.error "Failed to update history database!" if not $?.success?
   end
 
   def self.installed_packages
+    old_ld_library_path = ENV[OS.ld_library_path]
+    ENV[OS.ld_library_path] = ''
     res = `echo 'select name from install where compiler_set = "#{Settings.compiler_set}";' | #{db_cmd} #{db_path}`.split("\n")
+    ENV[OS.ld_library_path] = old_ld_library_path
     return [] if res.empty?
     res.map! { |record| record.split('|') }
     package_names = []
@@ -44,11 +56,14 @@ class History
   end
 
   def self.installed? package
+    old_ld_library_path = ENV[OS.ld_library_path]
+    ENV[OS.ld_library_path] = ''
     if package.has_label? :group
       res = `echo 'select * from install where like(\"#{File.dirname(package.prefix)}%\", prefix);' | #{db_cmd} #{db_path}`.split("\n")
     else
       res = `echo 'select * from install where name = \"#{package.name}\";' | #{db_cmd} #{db_path}`.split("\n")
     end
+    ENV[OS.ld_library_path] = old_ld_library_path
     return false if res.empty?
     res.map! { |record| record.split('|') }
     res.sort_by! { |columns| columns[2] }

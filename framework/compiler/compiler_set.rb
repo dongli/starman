@@ -22,6 +22,7 @@ class CompilerSet
       }
     }
     @@needs_load = false
+    CLI.error "Invalid C compiler! Run #{CLI.blue 'starman config'} to revise." if Settings.compilers['c'].empty?
     [:c, :cxx, :fortran].each do |language|
       next unless Settings.compilers[language.to_s]
       case Settings.compilers[language.to_s]

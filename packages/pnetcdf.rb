@@ -1,7 +1,6 @@
 class Pnetcdf < Package
-  url 'https://github.com/Parallel-NetCDF/PnetCDF/archive/checkpoint.1.12.1.tar.gz'
-  sha256 ''
-  file_name 'pnetcdf-1.12.1.tar.gz'
+  url 'http://cucis.ece.northwestern.edu/projects/PnetCDF/Release/pnetcdf-1.12.2.tar.gz'
+  sha256 '3ef1411875b07955f519a5b03278c31e566976357ddfc74c2493a1076e7d7c74'
 
   option 'without-cxx', 'Disable C++ bindings'
   option 'without-fortran', 'Disable Fortran bindings'
@@ -9,7 +8,6 @@ class Pnetcdf < Package
   depends_on :mpi
 
   def install
-    run 'autoreconf', '-i'
     args = %W[
       --prefix=#{prefix}
       CC=#{ENV['MPICC']}  
