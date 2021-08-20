@@ -5,11 +5,14 @@ class Proj < Package
   label :common
 
   depends_on :sqlite3
+  depends_on :libtiff
 
   def install
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
+      TIFF_CFLAGS='-I#{Libtiff.inc}'
+      TIFF_LIBS='-L#{Libtiff.lib} -ltiff'
     ]
     if not Sqlite3.skipped?
       args << "SQLITE3_CFLAGS='-I#{Sqlite3.inc}'"

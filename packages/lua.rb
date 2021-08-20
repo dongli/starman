@@ -16,7 +16,7 @@ class Lua < Package
     }
     if not OS.mac? and not CompilerSet.c.clang?
       inreplace 'src/Makefile', {
-        /^\s*CFLAGS\s*=(.*)$/ => "CFLAGS = \\1 -I#{Readline.inc} -I#{Ncurses.inc}",
+        /^\s*CFLAGS\s*=(.*)$/ => "CFLAGS = \\1 -fPIE -I#{Readline.inc} -I#{Ncurses.inc}",
         /^\s*LDFLAGS\s*=(.*)$/ => "LDFLAGS = \\1 -L#{Readline.lib} -L#{Ncurses.lib}",
         /^\s*LIBS\s*=(.*)$/ => "LIBS = \\1 -lncursesw"
       }
