@@ -51,8 +51,6 @@ EOS
     @parser.parse!
     # Reparse packages because the command options may change dependencies.
     parse_packages force: true
-    # Load GCC installed by STARMAN if necessary.
-    PackageLoader.loads [:gcc] if CompilerSet.needs_load?
     # Reinitialize settings since compiler set may be set in command line.
     Settings.init
     CompilerSet.init

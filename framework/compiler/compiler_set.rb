@@ -21,8 +21,6 @@ class CompilerSet
         fortran: /ifort$/
       }
     }
-    @@needs_load = false
-    CLI.error "Invalid C compiler! Run #{CLI.blue 'starman config'} to revise." if Settings.compilers['c'].empty?
     [:c, :cxx, :fortran].each do |language|
       next unless Settings.compilers[language.to_s]
       case Settings.compilers[language.to_s]
@@ -35,7 +33,6 @@ class CompilerSet
       when command_patterns[:intel][language]
         self.class_variable_set :"@@#{language}_compiler", IntelCompiler.new(language)
       end
-      @@needs_load = true if Settings.compilers[language.to_s].include? Settings.install_root
     end
   end
 
@@ -49,9 +46,5 @@ class CompilerSet
 
   def self.fortran
     @@fortran_compiler
-  end
-
-  def self.needs_load?
-    @@needs_load
   end
 end
