@@ -15,6 +15,7 @@ class Hdf5 < Package
     ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
 
     args = std_cmake_args
+    args << '-DHDF5_ENABLE_THREADSAFE=ON' unless CompilerSet.c.pgi?
     args << "-DHDF5_BUILD_CPP_LIB=#{(without_cxx? ? 'OFF' : 'ON')}"
     args << "-DHDF5_BUILD_FORTRAN=#{(without_fortran? ? 'OFF' : 'ON')}"
     if enable_parallel?
@@ -37,7 +38,7 @@ class Hdf5 < Package
 
     mkdir 'build' do
       run 'cmake', '..', *args
-      run 'make', multiple_jobs? ? '-j'+jobs_number : ''
+      run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
       run 'ctest' unless skip_test?
       run 'make', 'install'
     end
