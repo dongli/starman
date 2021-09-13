@@ -9,7 +9,6 @@ robust and focus on HPC usage. I set down the following goals:
   like `modules`.
 * [X] Use database to manage information.
 * [ ] Support package update which is lacked in previous version.
-* [ ] Better support MPI cluster environment.
 
 Prerequisites
 =============
@@ -30,7 +29,7 @@ Put STARMAN in any location, and add the following `source` statement in your `.
 source <STARMAN_directory>/setup/bashrc
 ```
 
-Then run setup command to kickoff:
+Relogin. Then run setup command to kickoff:
 
 ```
 starman setup --install-root <where_you_want_to_put_installed_software> \
@@ -38,10 +37,10 @@ starman setup --install-root <where_you_want_to_put_installed_software> \
 --cache-root <where_store_packages_and_temporary_files>
 ```
 
-The default `cache_root` is `/tmp/starman`. You can put predownloaded packages
-there to avoid download.
-
-The default `rc_root` is `$USER/.starman`.
+Where `rc_root` (default is `$USER/.starman`) stores `config` and `history.db`
+which should be accessible by anyone who needs to use STARMAN, and `cache_root`
+(default is `/tmp/starman`) is used to store package source codes. *You can put
+predownloaded packages into `cache_root` to avoid download.*
 
 Usage
 =====
@@ -111,17 +110,21 @@ or
 $ starman install hdf5 -j 4           # Currently only works for hdf5 and netcdf.
 ```
 
+to use more threads to build hdf5.
+
 Load package
 ------------
 
 In your `.bashrc` after STARMAN source statement, add the load commands:
 
 ```
-starman load netcdf@4.6.0
+starman load netcdf
 ```
 
 This command will load the environment settings (e.g., `PATH`,
-`LD_LIBRARY_PATH`) into current shell (currently only BASH).
+`LD_LIBRARY_PATH`) into current shell (currently only BASH). You can use
+`NETCDF_ROOT` environment variable in any place you need to refer to the
+location of netcdf.
 
 Uninstall package
 -----------------
