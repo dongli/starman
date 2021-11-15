@@ -18,7 +18,7 @@ class NetcdfCxx < Package
       --enable-shared
     ]
     run './configure', *args
-    run 'make', multiple_jobs? ? '-j'+jobs_number : ''
+    run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
     run 'make', 'check' unless skip_test?
     run 'make', 'install'
   end

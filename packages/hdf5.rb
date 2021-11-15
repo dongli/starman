@@ -15,7 +15,6 @@ class Hdf5 < Package
     ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
 
     args = std_cmake_args
-    args << '-DHDF5_ENABLE_THREADSAFE=ON' unless CompilerSet.c.pgi?
     args << "-DHDF5_BUILD_CPP_LIB=#{(without_cxx? ? 'OFF' : 'ON')}"
     args << "-DHDF5_BUILD_FORTRAN=#{(without_fortran? ? 'OFF' : 'ON')}"
     if enable_parallel?
@@ -25,6 +24,7 @@ class Hdf5 < Package
       ENV['CXX'] = ENV['MPICXX']
       ENV['FC'] = ENV['MPIFC'] unless without_fortran?
     end
+    args << '-DHDF5_ENABLE_THREADSAFE=OFF'
 
     args << "-DZLIB_DIR=#{install_root}"
     args << "-DSZIP_DIR=#{install_root}"
