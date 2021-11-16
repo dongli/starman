@@ -13,6 +13,7 @@ class NetcdfFortran < Package
       ENV['LDFLAGS'] += ' -Wl,-flat_namespace'
       ENV['FFLAGS'] = '-assume no2underscore'
     end
+    ENV['FC'] = "#{CompilerSet.fortran.command} -fPIC"
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
