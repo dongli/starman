@@ -13,6 +13,7 @@ class Hdf5 < Package
 
   def install
     ENV['LDFLAGS'] = '' if CompilerSet.c.pgi?
+    ENV['CFLAGS'] = '-fPIC'
 
     args = std_cmake_args
     args << "-DHDF5_BUILD_CPP_LIB=#{(without_cxx? ? 'OFF' : 'ON')}"
