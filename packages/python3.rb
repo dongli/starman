@@ -2,7 +2,7 @@ class Python3 < Package
   url 'https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tar.xz'
   sha256 '06828c04a573c073a4e51c4292a27c1be4ae26621c3edc7cf9318418ce3b6d27'
 
-  label :skip_if_exist, binary_file: 'python3'
+  label :skip_if_exist, binary_file: 'python3.9'
 
   label :common
 
@@ -43,10 +43,10 @@ class Python3 < Package
       --prefix=#{prefix}
       --enable-ipv6
       --without-ensurepip
-      --with-openssl=#{Openssl.prefix}
       --enable-optimizations
     ]
     args << without_dtrace? ? '--without-dtrace' : '--with-dtrace'
+    args << "--with-openssl=#{Openssl.prefix}" if not Openssl.skipped?
     if not Readline.skipped?
       inreplace 'setup.py',
         "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
@@ -57,7 +57,7 @@ class Python3 < Package
       ENV['LDFLAGS'] = "-L#{Libffi.common_lib} -L#{Libffi.common_lib64} -lffi"
     end
     run './configure', *args
-    run 'make'
+    run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
     run 'make', 'install'
     # Install pip related tools.
     install_resource :setuptools, "#{libexec}/setuptools"

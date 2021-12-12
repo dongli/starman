@@ -1,15 +1,25 @@
+# The libevent API provides a mechanism to execute a callback function when a
+# specific event occurs on a file descriptor or after a timeout has been
+# reached. Furthermore, libevent also support callbacks due to signals or
+# regular timeouts.
+#
+# libevent is meant to replace the event loop found in event driven network
+# servers. An application just needs to call event_dispatch() and then add or
+# remove events dynamically without having to change the event loop.
+
 class Libevent < Package
-  url 'https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz'
-  sha256 '965cc5a8bb46ce4199a47e9b2c9e1cae3b137e8356ffdad6d94d3b9069b71dc2'
-  version '2.1.8'
+  url 'https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz'
+  sha256 '92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb'
 
   label :common
 
   depends_on :openssl
 
   def install
-    ENV['CPPFLAGS'] += " -I#{Openssl.inc}"
-    ENV['LDFLAGS'] += " -L#{Openssl.lib}"
+    if not Openssl.skipped?
+      ENV['CPPFLAGS'] += " -I#{Openssl.inc}"
+      ENV['LDFLAGS'] += " -L#{Openssl.lib}"
+    end
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking

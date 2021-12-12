@@ -5,6 +5,7 @@ class Openssl < Package
 
   label :common
   label :alone
+  label :skip_if_exist, library_file: 'libssl.so'
 
   depends_on :zlib
 
