@@ -1,35 +1,34 @@
 class Python3 < Package
-  url 'https://www.python.org/ftp/python/3.8.6/Python-3.8.6.tar.xz'
-  sha256 'a9e0b79d27aa056eb9cce8d63a427b5f9bab1465dee3f942dcfdb25a82f4ab8a'
+  url 'https://www.python.org/ftp/python/3.9.9/Python-3.9.9.tar.xz'
+  sha256 '06828c04a573c073a4e51c4292a27c1be4ae26621c3edc7cf9318418ce3b6d27'
 
   label :skip_if_exist, binary_file: 'python3'
 
   label :common
 
   depends_on :readline
-  depends_on :zlib
   depends_on :openssl
   depends_on :libffi
 
   option 'without-dtrace', 'Disable DTrace support.'
 
   resource :setuptools do
-    url 'https://files.pythonhosted.org/packages/7c/1b/9b68465658cda69f33c31c4dbd511ac5648835680ea8de87ce05c81f95bf/setuptools-50.3.0.zip'
-    sha256 '39060a59d91cf5cf403fa3bacbb52df4205a8c3585e0b9ba4b30e0e19d4c4b18'
+    url 'https://files.pythonhosted.org/packages/cd/9a/6fff2cee92de1d34c0e8d48bb2ccedb0899eebb2cfe7955584b53bdaded7/setuptools-59.0.1.tar.gz'
+    sha256 '899d27ec8104a68d4ba813b1afd66708a1a10e9391e79be92c8c60f9c77d05e5'
   end
 
   resource :pip do
-    url 'https://files.pythonhosted.org/packages/59/64/4718738ffbc22d98b5223dbd6c5bb87c476d83a4c71719402935170064c7/pip-20.2.3.tar.gz'
-    sha256 '30c70b6179711a7c4cf76da89e8a0f5282279dfb0278bec7b94134be92543b6d'
+    url 'https://files.pythonhosted.org/packages/da/f6/c83229dcc3635cdeb51874184241a9508ada15d8baa337a41093fab58011/pip-21.3.1.tar.gz'
+    sha256 'fd11ba3d0fdb4c07fbc5ecbba0b1b719809420f25038f8ee3cd913d3faa3033a'
   end
 
   resource :wheel do
-    url 'https://files.pythonhosted.org/packages/83/72/611c121b6bd15479cb62f1a425b2e3372e121b324228df28e64cc28b01c2/wheel-0.35.1.tar.gz'
-    sha256 '99a22d87add3f634ff917310a3d87e499f19e663413a52eb9232c447aa646c9f'
+    url 'https://files.pythonhosted.org/packages/4e/be/8139f127b4db2f79c8b117c80af56a3078cc4824b5b94250c7f81a70e03b/wheel-0.37.0.tar.gz'
+    sha256 'e2ef7239991699e3355d54f8e968a21bb940a1dbf34a4d226741e64462516fad'
   end
 
   def site_packages
-    "#{link_lib}/python3.8/site-packages"
+    "#{link_lib}/python3.9/site-packages"
   end
 
   def export_env
