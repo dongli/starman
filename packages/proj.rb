@@ -1,6 +1,6 @@
 class Proj < Package
-  url 'https://download.osgeo.org/proj/proj-7.2.1.tar.gz'
-  sha256 'b384f42e5fb9c6d01fe5fa4d31da2e91329668863a684f97be5d4760dbbf0a14'
+  url 'https://github.com/OSGeo/PROJ/releases/download/8.2.0/proj-8.2.0.tar.gz'
+  sha256 'de93df9a4aa88d09459ead791f2dbc874b897bf67a5bbb3e4b68de7b1bdef13c'
 
   label :common
 
