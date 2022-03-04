@@ -22,10 +22,11 @@ class Munge < Package
       --with-crypto-lib=openssl
     ]
     args << "--with-openssl-prefix=#{Openssl.prefix}" if not Openssl.skipped?
+    run './bootstrap'
     run './configure', *args
     run 'make'
+    #run 'make', 'check' if not skip_test?
     run 'make', 'install'
-    run "dd if=/dev/random bs=1 count=1024 > #{prefix}/etc/munge/munge.key", :verbose
-    run "chmod 0400 #{prefix}/etc/munge/munge.key"
+    run "chmod 0600 #{prefix}/etc/munge/munge.key"
   end
 end
