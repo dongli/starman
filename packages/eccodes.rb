@@ -1,6 +1,6 @@
 class Eccodes < Package
   url 'https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.19.0-Source.tar.gz'
-  sha256 '158021539a85ca597075f4a534117721ea51f5ddea44b5ec27519d553c980f8d'
+  sha256 'a1d080aed1b17a9d4e3aecccc5a328c057830cd4d54f451f5498b80b24c46404'
 
   depends_on :cmake
   depends_on :openjpeg
@@ -41,7 +41,7 @@ class Eccodes < Package
     end
     mkdir 'build' do
       run 'cmake', '..', *args
-      run 'make', multiple_jobs? ? '-j'+jobs_number : ''
+      run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
       run 'ctest' unless skip_test?
       run 'make', 'install'
     end
