@@ -43,8 +43,11 @@ class Python3 < Package
       --prefix=#{prefix}
       --enable-ipv6
       --without-ensurepip
-      --enable-optimizations
     ]
+    unless CompilerSet.c.gcc? and CompilerSet.c.version <= '4.8.5'
+      # Avoid error 'Could not import runpy module'
+      args << '--enable-optimizations'
+    end
     args << without_dtrace? ? '--without-dtrace' : '--with-dtrace'
     args << "--with-openssl=#{Openssl.prefix}" if not Openssl.skipped?
     if not Readline.skipped?
