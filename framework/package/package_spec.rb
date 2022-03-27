@@ -110,4 +110,6 @@ class PackageSpec
   end
 
   attr_accessor :system_prefix
+  attr_accessor :system_inc
+  attr_accessor :system_lib
 end

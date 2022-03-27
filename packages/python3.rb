@@ -6,6 +6,7 @@ class Python3 < Package
 
   label :common
 
+  depends_on :bzip2
   depends_on :readline
   depends_on :openssl
   depends_on :libffi
@@ -50,14 +51,16 @@ class Python3 < Package
     end
     args << without_dtrace? ? '--without-dtrace' : '--with-dtrace'
     args << "--with-openssl=#{Openssl.prefix}" if not Openssl.skipped?
+    ENV['CFLAGS'] = "-I#{Bzip2.inc}"
+    ENV['LDFLAGS'] = "-L#{Bzip2.lib}"
     if not Readline.skipped?
       inreplace 'setup.py',
         "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
         "do_readline = '#{Readline.link_lib}/libhistory.#{OS.soname}'"
     end
     if not Libffi.skipped?
-      ENV['CPPFLAGS'] = "-I#{Libffi.common_inc}"
-      ENV['LDFLAGS'] = "-L#{Libffi.common_lib} -L#{Libffi.common_lib64} -lffi"
+      ENV['CFLAGS'] += " -I#{Libffi.common_inc}"
+      ENV['LDFLAGS'] += " -L#{Libffi.common_lib} -L#{Libffi.common_lib64} -lffi"
     end
     run './configure', *args
     run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''

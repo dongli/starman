@@ -82,9 +82,18 @@ class Package
       "#{Settings.common_root}/#{dir}"
     end
     self.class.send :define_method, dir do
-      dir = dir == :inc ? :include : dir
-      dir = dir == :man ? 'share/man' : dir
-      "#{prefix}/#{dir}"
+      package_class = self.name.split('::').last
+      spec = self.class_variable_get "@@#{package_class}_spec"
+      case dir
+      when :inc
+        spec.system_inc || "#{prefix}/include"
+      when :lib, :lib64
+        spec.system_lib || "#{prefix}/#{dir}"
+      when :man
+        "#{prefix}/share/man"
+      else
+        "#{prefix}/#{dir}"
+      end
     end
     self.class.send :define_method, :"link_#{dir}" do
       dir = dir == :inc ? :include : dir
@@ -131,6 +140,7 @@ class Package
     elsif self.labels[:skip_if_exist].has_key? :include_file
       ['/usr/include', '/usr/local/include'].each do |dir|
         if File.file? "#{dir}/#{self.labels[:skip_if_exist][:include_file]}"
+          @spec.system_inc = dir
           @spec.system_prefix = File.dirname dir
           return true
         end
@@ -138,7 +148,13 @@ class Package
     elsif self.labels[:skip_if_exist].has_key? :library_file
       ['/usr/lib', '/usr/lib64', '/usr/local/lib', '/usr/local/lib64', '/usr/lib/x86_64-linux-gnu'].each do |dir|
         if File.file? "#{dir}/#{self.labels[:skip_if_exist][:library_file]}"
-          @spec.system_prefix = File.dirname dir
+          @spec.system_lib = dir
+          case dir
+          when '/usr/lib', '/usr/lib64', '/usr/lib/x86_64-linux-gnu'
+            @spec.system_prefix = '/usr'
+          when '/usr/local/lib', '/usr/local/lib64'
+            @spec.system_prefix = '/usr/local'
+          end
           return true
         end
       end
