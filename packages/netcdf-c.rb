@@ -1,6 +1,7 @@
 class NetcdfC < Package
-  url 'https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.7.4.tar.gz'
-  sha256 '0e476f00aeed95af8771ff2727b7a15b2de353fb7bb3074a0d340b55c2bd4ea8'
+  url 'https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.8.1.tar.gz'
+  file_name 'netcdf-c-4.8.1.tar.gz'
+  sha256 'bc018cc30d5da402622bf76462480664c6668b55eb16ba205a0dfb8647161dd0'
 
   grouped_by :netcdf
 

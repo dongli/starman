@@ -7,7 +7,7 @@ class Cmake < Package
 
   def install
     CLI.error 'Use Clang compilers to build CMake!' if OS.mac? and CompilerSet.c.gcc?
-    run './bootstrap', "--prefix=#{prefix}", '--', '-DCMAKE_BUILD_TYPE=Release'
+    run './bootstrap', "--prefix=#{prefix}", '--', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_USE_OPENSSL=OFF'
     run 'make'
     run 'make', 'install'
   end

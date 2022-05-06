@@ -1,7 +1,7 @@
 class JsonFortran < Package
-  url 'https://github.com/jacobwilliams/json-fortran/archive/7.1.0.tar.gz'
-  sha256 'e7aa1f6e09b25ebacb17188147380c3f8c0a254754cd24869c001745fcecc9e6'
-  file_name 'json-fortran-7.1.0.tar.gz'
+  url 'https://github.com/jacobwilliams/json-fortran/archive/refs/tags/8.2.5.tar.gz'
+  sha256 '16eec827f64340c226ba9a8463f001901d469bc400a1e88b849f258f9ef0d100'
+  file_name 'json-fortran-8.2.5.tar.gz'
 
   depends_on :cmake
 
