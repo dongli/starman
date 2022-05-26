@@ -57,7 +57,7 @@ class Python3 < Package
       "        zlib_inc = find_file('zlib.h', [], self.inc_dirs)",
       "        self.inc_dirs.append('#{Zlib.inc}')\n        self.lib_dirs.append('#{Zlib.lib}')\n        zlib_inc = find_file('zlib.h', [], self.inc_dirs)"
     ENV['CPPFLAGS'] = "-I#{Zlib.inc} -I#{Bzip2.link_inc} -I#{Xz.link_inc}"
-    ENV['LDFLAGS'] = "-L#{Zlib.lib} -L#{Bzip2.link_lib} -L#{Xz.link_lib}"
+    ENV['LDFLAGS'] = "-L#{Zlib.lib} -L#{Bzip2.link_lib} -L#{Xz.link_lib} -Wl,-rpath,#{Openssl.lib} -Wl,-rpath,#{Zlib.lib}"
     if not Readline.skipped?
       inreplace 'setup.py',
         "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
