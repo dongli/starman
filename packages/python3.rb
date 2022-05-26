@@ -7,6 +7,8 @@ class Python3 < Package
   label :common
 
   depends_on :bzip2
+  depends_on :zlib
+  depends_on :xz
   depends_on :readline
   depends_on :openssl
   depends_on :libffi
@@ -51,16 +53,23 @@ class Python3 < Package
     end
     args << without_dtrace? ? '--without-dtrace' : '--with-dtrace'
     args << "--with-openssl=#{Openssl.prefix}" if not Openssl.skipped?
-    ENV['CFLAGS'] = "-I#{Bzip2.inc}"
-    ENV['LDFLAGS'] = "-L#{Bzip2.lib}"
+    inreplace 'setup.py',
+      "        zlib_inc = find_file('zlib.h', [], self.inc_dirs)",
+      "        self.inc_dirs.append('#{Zlib.inc}')\n        self.lib_dirs.append('#{Zlib.lib}')\n        zlib_inc = find_file('zlib.h', [], self.inc_dirs)"
+    ENV['CPPFLAGS'] = "-I#{Zlib.inc} -I#{Bzip2.link_inc} -I#{Xz.link_inc}"
+    ENV['LDFLAGS'] = "-L#{Zlib.lib} -L#{Bzip2.link_lib} -L#{Xz.link_lib}"
     if not Readline.skipped?
       inreplace 'setup.py',
         "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
         "do_readline = '#{Readline.link_lib}/libhistory.#{OS.soname}'"
     end
     if not Libffi.skipped?
-      ENV['CFLAGS'] += " -I#{Libffi.common_inc}"
-      ENV['LDFLAGS'] += " -L#{Libffi.common_lib} -L#{Libffi.common_lib64} -lffi"
+      ENV['CPPFLAGS'] += " -I#{Libffi.link_inc}"
+      ENV['LDFLAGS'] += " -L#{Libffi.link_lib} -L#{Libffi.link_lib64}"
+      # See: https://unix.stackexchange.com/questions/631725/how-do-i-build-pkgconf-and-libffi-and-subsequently-python3-9-with-ctypes-support
+      inreplace 'setup.py',
+        '    def detect_decimal(self):',
+        "        ext.libraries.append('ffi')\n\n    def detect_decimal(self):"
     end
     run './configure', *args
     run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
