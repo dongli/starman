@@ -5,7 +5,8 @@ class Charliecloud < Package
   label :common
 
   def install
+    run './configure', "--prefix=#{prefix}"
     run 'make'
-    run 'make', 'install', "PREFIX=#{prefix}"
+    run 'make', 'install'
   end
 end
