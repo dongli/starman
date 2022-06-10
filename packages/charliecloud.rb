@@ -1,7 +1,6 @@
 class Charliecloud < Package
-  url 'https://github.com/hpc/charliecloud/archive/v0.9.6.tar.gz'
-  sha256 '50e20d5e2a3710cd06e7c999db22495b07ef0fb15ffbc0af3bccac5387f0fddb'
-  file_name 'charliecloud-0.9.6.tar.gz'
+  url 'https://github.com/hpc/charliecloud/releases/download/v0.27/charliecloud-0.27.tar.gz'
+  sha256 '1142938ce73ec8a5dfe3a19a241b1f1ffbb63b582ac63d459aebec842c3f4b72'
 
   label :common
 
