@@ -1,6 +1,6 @@
 class Libffi < Package
-  url 'https://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz'
-  sha256 'd06ebb8e1d9a22d19e38d63fdb83954253f39bedc5d46232a05645685722ca37'
+  url 'https://github.com/libffi/libffi/releases/download/v3.4.2/libffi-3.4.2.tar.gz'
+  sha256 '540fb721619a6aba3bdeef7d940d8e9e0e6d2c193595bc243241b77ff9e93620'
 
   label :common
   label :skip_if_exist, include_file: 'ffi.h'
