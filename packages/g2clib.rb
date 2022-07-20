@@ -9,7 +9,8 @@ class G2clib < Package
   def install
     inreplace 'makefile', {
       'INC=-I/nwprod/lib/include/' => "INC=-I#{link_inc} -I#{Libpng.inc}",
-      'CC=gcc' => "CC=#{CompilerSet.c.command}"
+      'CC=gcc' => "CC=#{CompilerSet.c.command}",
+      '-D__64BIT__' => ''
     }
     run 'make'
     mkdir inc

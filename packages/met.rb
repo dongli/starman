@@ -1,7 +1,7 @@
 class Met < Package
-  url 'https://dtcenter.org/sites/default/files/community-code/met/met-8.1.1.20190708.tar.gz'
-  sha256 'b5b7e0f3c1d2b786f9ea625bce1fcd67d578dd1e73bd97825200e35428ecc745'
-  version '8.1.1'
+  url 'https://github.com/dtcenter/MET/releases/download/v10.1.2/met-10.1.2.20220516.tar.gz'
+  sha256 'f0ef0de116495c91128ca6a267bb4f93088220f33d4b9d2cf57f014be6fd9742'
+  version '10.1.2'
 
   label :common
 
