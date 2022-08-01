@@ -5,10 +5,12 @@ class Met < Package
 
   label :common
 
+  option 'with-sat', 'Enable functionality for satellite'
+
   depends_on :bufrlib
   depends_on :g2clib
-  depends_on :hdf4
-  depends_on 'hdf-eos2'
+  depends_on :hdf4 if with_sat?
+  depends_on 'hdf-eos2' if with_sat?
   depends_on 'netcdf-cxx4'
   depends_on :gsl
   depends_on :zlib
@@ -24,10 +26,12 @@ class Met < Package
       MET_GSL=#{Gsl.link_root}
       MET_BUFRLIB=#{Bufrlib.link_root}
       MET_HDF5=#{Hdf5.link_root}
-      MET_HDF=#{Hdf4.link_root}
-      MET_HDFEOS=#{HdfEos2.link_root}
       LDFLAGS='-L#{Netcdf.link_lib} #{OS.mac? ? "-L#{Libpng.lib}" : ''}'
     ]
+    if with_sat?
+      args << "MET_HDF=#{Hdf4.link_root}"
+      args << "MET_HDFEOS=#{HdfEos2.link_root}"
+    end
     if OS.mac?
       inreplace 'src/basic/vx_config/config_util.cc', /(#include <sys\/types.h>)/, "\\1\n#include <sys/syslimits.h>\n"
     end
