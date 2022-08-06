@@ -86,7 +86,7 @@ EOS
         CLI.notice "Package group #{CLI.green package.name}@#{CLI.blue package.version} is installed."
       elsif res == true
         CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} has been installed."
-      elsif res[0] == :different_version_installed
+      elsif res.class == Array and res[0] == :different_version_installed
         if package.from_cmd_line?
           CLI.warning "Package #{CLI.blue package.name} #{CLI.red res[1]} has been installed! Use --force/-f to override."
         end
