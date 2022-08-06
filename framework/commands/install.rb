@@ -86,12 +86,12 @@ EOS
         CLI.notice "Package group #{CLI.green package.name}@#{CLI.blue package.version} is installed."
       elsif res == true
         CLI.notice "Package #{CLI.green package.name}@#{CLI.blue package.version} has been installed."
-      elsif res == :old_version_installed
+      elsif res[0] == :different_version_installed
         if package.from_cmd_line?
-          CLI.warning "Package #{CLI.blue package.name} #{CLI.red package.version} has been installed! Use --force/-f to override."
+          CLI.warning "Package #{CLI.blue package.name} #{CLI.red res[1]} has been installed! Use --force/-f to override."
         end
       else
-        if res == :old_version_installed_but_unlink_it
+        if res == :different_version_installed_but_unlink_it
           CLI.notice "Unlink package #{CLI.green package.name} ..."
           PackageLinker.unlink package
         end
