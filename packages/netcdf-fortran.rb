@@ -1,7 +1,7 @@
 class NetcdfFortran < Package
-  url 'https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.5.3.tar.gz'
-  file_name 'netcdf-fortran-4.5.3.tar.gz'
-  sha256 'c6da30c2fe7e4e614c1dff4124e857afbd45355c6798353eccfa60c0702b495a'
+  url 'https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.6.0.tar.gz'
+  file_name 'netcdf-fortran-4.6.0.tar.gz'
+  sha256 '8194aa70e400c0adfc456127c1d97af2c6489207171d13b10cd754a16da8b0ca'
 
   grouped_by :netcdf
 
