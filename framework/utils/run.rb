@@ -8,7 +8,7 @@ module Utils
       CLI.blue_arrow cmd_line, :truncate
       system "#{cmd_line} 1>#{Settings.cache_root}/stdout.#{Process.pid} 2>#{Settings.cache_root}/stderr.#{Process.pid}"
     end
-    if not $?.success?
+    if not $?.success? and not options.include? :allow_failure
       CLI.error "Failed to run #{cmd_line}!" +
         "#{CommandParser.args[:verbose] || " Check logs:\n#{Settings.cache_root}/stdout.#{Process.pid}\n#{Settings.cache_root}/stderr.#{Process.pid}"}"
     else
