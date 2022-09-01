@@ -9,6 +9,8 @@ class Openmpi < Package
   option 'with-ucx', 'Use UCX library.'
   option 'with-verbs', 'Use VERBS library.'
 
+  depends_on :zlib
+
   def export_env
     ENV['MPICC'] = "#{bin}/mpicc"
     ENV['MPICXX'] = "#{bin}/mpic++"
@@ -23,6 +25,7 @@ class Openmpi < Package
       --disable-debug
       --enable-shared
       --with-hwloc=internal
+      --with-zlib=#{Zlib.prefix}
     ]
     args << '--with-ucx' if with_ucx?
     args << '--with-verbs' if with_verbs?
