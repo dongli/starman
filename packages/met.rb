@@ -7,8 +7,8 @@ class Met < Package
 
   option 'with-sat', 'Enable functionality for satellite'
 
+  depends_on :nceplibs
   depends_on :bufrlib
-  depends_on :g2clib
   depends_on :hdf4 if with_sat?
   depends_on 'hdf-eos2' if with_sat?
   depends_on 'netcdf-cxx4'
@@ -22,7 +22,8 @@ class Met < Package
       --enable-grib2
       --disable-mode_graphics
       MET_NETCDF=#{NetcdfCxx4.link_root}
-      MET_GRIB2C=#{G2clib.link_root}
+      MET_GRIB2C=#{Nceplibs.prefix}/g2c-1.6.2
+      GRIB2CLIB_NAME=-lg2c
       MET_GSL=#{Gsl.link_root}
       MET_BUFRLIB=#{Bufrlib.link_root}
       MET_HDF5=#{Hdf5.link_root}

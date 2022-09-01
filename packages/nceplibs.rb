@@ -3,6 +3,8 @@ class Nceplibs < Package
   sha256 'b952e116a0b7b94fdb022b9ecf40440163b872ff65461035337b3436cb72c1a8'
   file_name 'nceplibs-1.4.0.zip'
 
+  label :alone
+
   depends_on :hdf5
   depends_on :netcdf
   depends_on :jasper
