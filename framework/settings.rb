@@ -88,6 +88,7 @@ class Settings
   def self.init options = {}
     if File.file? conf_file
       @@settings = YAML.load(open(conf_file).read)
+      @@settings['no_common'] ||= false
       return if options[:only_load]
       if (not install_root or install_root == '<change_me>') and not options[:ignore_errors]
         CLI.error "#{CLI.red 'install_root'} is not set in #{CLI.blue conf_file}!"
@@ -113,6 +114,7 @@ class Settings
       if not options[:just_write]
         @@settings['install_root'] = options[:install_root] if options[:install_root]
         @@settings['cache_root'] = options[:cache_root] if options[:cache_root]
+        @@settings['no_common'] = options[:no_common] || false
         if system_command? CommandParser.args[:cc] and system_command? CommandParser.args[:cxx]
           if CommandParser.args[:compiler_set]
             tag = CommandParser.args[:compiler_set]

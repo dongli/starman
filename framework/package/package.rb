@@ -27,7 +27,7 @@ class Package
       PackageLoader.loaded_packages[spec.group].prefix
     elsif spec.has_label? :skip_if_exist and spec.system_prefix
       spec.system_prefix
-    elsif spec.has_label? :common
+    elsif spec.has_label? :common and not Settings.settings['no_common']
       "#{Settings.install_root}/common/Packages/#{name}/#{spec.version}"
     elsif spec.has_label? :compiler
       "#{Settings.install_root}/#{name}_#{spec.version}/Packages/#{name}/#{spec.version}"
