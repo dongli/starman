@@ -37,6 +37,6 @@ class Met < Package
       inreplace 'src/basic/vx_config/config_util.cc', /(#include <sys\/types.h>)/, "\\1\n#include <sys/syslimits.h>\n"
     end
     run './configure', *args
-    run 'make', 'install'
+    run 'make', 'install', multiple_jobs? ? "-j#{jobs_number}" : ''
   end
 end

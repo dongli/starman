@@ -21,7 +21,7 @@ class Settings
         package.prefix
       elsif package.has_label? :alone
         File.dirname(package.prefix) + '/link'
-      elsif package.has_label? :common
+      elsif package.has_label? :common and not @@settings['no_common']
         common_root
       elsif package.has_label? :compiler
         File.dirname(File.dirname(File.dirname(package.prefix)))
