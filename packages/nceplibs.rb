@@ -24,6 +24,12 @@ class Nceplibs < Package
           set(_C_libs_flag --libs)
       EOF
       }
+      inreplace '../download/nceplibs-g2c/CMakeLists.txt', {
+        'option(USE_OpenJPEG "Use OpenJPEG library" OFF)' => <<-EOF
+          option(USE_OpenJPEG "Use OpenJPEG library" OFF)
+          add_definitions(-D__64BIT__)
+        EOF
+      }
       run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
     end
   end
