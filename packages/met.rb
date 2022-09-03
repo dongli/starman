@@ -28,6 +28,7 @@ class Met < Package
       MET_BUFRLIB=#{Bufrlib.link_root}
       MET_HDF5=#{Hdf5.link_root}
       LDFLAGS='-L#{Netcdf.link_lib} #{OS.mac? ? "-L#{Libpng.lib}" : ''}'
+      CPPFLAGS='-D__64BIT__'
     ]
     if with_sat?
       args << "MET_HDF=#{Hdf4.link_root}"
