@@ -12,7 +12,6 @@ class Nceplibs < Package
   depends_on :libpng
 
   def install
-    ENV['JPEG_ROOT'] = Jpeg.prefix
     run "sed -i 's@\"-DOPENMP=\${OPENMP}\"@\"-DOPENMP=\${OPENMP}\"\\n\"-DJasper_ROOT=#{Jasper.prefix}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@' CMakeLists.txt"
     run "sed -i 's@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@' CMakeLists.txt"
     mkdir 'build' do
