@@ -125,6 +125,8 @@ class Settings
               res = `#{CommandParser.args[:cc]} -v 2>&1`.match(/version\s(\d+\.\d+\.\d+)/)[1] rescue nil
             elsif CommandParser.args[:cc] =~ /icc/
               res = `#{CommandParser.args[:cc]} -v 2>&1`.match(/^icc\s*(\(ICC\)|version)*\s*(\d+\.\d+(\.\d+)?)/)[2] rescue nil
+            elsif CommandParser.args[:cc] =~ /nvcc/
+              res = `#{CommandParser.args[:cc]} --version 2>&1`.match(/V(\d+\.\d+(\.\d+)?)/)[1] rescue nil
             end
             if res
               version = res

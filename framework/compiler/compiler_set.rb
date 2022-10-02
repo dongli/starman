@@ -11,9 +11,9 @@ class CompilerSet
         cxx: /\bclang\+\+$/
       },
       pgi: {
-        c: /\bpgcc$/,
-        cxx: /\bpgc\+\+$/,
-        fortran: /\bpgfortran$/
+        c: /\bnvcc$/,
+        cxx: /\bnvc\+\+$/,
+        fortran: /\bnvfortran$/
       },
       intel: {
         c: /icc$/,
