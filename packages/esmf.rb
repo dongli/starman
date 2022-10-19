@@ -1,7 +1,7 @@
 class Esmf < Package
-  url 'http://www.earthsystemmodeling.org/esmf_releases/public/ESMF_7_1_0r/esmf_7_1_0r_src.tar.gz'
-  sha256 'ae9a5edb8d40ae97a35cbd4bd00b77061f995c77c43d36334dbb95c18b00a889'
-  version '7.1.0'
+  url 'https://github.com/esmf-org/esmf/archive/refs/tags/v8.3.1.tar.gz'
+  sha256 '6c39261e55dcdf9781cdfa344417b9606f7f961889d5ec626150f992f04f146d'
+  version '8.3.1'
 
   option 'use-mkl', 'Use MKL for LAPACK dependency.'
   option 'use-pnetcdf', 'Use Parallel-NetCDF dependency.'
