@@ -1,6 +1,6 @@
 class Eccodes < Package
-  url 'https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.19.0-Source.tar.gz'
-  sha256 'a1d080aed1b17a9d4e3aecccc5a328c057830cd4d54f451f5498b80b24c46404'
+  url 'https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.27.0-Source.tar.gz'
+  sha256 'ede5b3ffd503967a5eac89100e8ead5e16a881b7585d02f033584ed0c4269c99'
 
   depends_on :cmake
   depends_on :openjpeg
