@@ -10,8 +10,12 @@ class Nceplibs < Package
   depends_on :jasper
   depends_on :jpeg
   depends_on :libpng
+  depends_on :mpi
 
   def install
+    inreplace 'CMakeLists.txt', {
+      '  LANGUAGES C Fortran)' => "  LANGUAGES C Fortran)\nset(CMAKE_C_FLAGS \"-std=c90\")\n"
+    }
     run "sed -i 's@\"-DOPENMP=\${OPENMP}\"@\"-DOPENMP=\${OPENMP}\"\\n\"-DJasper_ROOT=#{Jasper.prefix}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@' CMakeLists.txt"
     run "sed -i 's@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@' CMakeLists.txt"
     mkdir 'build' do
