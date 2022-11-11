@@ -81,7 +81,7 @@ class CLI
     else
       print "[#{red 'Error'}]: #{message}\n"
       print_call_stack if CommandLine.option(:debug) rescue exit
-      exit
+      exit 1
     end
   end
 
