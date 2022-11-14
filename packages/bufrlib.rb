@@ -4,7 +4,7 @@ class Bufrlib < Package
   version '11.3.0'
 
   def install
-    flags = CompilerSet.fortran.gcc? ? '-fno-second-underscore -Wno-argument-mismatch' : ''
+    flags = CompilerSet.fortran.gcc? ? '-fno-second-underscore -fallow-argument-mismatch' : ''
     run '$CC -DUNDERSCORE -c `./getdefflags_C.sh` *.c'
     run '$FC -c `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"`', flags
     run 'ar crv libbufr.a *.o'
