@@ -16,9 +16,9 @@ class CompilerSet
         fortran: /\bnvfortran$/
       },
       intel: {
-        c: /icc$/,
-        cxx: /icpc$/,
-        fortran: /ifort$/
+        c: /(icc|icx)$/,
+        cxx: /(icpc|icpx)$/,
+        fortran: /(ifort|ifx)$/
       }
     }
     [:c, :cxx, :fortran].each do |language|

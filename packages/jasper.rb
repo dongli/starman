@@ -10,7 +10,7 @@ class Jasper < Package
       --disable-dependency-tracking
       --enable-shared
       --prefix=#{prefix}
-      CPPFLAGS='-I#{Jpeg.inc}'
+      CPPFLAGS='-I#{Jpeg.inc} -std=c90'
       LDFLAGS='-L#{Jpeg.lib}'
     ]
     run './configure', *args
