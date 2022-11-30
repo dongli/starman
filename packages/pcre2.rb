@@ -1,6 +1,6 @@
 class Pcre2 < Package
-  url 'https://ftp.pcre.org/pub/pcre/pcre2-10.33.tar.bz2'
-  sha256 '35514dff0ccdf02b55bd2e9fa586a1b9d01f62332c3356e379eabb75f789d8aa'
+  url 'https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.40/pcre2-10.40.tar.bz2'
+  sha256 '14e4b83c4783933dc17e964318e6324f7cae1bc75d8f3c79bc6969f00c159d68'
 
   depends_on :zlib
   depends_on :bzip2
