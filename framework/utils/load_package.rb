@@ -1,5 +1,6 @@
 module Utils
   def load_package package
+    return if package.has_label? :alone and CommandParser.command != :install
     append_path package.bin if Dir.exist? package.bin
     append_ld_library_path package.lib if Dir.exist? package.lib
     append_ld_library_path package.lib64 if Dir.exist? package.lib64
