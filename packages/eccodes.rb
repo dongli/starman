@@ -6,6 +6,7 @@ class Eccodes < Package
   depends_on :openjpeg
   depends_on :jasper
   depends_on :netcdf
+  depends_on :libaec
 
   option 'with-python2', 'Build Python 2 bindings.'
   option 'with-python3', 'Build Python 3 bindings.'
