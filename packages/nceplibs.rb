@@ -133,6 +133,7 @@ class Nceplibs < Package
   end
 
   def install
+    ENV['NetCDF_ROOT'] = Netcdf.prefix
     inreplace 'CMakeLists.txt', {
       '  LANGUAGES C Fortran)' => "  LANGUAGES C Fortran)\nset(CMAKE_C_FLAGS \"-std=c90\")\n"
     }
