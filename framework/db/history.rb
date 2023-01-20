@@ -78,6 +78,14 @@ class History
           res = [:different_version_installed, columns[2]]
         end
       else
+        # Add method if necessary.
+        columns.each do |column|
+          if column[0] == '{'
+            eval(column).each do |key, value|
+              package.options[key] = value
+            end
+          end
+        end
         # If name and version match, just return.
         return true
       end

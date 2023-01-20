@@ -57,8 +57,8 @@ module PackageLoader
       search_packages_for_label(name).each do |path|
         eval open(path, 'r').read
         name = File.basename(path, '.rb')
-        possible_packages << eval("#{name.to_s.split('-').collect(&:capitalize).join}").new
-        if History.installed? possible_packages.last
+        possible_packages << eval("#{name.to_s.split('@').first.split('-').collect(&:capitalize).join}").new
+        if History.installed?(possible_packages.last) == true
           return scan(possible_packages.last.name)
         end
       end
@@ -97,6 +97,6 @@ module PackageLoader
     Dir.glob("#{ENV['STARMAN_ROOT']}/packages/*.rb").each do |path|
       matches << path if open(path, 'r').read =~ /label :#{label}/
     end
-    return matches
+    matches
   end
 end

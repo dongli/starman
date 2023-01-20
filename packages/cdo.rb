@@ -14,6 +14,11 @@ class Cdo < Package
 
   def install
     ENV['LDFLAGS'] = "-L#{Eccodes.lib64}"
+    if Hdf5.enable_parallel?
+      ENV['CC'] = ENV['MPICC']
+      ENV['CXX'] = ENV['MPICXX']
+      ENV['FC'] = ENV['MPIFC']
+    end
     args = %W[
       --prefix=#{prefix}
       --with-hdf5=#{Hdf5.prefix}
@@ -27,6 +32,7 @@ class Cdo < Package
       --with-libxml2=#{Libxml2.prefix}
       --disable-dependency-tracking
       --disable-debug
+      LIBS='-lz'
     ]
     run './configure', *args
     inreplace 'test/Makefile', 'CDO = $(top_builddir)/src/cdo' => 'CDO = $(top_builddir)/src/cdo -L'

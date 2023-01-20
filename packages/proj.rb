@@ -18,6 +18,7 @@ class Proj < Package
     args << "SQLITE3_CFLAGS='-I#{Sqlite3.inc}'"
     args << "SQLITE3_LIBS='-L#{Sqlite3.lib} -lsqlite3'"
     run './configure', *args
+    run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
     run 'make', 'install'
   end
 end
