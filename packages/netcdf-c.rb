@@ -7,7 +7,7 @@ class NetcdfC < Package
 
   depends_on :m4
   depends_on :hdf5
-  depends_on :blosc
+  depends_on :blosc if OS.mac?
   depends_on :mpi
 
   option 'disable-netcdf-4', 'Disable NetCDF4 interfaces.'

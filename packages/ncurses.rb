@@ -5,7 +5,7 @@ class Ncurses < Package
 
   label :common
   label :alone
-  label :skip_if_exist, library_file: "libncursesw.#{OS.soname}"
+  label :skip_if_exist, library_file: "libncursesw.#{OS.soname}.6.1"
 
   def install
     args = %W[
