@@ -5,7 +5,7 @@ class Expat < Package
   label :common
 
   def install
-    run './configure', "--prefix=#{prefix}"
+    run './configure', "--prefix=#{prefix} --without-docbook"
     run 'make', 'install'
   end
 end

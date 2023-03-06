@@ -2,8 +2,6 @@ class Proj < Package
   url 'https://github.com/OSGeo/PROJ/releases/download/8.2.0/proj-8.2.0.tar.gz'
   sha256 'de93df9a4aa88d09459ead791f2dbc874b897bf67a5bbb3e4b68de7b1bdef13c'
 
-  label :common
-
   depends_on :sqlite3
   depends_on :libtiff
 
