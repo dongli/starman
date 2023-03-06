@@ -1,12 +1,12 @@
 class Gcc < Package
-  url 'http://mirrors.aliyun.com/gnu/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz'
-  sha256 '4c4a6fb8a8396059241c2e674b85b351c26a5d678274007f076957afa1cc9ddf'
+  url 'http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-12.2.0/gcc-12.2.0.tar.xz'
+  sha256 'e549cf9cf3594a00e27b6589d4322d70e0720cdd213f39beb4181e06926230ff'
 
   label :compiler
 
   resource :mpfr do
-    url 'https://www.mpfr.org/mpfr-current/mpfr-4.1.0.tar.bz2'
-    sha256 'feced2d430dd5a97805fa289fed3fc8ff2b094c02d05287fd6133e7f1f0ec926'
+    url 'https://ftp.gnu.org/gnu/mpfr/mpfr-4.2.0.tar.xz'
+    sha256 '06a378df13501248c1b2db5aa977a2c8126ae849a9d9b7be2546fb4a9c26d993'
   end
 
   resource :gmp do
@@ -15,13 +15,13 @@ class Gcc < Package
   end
 
   resource :mpc do
-    url 'http://mirrors.aliyun.com/gnu/mpc/mpc-1.2.1.tar.gz'
-    sha256 '17503d2c395dfcf106b622dc142683c1199431d095367c6aacba6eec30340459'
+    url 'https://ftp.gnu.org/gnu/mpc/mpc-1.3.1.tar.gz'
+    sha256 'ab642492f5cf882b74aa0cb730cd410a81edcdbec895183ce930e706c1c759b8'
   end
 
   resource :isl do
-    url 'ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.18.tar.bz2'
-    sha256 '6b8b0fd7f81d0a957beb3679c81bbb34ccc7568d5682844d8924424a0dadcb1b'
+    url 'https://libisl.sourceforge.io/isl-0.25.tar.xz'
+    sha256 'be7b210647ccadf90a2f0b000fca11a4d40546374a850db67adb32fad4b230d9'
   end
 
   option 'disable-lto', 'Disable Link Time Optimisation support.'
@@ -71,18 +71,18 @@ class Gcc < Package
     ]
     args << '--enable-lto' unless disable_lto?
     install_resource :mpfr, '.'
-    mv 'mpfr-4.0.2', 'mpfr'
+    mv 'mpfr-4.2.0', 'mpfr'
     install_resource :gmp, '.'
-    mv 'gmp-6.1.2', 'gmp'
+    mv 'gmp-6.2.1', 'gmp'
     install_resource :mpc, '.'
-    mv 'mpc-1.1.0', 'mpc'
+    mv 'mpc-1.3.1', 'mpc'
     install_resource :isl, '.'
-    mv 'isl-0.18', 'isl'
+    mv 'isl-0.25', 'isl'
     mkdir '../gcc-build' do
       run "../gcc-#{version}/configure", *args
-      run 'make', '-j8', 'bootstrap'
+      run 'make', multiple_jobs? ? "-j#{jobs_number}" : '', 'bootstrap'
       #run 'ulimit -s 32768 && make -k check' unless skip_test?
-      run 'make', '-j8', 'install'
+      run 'make', multiple_jobs? ? "-j#{jobs_number}" : '', 'install'
     end
   end
 
