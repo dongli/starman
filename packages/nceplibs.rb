@@ -137,8 +137,8 @@ class Nceplibs < Package
     inreplace 'CMakeLists.txt', {
       '  LANGUAGES C Fortran)' => "  LANGUAGES C Fortran)\nset(CMAKE_C_FLAGS \"-std=c90\")\n"
     }
-    run "sed -i 's@\"-DOPENMP=\${OPENMP}\"@\"-DOPENMP=\${OPENMP}\"\\n\"-DJasper_ROOT=#{Jasper.prefix}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@' CMakeLists.txt"
-    run "sed -i 's@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@' CMakeLists.txt"
+    sed 'CMakeLists.txt', "'s@\"-DOPENMP=\${OPENMP}\"@\"-DOPENMP=\${OPENMP}\"\\n\"-DJasper_ROOT=#{Jasper.prefix}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@'"
+    sed 'CMakeLists.txt', "'s@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@'"
     mkdir 'download' do
       resources.keys.each do |key|
         install_resource key, '.'
@@ -150,9 +150,9 @@ class Nceplibs < Package
       end
       ['nceplibs-w3emc', 'emc_post'].each do |lib|
         cp 'nceplibs-wrf_io/cmake/FindNetCDF.cmake', "#{lib}/cmake"
-        run "sed -i 's@/CMakeModules/Modules@/cmake@' #{lib}/CMakeLists.txt"
+        sed "#{lib}/CMakeLists.txt", "'s@/CMakeModules/Modules@/cmake@'"
       end
-      run "sed -i 's@add_subdirectory(test)@#add_subdirectory(test)@' nceplibs-bufr/CMakeLists.txt"
+      sed 'nceplibs-bufr/CMakeLists.txt', "'s@add_subdirectory(test)@#add_subdirectory(test)@'"
     end
     mkdir 'build' do
       run 'cmake', '..', *std_cmake_args, '-DUSE_LOCAL=ON', "-DCMAKE_MODULE_PATH=../download/nceplibs-wgrib2/cmake/"
