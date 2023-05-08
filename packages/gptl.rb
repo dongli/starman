@@ -6,6 +6,8 @@ class Gptl < Package
   depends_on :papi unless OS.mac?
 
   def install
+    ENV['CC'] = ENV['MPICC']
+    ENV['FC'] = ENV['MPIF90']
     args = %W[
       --prefix=#{prefix}
     ]
