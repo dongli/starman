@@ -13,7 +13,7 @@ class Lapack < Package
                    '-DBUILD_SHARED_LIBS:BOOL=ON',
                    '-DLAPACKE:BOOL=ON',
                    *std_cmake_args
-      run 'make', multiple_jobs? ? '-j'+jobs_number : ''
+      run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
       run 'make', 'install'
     end
   end

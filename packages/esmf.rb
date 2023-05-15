@@ -60,7 +60,7 @@ class Esmf < Package
     inreplace 'build_config/Linux.gfortran.default/ESMC_Conf.h', {
       'typedef size_t ESMCI_FortranStrLenArg;' => "#include <stddef.h>\ntypedef size_t ESMCI_FortranStrLenArg;"
     }
-    run 'make', '-j8'
+    run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
     run 'make', 'unit_tests' if not skip_test?
     run 'make', 'install'
 

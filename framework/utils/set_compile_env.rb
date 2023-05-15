@@ -1,9 +1,9 @@
 module Utils
   def set_compile_env
-    ENV['CC'] = c_compiler
-    ENV['CXX'] = cxx_compiler
-    ENV['FC'] = fortran_compiler
-    ENV['F77'] = fortran_compiler
+    ENV['CC'] = mpi_c_compiler || c_compiler
+    ENV['CXX'] = mpi_cxx_compiler || cxx_compiler
+    ENV['FC'] = mpi_fortran_compiler || fortran_compiler
+    ENV['F77'] = mpi_fortran_compiler || fortran_compiler
     ENV['MPICC'] = mpi_c_compiler
     ENV['MPICXX'] = mpi_cxx_compiler
     ENV['MPIFC'] = mpi_fortran_compiler

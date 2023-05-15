@@ -54,19 +54,19 @@ class Settings
   end
 
   def self.cxx_compiler
-    compilers['cxx'] || compilers[:cxx]
+    compilers['cxx'] || compilers[:cxx] rescue nil
   end
 
   def self.fortran_compiler
-    compilers['fortran'] || compilers[:fortran]
+    compilers['fortran'] || compilers[:fortran] rescue nil
   end
 
   def self.mpi_c_compiler
-    compilers['mpi_c'] || compilers[:mpi_c]
+    compilers['mpi_c'] || compilers[:mpi_c] rescue nil
   end
 
   def self.mpi_cxx_compiler
-    compilers['mpi_cxx'] || compilers[:mpi_cxx]
+    compilers['mpi_cxx'] || compilers[:mpi_cxx] rescue nil
   end
 
   def self.mpi_fortran_compiler

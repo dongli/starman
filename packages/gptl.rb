@@ -6,12 +6,15 @@ class Gptl < Package
   depends_on :papi unless OS.mac?
 
   def install
-    ENV['CC'] = ENV['MPICC']
-    ENV['FC'] = ENV['MPIF90']
+    if CompilerSet.c.intel?
+      ENV['CFLAGS'] = '-std=gnu99'
+    end
     args = %W[
       --prefix=#{prefix}
+      --enable-pmpi
     ]
     args << '--enable-papi' unless OS.mac?
+    args << '--disable-shared' if CompilerSet.c.intel?
     run './configure', *args
     run 'make'
     run 'make', 'check' unless skip_test?
