@@ -2,6 +2,7 @@ class Esmf < Package
   url 'https://github.com/esmf-org/esmf/archive/refs/tags/v8.3.1.tar.gz'
   sha256 '6c39261e55dcdf9781cdfa344417b9606f7f961889d5ec626150f992f04f146d'
   version '8.3.1'
+  file_name 'esmf-8.3.1.tar.gz'
 
   option 'use-mkl', 'Use MKL for LAPACK dependency.'
   option 'use-pnetcdf', 'Use Parallel-NetCDF dependency.'

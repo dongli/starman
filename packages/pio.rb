@@ -2,6 +2,7 @@ class Pio < Package
   url 'https://github.com/NCAR/ParallelIO/archive/refs/tags/pio2_5_10.zip'
   sha256 '6c5d7369922422541f43e089802eb6e3e4b83569bb7c23c09ca040036eeb7947'
   version '2.5.10'
+  file_name 'ParallelIO-pio2_5_10.zip'
 
   option 'with-pnetcdf', 'Use PnetCDF library.'
 
@@ -27,6 +28,7 @@ class Pio < Package
     args << "-DNetCDF_Fortran_PATH=#{link_root}"
     args << "-DUSER_CMAKE_MODULE_PATH=#{pwd}/cmake_fortran_utils"
     args << "-DGENF90_PATH=#{pwd}/genf90"
+    args << "-DPIO_ENABLE_TIMING=OFF"
     if with_pnetcdf?
       args << "-DPnetCDF_PATH=#{link_root}"
     else
