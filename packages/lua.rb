@@ -1,9 +1,9 @@
 class Lua < Package
-  url 'https://www.lua.org/ftp/lua-5.3.4.tar.gz'
-  sha256 'f681aa518233bc407e23acf0f5887c884f17436f000d453b2491a9f11a52400c'
+  url 'https://www.lua.org/ftp/lua-5.4.4.tar.gz'
+  sha256 '164c7849653b80ae67bec4b7473b884bf5cc8d2dca05653475ec2ed27b9ebf61'
 
   label :common
-  label :skip_if_exist, include_file: 'lua.h'
+  label :skip_if_exist, include_file: 'lua5.4/lua.h'
 
   if not CompilerSet.c.clang?
     depends_on :readline
