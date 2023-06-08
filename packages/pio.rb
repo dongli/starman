@@ -44,7 +44,7 @@ class Pio < Package
     mkdir 'build' do
       install_resource :cmake_fortran_utils, '.'
       run 'cmake', '..', *args
-      run 'make'
+      run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
       run 'make', 'check' unless skip_test?
       run 'make', 'install'
     end
