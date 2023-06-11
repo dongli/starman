@@ -54,7 +54,7 @@ EOS
     PackageLoader.loaded_packages.each_value do |package|
       package.options.each do |name, option|
         if input_options.has_key? name
-          package.send :"#{name}=", input_options[name]
+          package.options[name][:value] = input_options[name]
         end
       end
     end
