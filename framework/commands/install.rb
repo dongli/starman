@@ -31,24 +31,33 @@ EOS
     CommandParser.command = :install
     parse_packages
     # Add possible package option and parse.
+  input_options = {}
     PackageLoader.loaded_packages.each_value do |package|
       package.options.each do |name, option|
         case option[:type]
         when :boolean
           @parser.on "--#{name.to_s.gsub('_', '-')}", option[:desc] do
-            option[:value] = true
+            input_options[name] = true
           end
         else
           @parser.on "--#{name.to_s.gsub('_', '-')} VALUE", "#{option[:desc]}#{' (' + option[:choices].join(', ') + ')' if option.has_key? :choices}" do |value|
             if option[:choices] and not option[:choices].include? value
               CLI.error "Invalid value #{CLI.red value} for argument #{CLI.blue '--' + name.to_s.gsub('_', '-')}! Choose one of #{option[:choices]}."
             end
-            option[:value] = value
+          input_options[name] = value
           end
         end
       end
     end
     @parser.parse!
+    # Propagate options to packages.
+    PackageLoader.loaded_packages.each_value do |package|
+      package.options.each do |name, option|
+        if input_options.has_key? name
+          package.send :"#{name}=", input_options[name]
+        end
+      end
+    end
     # Reparse packages because the command options may change dependencies.
     parse_packages force: true
     # Reinitialize settings since compiler set may be set in command line.
