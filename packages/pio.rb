@@ -22,6 +22,9 @@ class Pio < Package
   end
 
   def install
+    ENV['CC'] = ENV['MPICC']
+    ENV['CXX'] = ENV['MPICXX']
+    ENV['FC'] = ENV['MPIFC']
     install_resource :genf90, '.'
     args = std_cmake_args
     args << "-DLIBZ_PATH=#{link_root}"
