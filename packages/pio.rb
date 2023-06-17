@@ -27,6 +27,7 @@ class Pio < Package
     ENV['FC'] = ENV['MPIFC']
     install_resource :genf90, '.'
     args = std_cmake_args
+    args << "-DBUILD_SHARED_LIBS=ON"
     args << "-DLIBZ_PATH=#{link_root}"
     args << "-DSZIP_PATH=#{link_root}"
     args << "-DHDF5_PATH=#{link_root}"
