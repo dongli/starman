@@ -6,6 +6,7 @@ class Esmf < Package
 
   option 'use-mkl', 'Use MKL for LAPACK dependency.'
   option 'use-pnetcdf', 'Use Parallel-NetCDF dependency.'
+  option 'use-pio', 'Use PIO dependency.'
   option 'mpi-type', 'Set MPI type.', type: :string, choices: ['mpich', 'mpich2', 'mpich3', 'lam', 'openmpi', 'intelmpi']
   option 'with-esmpy', 'Install ESMPy interface.'
 
@@ -17,6 +18,7 @@ class Esmf < Package
   depends_on :mpi
   depends_on :netcdf
   depends_on :pnetcdf if use_pnetcdf?
+  depends_on :pio if use_pio?
 
   def export_env
     append_env 'PYTHONPATH', "#{lib}/python3.6/site-packages" if Dir.exist? "#{lib}/python3.6/site-packages"
@@ -50,7 +52,7 @@ class Esmf < Package
     end
     ENV['ESMF_NETCDF'] = 'nc-config'
     ENV['ESMF_PNETCDF'] = 'pnetcdf-config' if use_pnetcdf?
-    ENV['ESMF_PIO'] = 'internal'
+    ENV['ESMF_PIO'] = use_pio? ? Pio.prefix : 'OFF'
     if mpi_type
       ENV['ESMF_COMM'] = mpi_type.to_s
     elsif ENV['MPICXX'] =~ /mpiicpc$/ or ENV['MPIFC'] =~ /mpiifort$/
