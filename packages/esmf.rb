@@ -52,7 +52,12 @@ class Esmf < Package
     end
     ENV['ESMF_NETCDF'] = 'nc-config'
     ENV['ESMF_PNETCDF'] = 'pnetcdf-config' if use_pnetcdf?
-    ENV['ESMF_PIO'] = use_pio? ? Pio.prefix : 'OFF'
+    if use_pio?
+      ENV['ESMF_PIO'] = Pio.prefix
+      ENV['ESMF_PIO_INCLUDE'] = Pio.inc
+    else
+      ENV['ESMF_PIO'] = 'OFF'
+    end
     if mpi_type
       ENV['ESMF_COMM'] = mpi_type.to_s
     elsif ENV['MPICXX'] =~ /mpiicpc$/ or ENV['MPIFC'] =~ /mpiifort$/
