@@ -16,7 +16,7 @@ class IntelOneapi < Package
   def install
     install_resource :base, '.', plain_file: true
     args = %W[
-      -a --install-dir #{prefix}
+      -a --install-dir #{prefix}/intel/oneapi
       --silent --eula accept
       --components
     ]
@@ -27,11 +27,11 @@ class IntelOneapi < Package
       intel.oneapi.lin.mkl.devel
     ]
     args << components.join(':')
-    # run 'sh base/l_BaseKit_p_2023.1.0.46401_offline.sh', *args
+    run 'sh base/l_BaseKit_p_2023.1.0.46401_offline.sh', *args
 
     install_resource :hpc, '.', plain_file: true
     args = %W[
-      -a --install-dir #{prefix}
+      -a --install-dir #{prefix}/intel/oneapi
       --silent --eula accept
       --components
     ]
@@ -47,12 +47,12 @@ class IntelOneapi < Package
   def post_install
     # Update conf file to add this new compiler set.
     Settings.settings['compiler_sets']["intel_#{version}"] = {
-      'c' => "#{prefix}/compiler/latest/linux/bin/icx",
-      'mpi_c' => "#{prefix}/mpi/latest/bin/mpiicc",
+      'c' => "#{prefix}/intel/oneapi/compiler/latest/linux/bin/icx",
+      'mpi_c' => "#{prefix}/intel/oneapi/mpi/latest/bin/mpiicc",
       'cxx' => "#{prefix}/compiler/latest/linux/bin/icpx",
-      'mpi_cxx' => "#{prefix}/mpi/latest/bin/mpiicpc",
-      'fortran' => "#{prefix}/compiler/latest/linux/bin/ifx",
-      'mpi_fortran' => "#{prefix}/mpi/latest/bin/mpiifort"
+      'mpi_cxx' => "#{prefix}/intel/oneapi/mpi/latest/bin/mpiicpc",
+      'fortran' => "#{prefix}/intel/oneapi/compiler/latest/linux/bin/ifx",
+      'mpi_fortran' => "#{prefix}/intel/oneapi/mpi/latest/bin/mpiifort"
     }
     Settings.write
   end
