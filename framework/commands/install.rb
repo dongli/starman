@@ -118,8 +118,10 @@ EOS
           if subdirs.size > 1
             working_dir = dir
             CLI.warning "There are multiple directories in #{CLI.red dir}."
-          else
+          elsif subdirs.size == 1
             working_dir = subdirs.first
+          else
+            working_dir = '.'
           end
           work_in working_dir do
             # Apply possible patches.

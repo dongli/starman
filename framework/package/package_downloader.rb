@@ -13,9 +13,11 @@ class PackageDownloader
       else
         url = package.url
       end
-      CLI.notice "Downloading #{url} ..."
-      FileUtils.mkdir_p Settings.cache_root if not File.directory? Settings.cache_root
-      curl url, Settings.cache_root, rename: package.file_name
+      if not url.nil?
+        CLI.notice "Downloading #{url} ..."
+        FileUtils.mkdir_p Settings.cache_root if not File.directory? Settings.cache_root
+        curl url, Settings.cache_root, rename: package.file_name
+      end
     end
     # Download patches if exist.
     package.patches.each_with_index do |patch, index|
