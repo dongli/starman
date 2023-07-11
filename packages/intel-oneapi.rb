@@ -55,6 +55,11 @@ class IntelOneapi < Package
       'mpi_fortran' => "#{prefix}/intel/oneapi/mpi/latest/bin/mpiifort"
     }
     Settings.write
+    CLI.caveat <<-EOS.chomp
+Please add the following line into your ~/.bashrc or other shell config file:
+source #{prefix}/intel/oneapi/setvars.sh
+And relogin or source the shell config file before using Intel OneAPI compiler!
+EOS
   end
 
 end
