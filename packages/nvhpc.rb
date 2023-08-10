@@ -1,9 +1,9 @@
 class Nvhpc < Package
   if OS.linux?
-    url 'https://developer.download.nvidia.com/hpc-sdk/nvhpc_2020_207_Linux_x86_64_cuda_11.0.tar.gz'
-    sha256 'ec5a385650194b4213bce53f3766089656916e28e38df3aa3882ff35667b0be2'
+    url 'https://developer.download.nvidia.com/hpc-sdk/23.7/nvhpc_2023_237_Linux_x86_64_cuda_12.2.tar.gz'
+    sha256 '5606fc0c282c345d8039cd44b552e609da1147043857fe232c10d31846a4e64d'
   end
-  version '20.7'
+  version '23.7'
 
   label :compiler
   label :mpi
@@ -47,6 +47,15 @@ class Nvhpc < Package
       'mpi_fortran' => "#{mpi_bin}/mpif90"
     }
     Settings.write
+    CLI.caveat <<-EOS
+Please add the following lines into your ~/.bashrc:
+export NVARCH=`uname -s`_`uname -m`
+export NVCOMPILERS=#{prefix}
+export MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/23.7/compilers/man
+export PATH=$NVCOMPILERS/$NVARCH/23.7/compilers/bin:$PATH
+export PATH=$NVCOMPILERS/$NVARCH/23.7/comm_libs/mpi/bin:$PATH
+export MANPATH=$MANPATH:$NVCOMPILERS/$NVARCH/23.7/comm_libs/mpi/man
+EOS
   end
 
   def export_env
