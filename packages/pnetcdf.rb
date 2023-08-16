@@ -1,6 +1,6 @@
 class Pnetcdf < Package
-  url 'http://cucis.ece.northwestern.edu/projects/PnetCDF/Release/pnetcdf-1.12.2.tar.gz'
-  sha256 '3ef1411875b07955f519a5b03278c31e566976357ddfc74c2493a1076e7d7c74'
+  url 'https://parallel-netcdf.github.io/Release/pnetcdf-1.12.3.tar.gz'
+  sha256 '439e359d09bb93d0e58a6e3f928f39c2eae965b6c97f64e67cd42220d6034f77'
 
   option 'without-cxx', 'Disable C++ bindings'
   option 'without-fortran', 'Disable Fortran bindings'
