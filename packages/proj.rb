@@ -6,6 +6,14 @@ class Proj < Package
   depends_on :libtiff
 
   def install
+    if CompilerSet.c.vendor == :gcc and CompilerSet.c.version >= '13'
+      inreplace 'src/proj_json_streaming_writer.hpp', {
+        '#include <string>' => "#include <string>\n#include <cstdint>"
+      }
+      inreplace 'src/projections/s2.cpp', {
+        '#include <cmath>' => "#include <cmath>\n#include <cstdint>"
+      }
+    end
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
