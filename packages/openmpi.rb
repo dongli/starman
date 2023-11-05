@@ -24,6 +24,9 @@ class Openmpi < Package
       --disable-silent-rules
       --disable-debug
       --enable-shared
+      --with-libevent=internal
+      --with-pmix=internal
+      --with-prrte=internal
       --with-hwloc=internal
       --with-zlib=#{Zlib.prefix}
     ]
