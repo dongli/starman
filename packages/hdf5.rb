@@ -21,9 +21,6 @@ class Hdf5 < Package
     if enable_parallel?
       args << '-DHDF5_ENABLE_PARALLEL=ON'
       args << '-DALLOW_UNSUPPORTED=ON'
-      ENV['CC'] = ENV['MPICC']
-      ENV['CXX'] = ENV['MPICXX']
-      ENV['FC'] = ENV['MPIFC'] unless without_fortran?
     end
     args << '-DHDF5_ENABLE_THREADSAFE=OFF'
 

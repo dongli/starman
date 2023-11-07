@@ -1,6 +1,6 @@
 class Cdo < Package
   url 'https://code.mpimet.mpg.de/attachments/download/28882/cdo-2.2.2.tar.gz'
-  sha256 ''
+  sha256 '419c77315244019af41a296c05066f474cccbf94debfaae9e2106da51bc7c937'
 
   label :common
 
