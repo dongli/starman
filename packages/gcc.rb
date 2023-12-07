@@ -1,27 +1,27 @@
 class Gcc < Package
-  url 'http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-12.2.0/gcc-12.2.0.tar.xz'
-  sha256 'e549cf9cf3594a00e27b6589d4322d70e0720cdd213f39beb4181e06926230ff'
+  url 'http://mirrors.aliyun.com/gnu/gcc/gcc-12.3.0/gcc-12.3.0.tar.xz'
+  sha256 '949a5d4f99e786421a93b532b22ffab5578de7321369975b91aec97adfda8c3b'
 
   label :compiler
 
   resource :mpfr do
-    url 'https://ftp.gnu.org/gnu/mpfr/mpfr-4.2.0.tar.xz'
+    url 'http://mirrors.aliyun.com/gnu/mpfr/mpfr-4.2.0.tar.xz'
     sha256 '06a378df13501248c1b2db5aa977a2c8126ae849a9d9b7be2546fb4a9c26d993'
   end
 
   resource :gmp do
-    url 'http://mirrors.aliyun.com/gnu/gmp/gmp-6.2.1.tar.xz'
-    sha256 'fd4829912cddd12f84181c3451cc752be224643e87fac497b69edddadc49b4f2'
+    url 'http://mirrors.aliyun.com/gnu/gmp/gmp-6.3.0.tar.xz'
+    sha256 'a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898'
   end
 
   resource :mpc do
-    url 'https://ftp.gnu.org/gnu/mpc/mpc-1.3.1.tar.gz'
+    url 'http://mirrors.aliyun.com/gnu/mpc/mpc-1.3.1.tar.gz'
     sha256 'ab642492f5cf882b74aa0cb730cd410a81edcdbec895183ce930e706c1c759b8'
   end
 
   resource :isl do
-    url 'https://libisl.sourceforge.io/isl-0.25.tar.xz'
-    sha256 'be7b210647ccadf90a2f0b000fca11a4d40546374a850db67adb32fad4b230d9'
+    url 'https://libisl.sourceforge.io/isl-0.26.tar.xz'
+    sha256 'a0b5cb06d24f9fa9e77b55fabbe9a3c94a336190345c2555f9915bb38e976504'
   end
 
   option 'disable-lto', 'Disable Link Time Optimisation support.'
