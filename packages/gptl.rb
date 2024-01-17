@@ -5,6 +5,10 @@ class Gptl < Package
   depends_on :mpi
   depends_on :papi unless OS.mac?
 
+  def prefix
+    link_root
+  end
+
   def install
     ENV['CC'] = ENV['MPICC']
     ENV['FC'] = ENV['MPIFC']
@@ -15,7 +19,11 @@ class Gptl < Package
       --prefix=#{prefix}
       --enable-pmpi
     ]
-    args << '--enable-papi' unless OS.mac?
+    if not OS.mac?
+      args << '--enable-papi'
+      ENV['CPPFLAGS'] = "-I#{Papi.link_inc}"
+      ENV['LDFLAGS'] = "-L#{Papi.link_lib}"
+    end
     args << '--disable-shared' if CompilerSet.c.intel?
     run './configure', *args
     run 'make'
