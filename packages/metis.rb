@@ -19,6 +19,12 @@ class Metis < Package
     # Install GKLib.
     install_resource :gklib, '.'
     work_in 'gklib' do
+      if OS.centos?
+        inreplace 'GKlibSystem.cmake', {
+          '# Finally set the official C flags.' =>
+          'set(GKlib_COPTIONS "${GKlib_COPTIONS} -D_POSIX_C_SOURCE=199309L")'
+        }
+      end
       run 'make', 'config', *args
       run 'make', 'install'
     end

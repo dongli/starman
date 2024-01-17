@@ -10,7 +10,7 @@ module Utils
       case options[:method]
       when :get
         filename = options[:rename] ? options[:rename] : File.basename(URI.parse(url).path)
-        system "curl -f#L -C - -o #{root}/#{filename} #{url}"
+        system "curl --insecure -f#L -C - -o #{root}/#{filename} #{url}"
         unless $?.success?
           if $?.exitstatus == 33
             rm "#{root}/#{filename}"
