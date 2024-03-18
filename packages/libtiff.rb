@@ -1,6 +1,6 @@
 class Libtiff < Package
-  url 'https://download.osgeo.org/libtiff/tiff-4.3.0.tar.gz'
-  sha256 '0e46e5acb087ce7d1ac53cf4f56a09b221537fc86dfc5daaad1c2e89e1b37ac8'
+  url 'https://download.osgeo.org/libtiff/tiff-4.6.0.tar.gz'
+  sha256 '88b3979e6d5c7e32b50d7ec72fb15af724f6ab2cbf7e10880c360a77e4b5d99a'
 
   depends_on :jpeg
 
