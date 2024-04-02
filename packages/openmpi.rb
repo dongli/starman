@@ -23,6 +23,7 @@ class Openmpi < Package
       --disable-dependency-tracking
       --disable-silent-rules
       --disable-debug
+      --disable-sphinx
       --enable-shared
       --with-libevent=internal
       --with-pmix=internal
