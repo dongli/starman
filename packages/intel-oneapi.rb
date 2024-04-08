@@ -49,7 +49,7 @@ class IntelOneapi < Package
     Settings.settings['compiler_sets']["intel_#{version}"] = {
       'c' => "#{prefix}/intel/oneapi/compiler/latest/linux/bin/icx",
       'mpi_c' => "#{prefix}/intel/oneapi/mpi/latest/bin/mpiicc",
-      'cxx' => "#{prefix}/compiler/latest/linux/bin/icpx",
+      'cxx' => "#{prefix}/intel/oneapi/compiler/latest/linux/bin/icpx",
       'mpi_cxx' => "#{prefix}/intel/oneapi/mpi/latest/bin/mpiicpc",
       'fortran' => "#{prefix}/intel/oneapi/compiler/latest/linux/bin/ifx",
       'mpi_fortran' => "#{prefix}/intel/oneapi/mpi/latest/bin/mpiifort"
