@@ -122,7 +122,7 @@ class Nceplibs < Package
 
   resource :wgrib2 do
     url 'https://github.com/NOAA-EMC/NCEPLIBS-wgrib2/archive/refs/tags/v2.0.8-cmake-v6.zip'
-    sha256 '783530bb46ff5618f0412f646a8599c57d4716b639a555753cd85693508d3395'
+    sha256 '5498841bf29110428c42ab718739276af40de933d43f9bb453b606678ce0e360'
     file_name 'nceplibs-wgrib2-2.0.8.zip'
   end
 

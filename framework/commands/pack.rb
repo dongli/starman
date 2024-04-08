@@ -34,9 +34,11 @@ EOS
     tar_file = Gem::Package::TarWriter.new(File.open(tar_file_path, 'wb'))
     PackageLoader.loaded_packages.each do |name, package|
       unless package.has_label? :group
-        CLI.blue_arrow package.file_path
-        tar_file.add_file package.file_name, File.stat(package.file_path).mode do |io|
-          io.write File.open(package.file_path, 'rb').read
+        if package.file_name
+          CLI.blue_arrow package.file_path
+          tar_file.add_file package.file_name, File.stat(package.file_path).mode do |io|
+            io.write File.open(package.file_path, 'rb').read
+          end
         end
         package.patches.each do |patch|
           next if patch.class == String

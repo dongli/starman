@@ -67,7 +67,8 @@ module PackageLoader
       elsif possible_packages.size == 0
         CLI.error "Unknown input #{CLI.red name}!"
       else
-        scan name
+        name, version = name.split '@'
+        scan name, version: version
         @@loaded_packages[name].version = options[:version] if options[:version]
       end
     end
