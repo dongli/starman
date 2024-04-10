@@ -137,7 +137,7 @@ class Nceplibs < Package
     inreplace 'CMakeLists.txt', {
       '  LANGUAGES C Fortran)' => "  LANGUAGES C Fortran)\nset(CMAKE_C_FLAGS \"-std=c90\")\n"
     }
-    sed 'CMakeLists.txt', "'s@\"-DOPENMP=\${OPENMP}\"@\"-DOPENMP=\${OPENMP}\"\\n\"-DJasper_ROOT=#{Jasper.prefix}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@'"
+    sed 'CMakeLists.txt', "'s@\"-DOPENMP=\${OPENMP}\"@\"-DOPENMP=\${OPENMP}\"\\n\"-DNetCDF_ROOT=#{Netcdf.prefix}\"\\n\"-DZLIB_ROOT=#{Zlib.prefix}\"\\n\"-DJPEG_ROOT=#{Jpeg.prefix}\"\\n\"-DJasper_ROOT=#{Jasper.prefix}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@'"
     sed 'CMakeLists.txt', "'s@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"@\"-DCMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER}\"\\n\"-DPNG_ROOT=#{Libpng.prefix}\"@'"
     mkdir 'download' do
       resources.keys.each do |key|
@@ -153,9 +153,27 @@ class Nceplibs < Package
         sed "#{lib}/CMakeLists.txt", "'s@/CMakeModules/Modules@/cmake@'"
       end
       sed 'nceplibs-bufr/CMakeLists.txt', "'s@add_subdirectory(test)@#add_subdirectory(test)@'"
+      inreplace 'nceplibs-sp/CMakeLists.txt', {
+        'libsp_8.a" OFF' => 'libsp_8.a" ON'
+      }
+      inreplace 'nceplibs-w3nco/src/CMakeLists.txt', {
+        'set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")' => 'set(CMAKE_C_FLAGS "-std=c90 -g ${CMAKE_C_FLAGS}")'
+      }
+      ['bacio', 'g2', 'gfsio', 'ip2', 'landsfcutil', 'nemsio', 'nemsiogfs', 'sfcio', 'sigio', 'w3nco', 'w3emc'].each do |lib|
+        inreplace "nceplibs-#{lib}/src/CMakeLists.txt", {
+          'MATCHES "^(Intel)' => 'MATCHES "^(Intel|IntelLLVM)'
+        }
+      end
+      inreplace 'nceplibs-wgrib2/wgrib2/CMakeLists.txt', {
+        'include("source-files.cmake")' => "include(\"source-files.cmake\")\nset(CMAKE_C_FLAGS \"${CMAKE_C_FLAGS} -std=c90\")",
+        'MATCHES "^(Intel)' => 'MATCHES "^(Intel|IntelLLVM)'
+      }
+      inreplace 'emc_post/sorc/ncep_post.fd/CMakeLists.txt', {
+        'MATCHES "^(Intel)' => 'MATCHES "^(Intel|IntelLLVM)'
+      }
     end
     mkdir 'build' do
-      run 'cmake', '..', *std_cmake_args, '-DUSE_LOCAL=ON', "-DCMAKE_MODULE_PATH=../download/nceplibs-wgrib2/cmake/"
+      run 'cmake', '..', *std_cmake_args, '-DUSE_LOCAL=ON', "-DCMAKE_MODULE_PATH=../download/nceplibs-wgrib2/cmake"
       run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
     end
   end
