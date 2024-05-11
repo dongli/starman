@@ -1,8 +1,8 @@
 class Esmf < Package
-  url 'https://github.com/esmf-org/esmf/archive/refs/tags/v8.4.2.tar.gz'
-  sha256 '969304efa518c7859567fa6e65efd960df2b4f6d72dbf2c3f29e39e4ab5ae594'
-  version '8.4.2'
-  file_name 'esmf-8.4.2.tar.gz'
+  url 'https://github.com/esmf-org/esmf/archive/refs/tags/v8.6.0.tar.gz'
+  sha256 'ed057eaddb158a3cce2afc0712b49353b7038b45b29aee86180f381457c0ebe7'
+  version '8.6.0'
+  file_name 'esmf-8.6.0.tar.gz'
 
   option 'use-mkl', 'Use MKL for LAPACK dependency.'
   option 'use-pnetcdf', 'Use Parallel-NetCDF dependency.'
@@ -60,7 +60,7 @@ class Esmf < Package
     end
     if mpi_type
       ENV['ESMF_COMM'] = mpi_type.to_s
-    elsif ENV['MPICXX'] =~ /mpiicpc$/ or ENV['MPIFC'] =~ /mpiifort$/
+    elsif ENV['MPICXX'] =~ /mpiicpx$/ or ENV['MPICXX'] =~ /mpiicpc$/ or ENV['MPIFC'] =~ /mpiifort$/
       ENV['ESMF_COMM'] = 'intelmpi'
     else
       CLI.error "You should set #{CLI.blue '--mpi-type'} option!"
@@ -68,7 +68,12 @@ class Esmf < Package
     inreplace 'build_config/Linux.gfortran.default/ESMC_Conf.h', {
       'typedef size_t ESMCI_FortranStrLenArg;' => "#include <stddef.h>\ntypedef size_t ESMCI_FortranStrLenArg;"
     }
+    ENV['ESMF_CCOMPILER'] = ENV['MPICC']
+    ENV['ESMF_CLINKER'] = ENV['MPICC']
     ENV['ESMF_CXXCOMPILER'] = ENV['MPICXX']
+    ENV['ESMF_CXXLINKER'] = ENV['MPICXX']
+    ENV['ESMF_F90COMPILER'] = ENV['MPIFC']
+    ENV['ESMF_F90LINKER'] = ENV['MPIFC']
     run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
     run 'make', 'unit_tests' if not skip_test?
     run 'make', 'install'
