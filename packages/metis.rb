@@ -25,9 +25,15 @@ class Metis < Package
           'set(GKlib_COPTIONS "${GKlib_COPTIONS} -D_POSIX_C_SOURCE=199309L")'
         }
       end
+      inreplace 'CMakeLists.txt', {
+        'project(GKlib C)' => "project(GKlib C)\nset(CMAKE_C_FLAGS -fPIC)"
+      }
       run 'make', 'config', *args
       run 'make', 'install'
     end
+    inreplace 'CMakeLists.txt', {
+      'project(METIS C)' => "project(GKlib C)\nset(CMAKE_C_FLAGS -fPIC)"
+    }
     inreplace 'libmetis/CMakeLists.txt', {
       'add_library(metis ${METIS_LIBRARY_TYPE} ${metis_sources})' =>
       "add_library(metis ${METIS_LIBRARY_TYPE} ${metis_sources})\ntarget_link_libraries(metis GKlib)"
