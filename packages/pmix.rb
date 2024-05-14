@@ -1,6 +1,6 @@
 class Pmix < Package
-  url 'https://github.com/openpmix/openpmix/releases/download/v4.0.0/pmix-4.0.0.tar.bz2'
-  sha256 'feb931660ea372e80dbd2751d76cb4a10ea42c33035c01c3b753900946efe69f'
+  url 'https://github.com/openpmix/openpmix/releases/download/v5.0.2/pmix-5.0.2.tar.bz2'
+  sha256 '28227ff2ba925da2c3fece44502f23a91446017de0f5a58f5cea9370c514b83c'
 
   label :common
 
