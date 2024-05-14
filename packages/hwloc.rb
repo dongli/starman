@@ -1,8 +1,10 @@
 class Hwloc < Package
-  url 'https://www.open-mpi.org/software/hwloc/v2.0/downloads/hwloc-2.0.0.tar.bz2'
-  sha256 '99e56f72d21f4e9c449b57f602ef72d79bf0a2e2ff5fb77367fd1a9f5c312708'
+  url 'https://download.open-mpi.org/release/hwloc/v2.10/hwloc-2.10.0.tar.bz2'
+  sha256 '0305dd60c9de2fbe6519fe2a4e8fdc6d3db8de574a0ca7812b92e80c05ae1392'
 
   label :common
+
+  option 'without-rocm', 'Build without ROCM.'
 
   def install
     args = %W[
@@ -11,6 +13,7 @@ class Hwloc < Package
       --disable-dependency-tracking
       --without-x
     ]
+    args << '--without-rocm' if without_rocm?
     run './configure', *args
     run 'make', 'install'
   end
