@@ -1,14 +1,13 @@
 class Eccodes < Package
-  url 'https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.32.1-Source.tar.gz'
-  sha256 'ad2ac1bf36577b1d35c4a771b4d174a06f522a1e5ef6c1f5e53a795fb624863e'
+  url 'https://confluence.ecmwf.int/download/attachments/45757960/eccodes-2.34.1-Source.tar.gz'
+  sha256 'f9b8680122e3ccec26e6ed24a81f1bc50ed9f2232b431e05e573678aac4d9734'
 
   depends_on :cmake
-  depends_on :openjpeg
-  depends_on :jasper
-  depends_on :netcdf
   depends_on :libaec
+  depends_on :libpng
+  depends_on :netcdf
+  depends_on :openjpeg
 
-  option 'with-python2', 'Build Python 2 bindings.'
   option 'with-python3', 'Build Python 3 bindings.'
 
   def export_env
@@ -18,25 +17,19 @@ class Eccodes < Package
   end
 
   def install
-    inreplace 'cmake/FindOpenJPEG.cmake', {
-      'include/openjpeg-2.1 )' => "include/openjpeg-2.1 include/openjpeg-#{Openjpeg.version.major_minor} )"
-    }
-    inreplace 'cmake/ecbuild_check_os.cmake', {
-      '-Wl,--allow-shlib-undefined' => ''
-    }
     args = std_cmake_args search_paths: [link_root]
-    args << '-DENABLE_JPG=On'
-    args << '-DENABLE_NETCDF=On'
     args << '-DENABLE_FORTRAN=On'
-    args << "-DOPENJPEG_PATH='#{link_root}'"
-    args << "-DJASPER_PATH='#{link_root}'"
+    args << '-DENABLE_NETCDF=On'
     args << "-DNETCDF_PATH='#{link_root}'"
+    args << '-DENABLE_JPG=On'
+    args << "-DOPENJPEG_PATH='#{link_root}'"
+    args << '-DENABLE_JPG_LIBOPENJPEG=ON'
+    args << '-DENABLE_JPG_LIBJASPER=OFF'
+    args << '-DENABLE_ECCODES_THREADS=ON'
     if with_python3?
       args << "-DENABLE_PYTHON=On"
       args << "-DPYTHON_EXECUTABLE=#{which 'python3'}"
       CLI.warning "Ignore #{CLI.red '--with-python2'} option." if with_python2?
-    elsif with_python2?
-      args << "-DENABLE_PYTHON=On"
     else
       args << "-DENABLE_PYTHON=Off"
     end
