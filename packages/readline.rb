@@ -1,7 +1,7 @@
 class Readline < Package
-  url 'https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz'
-  sha256 'e339f51971478d369f8a053a330a190781acb9864cf4c541060f12078948e461'
-  version '8.0.1'
+  url 'https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz'
+  sha256 '3feb7171f16a84ee82ca18a36d7b9be109a52c04f492a053331d7d1095007c35'
+  version '8.2'
 
   label :common
   label :alone
