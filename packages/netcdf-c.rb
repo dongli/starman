@@ -1,7 +1,7 @@
 class NetcdfC < Package
-  url 'https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.0.tar.gz'
-  file_name 'netcdf-c-4.9.0.tar.gz'
-  sha256 '9f4cb864f3ab54adb75409984c6202323d2fc66c003e5308f3cdf224ed41c0a6'
+  url 'https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.9.2.tar.gz'
+  file_name 'netcdf-c-4.9.2.tar.gz'
+  sha256 'bc104d101278c68b303359b3dc4192f81592ae8640f1aee486921138f7f88cb7'
 
   grouped_by :netcdf
 

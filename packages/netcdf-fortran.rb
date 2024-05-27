@@ -1,11 +1,13 @@
 class NetcdfFortran < Package
-  url 'https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.6.0.tar.gz'
-  file_name 'netcdf-fortran-4.6.0.tar.gz'
-  sha256 '8194aa70e400c0adfc456127c1d97af2c6489207171d13b10cd754a16da8b0ca'
+  url 'https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.6.1.tar.gz'
+  file_name 'netcdf-fortran-4.6.1.tar.gz'
+  sha256 '40b534e0c81b853081c67ccde095367bd8a5eead2ee883431331674e7aa9509f'
 
   grouped_by :netcdf
 
   depends_on 'netcdf-c'
+
+  option 'enable-parallel', 'Enable parallel IO.'
 
   def install
     ENV['CPPFLAGS'] += " -I#{link_inc}"
@@ -14,7 +16,7 @@ class NetcdfFortran < Package
       ENV['LDFLAGS'] += ' -Wl,-flat_namespace'
       ENV['FFLAGS'] = '-assume no2underscore'
     end
-    ENV['FC'] = "#{CompilerSet.fortran.command} -fPIC"
+    ENV['FC'] = "#{enable_parallel? ? ENV['MPIFC'] : ENV['FC']} -fPIC"
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking

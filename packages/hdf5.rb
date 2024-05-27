@@ -1,6 +1,6 @@
 class Hdf5 < Package
-  url 'https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.0/src/hdf5-1.12.0.tar.bz2'
-  sha256 '97906268640a6e9ce0cde703d5a71c9ac3092eded729591279bf2e3ca9765f61'
+  url 'https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.3/src/hdf5-1.14.3.tar.bz2'
+  sha256 '9425f224ed75d1280bb46d6f26923dd938f9040e7eaebf57e66ec7357c08f917'
 
   depends_on :szip
   depends_on :zlib

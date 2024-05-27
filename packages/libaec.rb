@@ -1,7 +1,7 @@
 class Libaec < Package
-  url 'https://gitlab.dkrz.de/k202009/libaec/-/archive/v1.0.6/libaec-v1.0.6.tar.bz2'
-  sha256 '31fb65b31e835e1a0f3b682d64920957b6e4407ee5bbf42ca49549438795a288'
-  version '1.0.6'
+  url 'https://gitlab.dkrz.de/k202009/libaec/-/archive/v1.1.3/libaec-v1.1.3.tar.bz2'
+  sha256 '46216f9d2f2d3ffea4c61c9198fe0236f7f316d702f49065c811447186d18222'
+  version '1.1.3'
 
   def install
     mkdir 'build' do
