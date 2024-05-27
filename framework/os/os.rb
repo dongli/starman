@@ -47,6 +47,10 @@ class OS
     @@os.type == :mac
   end
 
+  def self.arm?
+    @@os.arm?
+  end
+
   def self.linux?
     [:centos, :fedora, :redhat, :ubuntu, :unknown].include? @@os.type
   end

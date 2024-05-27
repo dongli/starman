@@ -16,7 +16,7 @@ EOS
     @parser.on '--all', 'Remove all packages.' do
       @@args[:all] = true
     end
-    parse_packages empty_is_ok: true
+    parse_packages empty_is_ok: true, relax: true
     @parser.parse!
   end
 
