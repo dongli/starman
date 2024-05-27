@@ -9,9 +9,8 @@ class Libtiff < Package
       --prefix=#{prefix}
       --disable-dependency-tracking
       --disable-lzma
-      --with-jpeg-include-dir=#{Jpeg.link_inc}
-      --with-jpeg-lib-dir=#{Jpeg.link_lib}
-      --without-x
+      --with-jpeg-include-dir=#{Jpeg.inc}
+      --with-jpeg-lib-dir=#{Jpeg.lib}
     ]
     run './configure', *args
     run 'make', 'install'
