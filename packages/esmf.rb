@@ -74,6 +74,18 @@ class Esmf < Package
     ENV['ESMF_CXXLINKER'] = ENV['MPICXX']
     ENV['ESMF_F90COMPILER'] = ENV['MPIFC']
     ENV['ESMF_F90LINKER'] = ENV['MPIFC']
+    if OS.mac? and CompilerSet.c.vendor == :gcc
+      ['src/Infrastructure/IO/PIO/configure',
+       'src/Infrastructure/IO/PIO/ParallelIO/tests/cperf/CMakeLists.txt',
+       'src/Infrastructure/IO/PIO/ParallelIO/examples/c/CMakeLists.txt',
+       'src/Infrastructure/IO/PIO/ParallelIO/src/clib/CMakeLists.txt',
+       'src/Infrastructure/IO/PIO/ParallelIO/tests/cunit/CMakeLists.txt',
+       'src/Infrastructure/IO/PIO/ParallelIO/.github/workflows/autotools.yml'].each do |file|
+        inreplace file, '-std=c99' => '-std=gnu11'
+      end
+      ENV['ESMF_CSTD'] = 'gnu11'
+      inreplace 'build/common.mk', 'ESMF_CSTDFLAG         = -std=c$(ESMF_CSTD)' => 'ESMF_CSTDFLAG = -std=$(ESMF_CSTD)'
+    end
     run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
     run 'make', 'unit_tests' if not skip_test?
     run 'make', 'install'
