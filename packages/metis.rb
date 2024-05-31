@@ -18,6 +18,11 @@ class Metis < Package
     ]
     # Install GKLib.
     install_resource :gklib, '.'
+    if OS.mac? and CompilerSet.c.vendor == :gcc
+      ['conf/gkbuild.cmake', 'gklib/GKlibSystem.cmake'].each do |file|
+        inreplace file, { '-std=c99' => '-std=gnu11' }
+      end
+    end
     work_in 'gklib' do
       if OS.centos?
         inreplace 'GKlibSystem.cmake', {
