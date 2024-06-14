@@ -29,5 +29,14 @@ class NetcdfFortran < Package
     run 'make', multiple_jobs? ? "-j#{jobs_number}" : ''
     run 'make', 'check' unless skip_test?
     run 'make', 'install'
+
+    # Fix RPATH!
+    # dyld[68316]: Library not loaded: @rpath/libhdf5_hl.310.dylib
+    # Referenced from: <F81D03A7-7D32-36C0-A799-8B543BDC5125> .../libnetcdff.7.dylib
+    if OS.mac?
+      {'hdf5_hl.310' => Hdf5.lib, 'hdf5.310' => Hdf5.lib, 'sz.2' => Szip.lib}.each do |key, value|
+        run 'install_name_tool', '-change', "@rpath/lib#{key}.dylib", "#{value}/lib#{key}.dylib", "#{lib}/libnetcdff.dylib"
+      end
+    end
   end
 end
